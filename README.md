@@ -25,3 +25,4 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 微信多客服：http://dkf.qq.com
 
 ### 支付接口方法
+支付商户证书
