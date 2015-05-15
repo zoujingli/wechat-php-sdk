@@ -21,7 +21,7 @@ class WechatPay {
     /** 商户支付密钥Key */
     protected $partnerKey;
 
-    /** 证书路径 */
+    /** 商户证书 */
     protected $ssl_cer;
     protected $ssl_key;
 
