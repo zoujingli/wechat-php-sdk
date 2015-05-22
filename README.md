@@ -166,7 +166,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  addTemplateMessage($tpl_id) 模板消息，添加消息模板
  *  sendTemplateMessage($data) 发送模板消息
  *  
- *  多客服接口：
+####多客服接口：
  *  getCustomServiceMessage($data) 获取多客服会话记录
  *  transfer_customer_service($customer_account) 转发多客服消息
  *  getCustomServiceKFlist() 获取多客服客服基本信息
@@ -206,8 +206,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 | 接口分析 | 'interface' | 获取接口分析分时数据 | 'summaryhour' | 1 |
 需要注意 `begin_date`和`end_date`的差值需小于“最大时间跨度”（比如最大时间跨度为1时，`begin_date`和`end_date`的差值只能为0，才能小于1）
 
- *  
- *  卡券接口：
+
+####卡券接口：
  *  createCard($data) 创建卡券
  *  updateCard($data) 修改卡券
  *  delCard($card_id) 删除卡券
