@@ -37,3 +37,17 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 
 ### 支付接口方法
 支付商户证书
+
+### 微信开放平台
+
+    $options = array(
+        'ticket'=>'ticket', //填写你设定的ticket
+        'appid'=>'appid', //填写高级调用功能的appid
+        'appsecret'=>'appsecret', //填写高级调用功能的appsecret
+    );
+    $weObj = new Service($options);
+    $weObj->getAuthorizationInfo(); //获取服务号的授权信息
+    $weObj->refreshAccessToken(); //刷新授权方操作Token
+    $weObj->getWechatInfo(); //获取公众号的帐号信息
+    $weObj->getAuthorizerOption(); //获取公众号的授权项的值
+    $weObj->setAuthorizerOption(); //设置公众号的授权项的值
