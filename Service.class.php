@@ -114,6 +114,26 @@ class Service {
     /**
      * 获取公众号的AccessToken
      * @param type $appid
+     * 
+      CREATE TABLE `wx_wechat_config` (
+      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+      `store_id` bigint(20) DEFAULT NULL COMMENT '店铺ID',
+      `authorizer_appid` varchar(100) DEFAULT NULL COMMENT '公众号APPID',
+      `authorizer_access_token` varchar(200) DEFAULT NULL COMMENT '公众号Token',
+      `authorizer_refresh_token` varchar(200) DEFAULT NULL COMMENT '公众号刷新Token',
+      `func_info` varchar(100) DEFAULT NULL COMMENT '公众号集权',
+      `nick_name` varchar(50) DEFAULT NULL COMMENT '公众号昵称',
+      `head_img` varchar(200) DEFAULT NULL COMMENT '公众号头像',
+      `expires_in` bigint(20) DEFAULT NULL COMMENT 'Token有效时间',
+      `service_type_info` int(11) DEFAULT NULL COMMENT '服务类型信息',
+      `verify_type_info` int(11) DEFAULT NULL COMMENT '验证类型信息',
+      `user_name` varchar(100) DEFAULT NULL COMMENT '众众号OPENID',
+      `alias` varchar(100) DEFAULT NULL COMMENT '公众号别名',
+      `qrcode_url` varchar(200) DEFAULT NULL COMMENT '公众号二维码地址',
+      `status` int(11) DEFAULT '2' COMMENT '状态',
+      `update_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+      PRIMARY KEY (`id`)
+      ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='微信授权配置表';
      */
     public function getWechatConfig($appid, $model = 'WechatConfig') {
         $map = array('authorizer_appid|store_id' => $appid, 'status' => '2');
