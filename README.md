@@ -260,3 +260,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
     $weObj->getWechatInfo(); //获取公众号的帐号信息
     $weObj->getAuthorizerOption(); //获取公众号的授权项的值
     $weObj->setAuthorizerOption(); //设置公众号的授权项的值
+
+    $weObj->getWechatConfig($appid); //获取可用于WechatSDK的配置参数
+    $weObj->getInstanceWechat($appid); //获取普通微信SDK操作对象，需要配合数据库
+    
