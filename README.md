@@ -75,7 +75,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 
 ### 被动接口方法:   
 * valid() 验证连接，被动接口处于加密模式时必须调用
-* 
+
 * getRev() 获取微信服务器发来信息(不返回结果)，被动接口必须调用
 * getRevData() 返回微信服务器发来的信息（数组）
 * getRevFrom()  返回消息发送者的userid
@@ -105,7 +105,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 * getRevCardPass() 返回卡券-审核通过的卡券ID（卡券-卡券审核事件） 返回文本型
 * getRevCardGet() 返回卡券-用户领取卡券的相关信息（卡券-领取卡券事件） 返回数组{'CardId' => '','IsGiveByFriend' => '','UserCardCode' => ''}
 * getRevCardDel() 返回卡券-用户删除卡券的相关信息（卡券-删除卡券事件） 返回数组{'CardId' => '','UserCardCode' => ''}
-* 
+
 * text($text) 设置文本型消息，参数：文本内容
 * image($mediaid) 设置图片型消息，参数：图片的media_id
 * voice($mediaid) 设置语音型消息，参数：语音的media_id
@@ -165,8 +165,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  setTMIndustry($id1,$id2='') 模板消息，设置所属行业
  *  addTemplateMessage($tpl_id) 模板消息，添加消息模板
  *  sendTemplateMessage($data) 发送模板消息
- *  
-####多客服接口：
+ 
+#### 多客服接口：
  *  getCustomServiceMessage($data) 获取多客服会话记录
  *  transfer_customer_service($customer_account) 转发多客服消息
  *  getCustomServiceKFlist() 获取多客服客服基本信息
@@ -207,7 +207,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 需要注意 `begin_date`和`end_date`的差值需小于“最大时间跨度”（比如最大时间跨度为1时，`begin_date`和`end_date`的差值只能为0，才能小于1）
 
 
-####卡券接口：
+#### 卡券接口：
  *  createCard($data) 创建卡券
  *  updateCard($data) 修改卡券
  *  delCard($card_id) 删除卡券
@@ -227,8 +227,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  updateMemberCard($data) 会员卡交易，参数结构请参看卡券开发文档(6.1.2 会员卡交易)章节
  *  updateLuckyMoney($code,$balance,$card_id='') 更新红包金额
  *  setCardTestWhiteList($openid=array(),$user=array()) 设置卡券测试白名单
- *  
- *  摇一摇周边接口：
+
+#### 摇一摇周边接口：
  *  applyShakeAroundDevice($data) 申请设备ID
  *  updateShakeAroundDevice($data) 编辑设备的备注信息
  *  searchShakeAroundDevice($data) 查询设备列表
