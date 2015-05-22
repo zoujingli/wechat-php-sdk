@@ -1,5 +1,10 @@
 #WECHAT-PHP-SDK
 
+### 运行环境说明
+此SDK开发调试是在ThinkPHP3.2的基础进行的，因此带上了命名空间
+
+如果不需要命名空间，可以命名空间去除，再分别引入对应的PHP文体
+
 ### SDK文件说明
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
 weixin developer SDK.
@@ -8,7 +13,9 @@ Wechat.class.php 微信常用接口
 
 WechatPay.class.php 微信支付接口
 
-WechatPayCommon.class.php 微信支付基础库
+Service.class.php 微信开放平台接口
+
+Common.class.php 微信接口基础库
 
 ### 常用接口方法
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
@@ -20,6 +27,8 @@ wechat-php-sdk.
 微信公众平台： http://mp.weixin.qq.com/wiki/
 
 微信企业平台： http://qydev.weixin.qq.com/wiki/
+
+微信开放平台：https://open.weixin.qq.com/
 
 微信支付接入文档：
 https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
