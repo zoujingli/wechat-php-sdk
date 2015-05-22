@@ -248,13 +248,14 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 支付商户证书
 
 ## 微信开放平台
-
+```php
     $options = array(
         'ticket'=>'ticket', //填写你设定的ticket
         'appid'=>'appid', //填写高级调用功能的appid
         'appsecret'=>'appsecret', //填写高级调用功能的appsecret
     );
     $weObj = new Service($options);
+
     $weObj->getAuthorizationInfo(); //获取服务号的授权信息
     $weObj->refreshAccessToken(); //刷新授权方操作Token
     $weObj->getWechatInfo(); //获取公众号的帐号信息
@@ -263,4 +264,5 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 
     $weObj->getWechatConfig($appid); //获取可用于WechatSDK的配置参数
     $weObj->getInstanceWechat($appid); //获取普通微信SDK操作对象，需要配合数据库
+```
     
