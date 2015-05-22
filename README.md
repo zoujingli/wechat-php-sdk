@@ -185,6 +185,7 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  getDatacube($type,$subtype,$begin_date,$end_date='') 获取统计数据 参数需注意$type与$subtype的定义
 > 获取统计数据方法 参数定义
 > 
+
 | 数据分类 | $type值(字符串)  | 数据子分类 | $subtype值(字符串) | 时间跨度(天) |
 | --------- | :-------:  | --------- | :------: | ----: |
 | 用户分析 | 'user' | 获取用户增减数据 | 'summary' | 7 |
