@@ -2,7 +2,7 @@
 
 if (!class_exists('WechatBasic', false)) {
     require __DIR__ . '/WechatBasic.php';
-}
+} 
 
 /**
  * 微信SDK基础类
