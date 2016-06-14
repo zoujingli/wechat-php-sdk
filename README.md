@@ -33,10 +33,6 @@ Service.class.php 微信开放平台接口
 
 Common.class.php 微信接口基础库
 
-### 常用接口方法
-微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
-wechat-php-sdk.
-
 #### 使用详解
 使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
 
@@ -278,9 +274,6 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  *  deviceShakeAroundStatistics($device_id,$begin_date,$end_date,$uuid='',$major=0,$minor=0) 以设备为维度的数据统计接口
  *  pageShakeAroundStatistics($page_id,$begin_date,$end_date) 以页面为维度的数据统计接口
 
-
-## 微信支付接口方法
-支付商户证书
 
 ## 微信开放平台
 ```php
