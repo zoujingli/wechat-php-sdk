@@ -1,14 +1,11 @@
 <?php
 
-class WechatBasic { 
+class WechatBasic {
 
     protected $CI;
 
     public function __construct() {
         $this->CI = &get_instance();
-        /*
-         * $this->CI->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
-         */
         $this->CI->load->driver('cache');
     }
 
