@@ -12,7 +12,7 @@ function &load_wechat($type = '', $config = array()) {
     if (!isset($wechat[$type])) {
         $className = "Wechat" . ucfirst(strtolower($type));
         if (!class_exists($className, false)) {
-            require __DIR__ . "/{$className}.php";
+            require __DIR__ . "/{$className}.php"; 
         }
         $wechat[$type] = new $className($config);
     }
