@@ -1,6 +1,6 @@
 <?php
 
-class WechatBasic {
+class WechatBasic { 
 
     protected $CI;
 
