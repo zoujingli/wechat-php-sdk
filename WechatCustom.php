@@ -5,7 +5,7 @@ if (!class_exists('WechatCommon')) {
 }
 
 class WechatCustom extends WechatCommon {
-
+ 
     /** 多客服相关地址 */
     const CUSTOM_SERVICE_GET_RECORD = '/customservice/getrecord?';
     const CUSTOM_SERVICE_GET_KFLIST = '/customservice/getkflist?';
