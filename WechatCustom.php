@@ -4,8 +4,11 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 多客服接口
+ */
 class WechatCustom extends WechatCommon {
- 
+
     /** 多客服相关地址 */
     const CUSTOM_SERVICE_GET_RECORD = '/customservice/getrecord?';
     const CUSTOM_SERVICE_GET_KFLIST = '/customservice/getkflist?';
