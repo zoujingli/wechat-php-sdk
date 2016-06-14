@@ -1,13 +1,15 @@
 <?php
 
-namespace Library\Util\Api;
+if (!class_exists('WechatBasic', false)) {
+    require __DIR__ . '/WechatBasic.php';
+}
 
 /**
  * 微信支付SDK
  * @author zoujingli <zoujingli@qq.com>
  * @date 2015/05/13 12:12:00
  */
-class WechatPay {
+class WechatPay extends WechatBasic {
 
     /** 支付接口基础地址 */
     const MCH_BASE_URL = 'https://api.mch.weixin.qq.com';
@@ -34,8 +36,10 @@ class WechatPay {
      * @param type $options
      */
     public function __construct($options) {
+        $this->CI = &get_instance();
+        $this->CI->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
-        $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : $options['partnerid'];
+        $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : '';
         $this->partnerKey = isset($options['partnerkey']) ? $options['partnerkey'] : '';
         $this->ssl_cer = isset($options['ssl_cer']) ? $options['ssl_cer'] : '';
         $this->ssl_key = isset($options['ssl_key']) ? $options['ssl_key'] : '';
@@ -47,11 +51,15 @@ class WechatPay {
      * @return type
      */
     protected function createXml($data) {
-        isset($data['appid']) || $data['appid'] = $this->appid;
-        isset($data['mch_id']) || $data['mch_id'] = $this->mch_id;
-        isset($data['nonce_str']) || $data['nonce_str'] = Common::createNoncestr();
-        $data["sign"] = Common::getPaySign($data, $this->partnerKey);
-        return Common::array2xml($data);
+        if (!isset($data['wxappid']) && !isset($data['mch_appid']) && !isset($data['appid'])) {
+            $data['appid'] = $this->appid;
+        }
+        if (!isset($data['mchid']) && !isset($data['mch_id'])) {
+            $data['mch_id'] = $this->mch_id;
+        }
+        isset($data['nonce_str']) || $data['nonce_str'] = self::createNoncestr();
+        $data["sign"] = self::getPaySign($data, $this->partnerKey);
+        return self::array2xml($data);
     }
 
     /**
@@ -61,7 +69,7 @@ class WechatPay {
      * @return type
      */
     public function postXml($data, $url) {
-        return Common::http_post($url, $this->createXml($data));
+        return self::http_post($url, $this->createXml($data));
     }
 
     /**
@@ -71,7 +79,7 @@ class WechatPay {
      * @return type
      */
     function postXmlSSL($data, $url) {
-        return Common::http_ssl_post($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
+        return self::http_ssl_post($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
     }
 
     /**
@@ -82,7 +90,7 @@ class WechatPay {
      * @return type
      */
     public function getArrayResult($data, $url, $method = 'postXml') {
-        return Common::xml2array($this->$method($data, $url));
+        return self::xml2array($this->$method($data, $url));
     }
 
     /**
@@ -121,19 +129,19 @@ class WechatPay {
      */
     public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI") {
         $postdata = array(
-            "openid"           => $openid,
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
-            "spbill_create_ip" => get_client_ip(),
+            "spbill_create_ip" => $this->CI->input->ip_address(),
         );
+        empty($openid) || $postdata['openid'] = $openid;
         $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
         if (false === $this->_parseResult($result)) {
             return false;
         }
-        return $result['prepay_id'];
+        return $trade_type == 'JSAPI' ? $result['prepay_id'] : $result['code_url'];
     }
 
     /**
@@ -145,10 +153,12 @@ class WechatPay {
         $option = array();
         $option["appId"] = $this->appid;
         $option["timeStamp"] = (string) time();
-        $option["nonceStr"] = Common::createNoncestr();
+        $option["nonceStr"] = self::createNoncestr();
         $option["package"] = "prepay_id={$prepay_id}";
         $option["signType"] = "MD5";
-        $option["paySign"] = Common::getPaySign($option, $this->partnerKey);
+        $option["paySign"] = self::getPaySign($option, $this->partnerKey);
+        $option['timestamp'] = $option['timeStamp'];
+        unset($option["timeStamp"]);
         return $option;
     }
 
@@ -230,11 +240,109 @@ class WechatPay {
         $data['bill_date'] = $bill_date;
         $data['bill_type'] = $bill_type;
         $result = $this->postXml($data, self::MCH_BASE_URL . '/pay/downloadbill');
-        $json = Common::xml2array($result);
+        $json = self::xml2array($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
-        return $result;
+        return $json;
+    }
+
+    /**
+     * 发送现金红包
+     * @param type $openid      红包接收者OPENID
+     * @param type $amount      红包总金额
+     * @param type $billno      商户订单号
+     * @param type $sendname    商户名称
+     * @param type $wishing     红包祝福语
+     * @param type $actname     活动名称
+     * @param type $remark      备注信息
+     * @return boolean
+     * 
+     * @link  https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_5
+     */
+    public function sendRedPack($openid, $amount, $billno, $sendname, $wishing, $actname, $remark) {
+        $data = array();
+        $data['mch_billno'] = $billno; // 商户订单号 mch_id+yyyymmdd+10位一天内不能重复的数字
+        $data['wxappid'] = $this->appid;
+        $data['send_name'] = $sendname; //商户名称
+        $data['re_openid'] = $openid; //红包接收者
+        $data['total_amount'] = $amount; //红包金额
+        $data['total_num'] = '1'; //发放人数据
+        $data['wishing'] = $wishing; //红包祝福语
+        $data['client_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
+        $data['act_name'] = $actname; //活动名称
+        $data['remark'] = $remark; //备注信息
+        $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/sendredpack');
+        $json = self::xml2array($result);
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
+    }
+
+    /**
+     * 现金红包状态查询
+     * @param type $billno
+     * @return boolean
+     * 
+     * @link https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_7&index=6
+     */
+    public function queryRedPack($billno) {
+        $data['mch_billno'] = $billno;
+        $data['bill_type'] = 'MCHT';
+        $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gethbinfo');
+        $json = self::xml2array($result);
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
+    }
+
+    /**
+     * 企业付款
+     * @param type $openid      红包接收者OPENID
+     * @param type $amount      红包总金额
+     * @param type $billno      商户订单号
+     * @param type $desc        备注信息
+     * @return boolean
+     * 
+     * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
+     */
+    public function transfers($openid, $amount, $billno, $desc) {
+        $data = array();
+        $data['mchid'] = $this->mch_id;
+        $data['mch_appid'] = $this->appid;
+        $data['partner_trade_no'] = $billno;
+        $data['openid'] = $openid;
+        $data['amount'] = $amount;
+        $data['check_name'] = 'NO_CHECK'; #不验证姓名
+        $data['spbill_create_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
+        $data['desc'] = $desc; //备注信息
+        $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/promotion/transfers');
+        $json = self::xml2array($result);
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
+    }
+
+    /**
+     * 企业付款查询
+     * @param type $billno
+     * @return boolean
+     * 
+     * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
+     */
+    public function queryTransfers($billno) {
+        $data['appid'] = $this->appid;
+        $data['mch_id'] = $this->mch_id;
+        $data['partner_trade_no'] = $billno;
+        $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gettransferinfo');
+        $json = self::xml2array($result);
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
     }
 
     /**
