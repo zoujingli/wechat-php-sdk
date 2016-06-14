@@ -4,6 +4,9 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 微信网页端脚本相关
+ */
 class WechatScript extends WechatCommon {
 
     private $jsapi_ticket;
