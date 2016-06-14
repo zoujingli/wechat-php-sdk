@@ -7,9 +7,27 @@
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
 weixin developer SDK.
 
-Wechat.class.php 微信常用接口
+WechatCustom.php 微信多客服接口
 
-WechatPay.class.php 微信支付接口
+WechatDevice.php 微信周边设备接口
+
+WechatExtends.php 微信其它工具接口
+
+WechatMedia.php 微信媒体素材接口
+
+WechatMenu.php 微信菜单操作接口
+
+WechatOauth.php 微信网页授权接口
+
+WechatPay.php 微信支付相关接口
+
+WechatReceive.php 微信被动消息处理SDK
+
+WechatScript.php 微信网页脚本工具
+
+WechatUser.php 微信粉丝操作接口
+
+####第三方库
 
 Service.class.php 微信开放平台接口
 
