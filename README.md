@@ -1,7 +1,7 @@
 #WECHAT-PHP-SDK
 
 ### 运行环境说明
-此SDK是在CodeIgniter3的基础进行的开发调试。
+此SDK是在CodeIgniter3的基础进行的开发调试，可根据实际开发环境进行微调。
 
 ### SDK文件说明
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
