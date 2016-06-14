@@ -5,7 +5,7 @@
  *
  * 提供基于PKCS7算法的加解密接口.
  */
-class PKCS7Encoder {
+class PKCS7Encoder { 
 
     public static $block_size = 32;
 
