@@ -4,8 +4,8 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
-/** 
- * 微信媒体素材管理类
+/**
+ * 微信媒体素材管理类 
  */
 class WechatMedia extends WechatCommon {
 
