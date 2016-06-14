@@ -4,6 +4,9 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 微信菜单操作相关
+ */
 class WechatMenu extends WechatCommon {
 
     const MENU_CREATE_URL = '/menu/create?';
