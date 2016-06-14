@@ -3,7 +3,7 @@
 if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
-
+ 
 /**
  * 微信卡卷
  */
