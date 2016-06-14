@@ -5,7 +5,7 @@ if (!class_exists('WechatCommon')) {
 }
 
 /**
- * 微信粉丝操作SDK
+ * 微信粉丝操作SDK 
  */
 class WechatUser extends WechatCommon {
 
