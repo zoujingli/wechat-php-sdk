@@ -128,7 +128,7 @@ class WechatOauth extends WechatCommon {
             }
             return $json['ip_list'];
         }
-        return false;
+        return false; 
     }
 
 }
