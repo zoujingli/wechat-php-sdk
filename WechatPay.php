@@ -5,7 +5,7 @@ if (!class_exists('WechatBasic', false)) {
 }
 
 /**
- * 微信支付SDK
+ * 微信支付SDK 
  * @author zoujingli <zoujingli@qq.com>
  * @date 2015/05/13 12:12:00
  */
