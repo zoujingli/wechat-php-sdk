@@ -4,6 +4,9 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 微信被动消息处理
+ */
 class WechatReceive extends WechatCommon {
 
     const CUSTOM_SEND_URL = '/message/custom/send?';
