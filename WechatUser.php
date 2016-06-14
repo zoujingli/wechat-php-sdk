@@ -4,6 +4,9 @@ if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 微信粉丝操作SDK
+ */
 class WechatUser extends WechatCommon {
 
     const USER_GET_URL = '/user/get?';
