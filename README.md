@@ -86,10 +86,10 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
         'appid'             =>  'wxdk1234567890',       //填写高级调用功能的app id, 请在微信开发模式后台查询
         'appsecret'         =>  'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
         'encodingaeskey'    =>  'encodingaeskey',       //填写加密用的EncodingAESKey（可选，接口传输选择加密时必需）
-        'mch_id'            =>  '',     //微信支付，商户ID（可选）
-        'partnerkey'        =>  '',     //微信支付，密钥（可选）
-        'ssl_cer'           =>  '',     //微信支付，双向证书（可选，操作退款或打款时必需）
-        'ssl_key'           =>  '',     //微信支付，双向证书（可选，操作退款或打款时必需）
+        'mch_id'            =>  '',                     //微信支付，商户ID（可选）
+        'partnerkey'        =>  '',                     //微信支付，密钥（可选）
+        'ssl_cer'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
+        'ssl_key'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
 	);
 
     // 3. 加载需要操作对象
