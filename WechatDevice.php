@@ -1,9 +1,12 @@
 <?php
- 
+
 if (!class_exists('WechatCommon')) {
     include __DIR__ . '/WechatCommon.php';
 }
 
+/**
+ * 微信设备
+ */
 class WechatDevice extends WechatCommon {
 
     ///微信摇一摇周边
