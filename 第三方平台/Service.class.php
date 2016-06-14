@@ -1,5 +1,6 @@
 <?php
 
+namespace Library\Util\Api;
 
 /**
  * 微信第三方法公众平台SDK
@@ -71,7 +72,7 @@ class Service {
      * @param type $options
      */
     public function __construct($options) {
-        $this->component_verify_ticket = isset($options['ticket']) ? $options['ticket'] : S('wechat_component_verify_ticket');
+        $this->component_verify_ticket = isset($options['ticket']) ? $options['ticket'] : S('ComponentVerifyTicket');
         $this->component_appid = isset($options['appid']) ? $options['appid'] : get_sysconfig('wechat_appid');
         $this->component_appsecret = isset($options['appsecret']) ? $options['appsecret'] : get_sysconfig('wechat_appsecret');
     }
@@ -92,9 +93,36 @@ class Service {
             $url = self::URL_PREFIX . self::COMPONENT_TOKEN_URL;
             $result = $this->http_post($url, $data);
             $this->component_access_token = $this->_decode($result, 'component_access_token');
-            Common::setCache($cacheKey, $this->component_access_token, 7000);
+            Common::setCache($cacheKey, $this->component_access_token, 7200);
         endif;
         return $this;
+    }
+
+    /**
+     * 获取公众号的AccessToken
+     * @param type $appid
+     */
+    public function getAppidAccessToken($appid) {
+        $cacheKey = 'wechat_access_token_' . $appid;
+        $this->access_token = Common::getCache($cacheKey);
+        if (!empty($this->access_token)) {
+            return $this->access_token;
+        } else {
+            $wechat = M('WechatConfig')->where(array('authorizer_appid' => $appid, 'status' => 2))->find();
+            if ($wechat) {
+                $newAccessToken = $this->refreshAccessToken($appid, $wechat['authorizer_refresh_token']);
+                if ($newAccessToken['authorizer_access_token']) {
+                    M('WechatConfig')->where(array('authorizer_appid' => $appid, 'status' => 2))->save(array('authorizer_access_token' => $newAccessToken['authorizer_access_token'], 'authorizer_refresh_token' => $newAccessToken['authorizer_refresh_token']));
+                    Common::setCache($cacheKey, $newAccessToken['authorizer_access_token'], 7200);
+                    return $newAccessToken['authorizer_access_token'];
+                } else {
+                    return '请在服务器操作';
+                }
+            } else {
+                P(date('Y/m/d H:i:s') . "\t 获取getAppidAccessToken失败,公众号未授权或者取消授权，请重新授权。原因：" . var_export($newAccessToken, true), false, RUNTIME_PATH . 'AccessToken.log');
+                return '公众号未授权或者取消授权，请重新授权';
+            }
+        }
     }
 
     /**
@@ -113,33 +141,10 @@ class Service {
     /**
      * 获取公众号的AccessToken
      * @param type $appid
-     * 
-      CREATE TABLE `wx_wechat_config` (
-      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-      `store_id` bigint(20) DEFAULT NULL COMMENT '店铺ID',
-      `authorizer_appid` varchar(100) DEFAULT NULL COMMENT '公众号APPID',
-      `authorizer_access_token` varchar(200) DEFAULT NULL COMMENT '公众号Token',
-      `authorizer_refresh_token` varchar(200) DEFAULT NULL COMMENT '公众号刷新Token',
-      `func_info` varchar(100) DEFAULT NULL COMMENT '公众号集权',
-      `nick_name` varchar(50) DEFAULT NULL COMMENT '公众号昵称',
-      `head_img` varchar(200) DEFAULT NULL COMMENT '公众号头像',
-      `expires_in` bigint(20) DEFAULT NULL COMMENT 'Token有效时间',
-      `service_type_info` int(11) DEFAULT NULL COMMENT '服务类型信息',
-      `verify_type_info` int(11) DEFAULT NULL COMMENT '验证类型信息',
-      `user_name` varchar(100) DEFAULT NULL COMMENT '众众号OPENID',
-      `alias` varchar(100) DEFAULT NULL COMMENT '公众号别名',
-      `qrcode_url` varchar(200) DEFAULT NULL COMMENT '公众号二维码地址',
-      `status` int(11) DEFAULT '2' COMMENT '状态',
-      `update_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-      PRIMARY KEY (`id`)
-      ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='微信授权配置表';
      */
     public function getWechatConfig($appid, $model = 'WechatConfig') {
-        $map = array('authorizer_appid|store_id' => $appid, 'status' => '2');
-        $info = Common::getCache('wechat_config_' . $appid);
-        if (empty($info) || $info['expires_in'] < time()) {
-            $info = M($model)->where($map)->find();
-        }
+        $map = array('authorizer_appid' => $appid, 'status' => '2');
+        $info = M($model)->where($map)->find();
         if (empty($info)) {
             $this->errMsg = '公众号配置不存在';
             return false;
@@ -148,21 +153,22 @@ class Service {
             $newAccessToken = $this->refreshAccessToken($info['authorizer_appid'], $info['authorizer_refresh_token']);
             if ($newAccessToken === false) {
                 $this->errMsg = '刷新AcessToken失败';
+                P(date('Y/m/d H:i:s') . "\t 刷新AcessToken失败。原因：" . var_export($newAccessToken, true), false, RUNTIME_PATH . 'AccessToken.log');
                 return false;
             }
-            $newAccessToken['expires_in']+=(time() - 200);
+            $newAccessToken['expires_in'] = (int) $newAccessToken['expires_in'] + time();
             $result = M($model)->where($map)->save($newAccessToken);
             if ($result === false) {
                 $this->errMsg = '更新AccessToken失败';
+                P(date('Y/m/d H:i:s') . "\t 更新AccessToken失败。原因：" . var_export($result, true), false, RUNTIME_PATH . 'AccessToken.log');
                 return false;
             }
             $info = M($model)->where($map)->find();
         }
-        Common::setCache('wechat_config_' . $appid, $info);
         return array(
-            'appid'          => $info['authorizer_appid'],
-            'access_token'   => $info['authorizer_access_token'],
-            'token'          => get_sysconfig('wechat_token'),
+            'appid' => $info['authorizer_appid'],
+            'access_token' => $info['authorizer_access_token'],
+            'token' => get_sysconfig('wechat_token'),
             'encodingaeskey' => get_sysconfig('wechat_encodingaeskey'),
         );
     }
@@ -175,6 +181,7 @@ class Service {
         $wechat = $this->getWechatConfig($appid);
         if (empty($wechat)) {
             $this->errMsg = '获取AccessToken失败';
+            P(date('Y/m/d H:i:s') . "\t 获取AccessToken失败。原因：" . var_export($wechat, true), false, RUNTIME_PATH . 'AccessToken.log');
             return false;
         }
         $jsapiTicket = $this->getJsApiTicket($appid, $wechat['access_token']);
@@ -183,10 +190,10 @@ class Service {
         // 这里参数的顺序要按照 key 值 ASCII 码升序排序
         $string = "jsapi_ticket={$jsapiTicket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$url}";
         return array(
-            "appId"     => $appid,
+            "appId" => $appid,
             "timestamp" => $timestamp,
-            "nonceStr"  => $nonceStr,
-            "url"       => $url,
+            "nonceStr" => $nonceStr,
+            "url" => $url,
             "signature" => sha1($string),
             "rawString" => $string
         );
@@ -208,10 +215,11 @@ class Service {
             $res = json_decode(Common::http_get($url));
             $ticket = $res->ticket;
             if ($ticket) {
-                Common::setCache('wechat_jsapi_ticket_' . $appid, $ticket, 7000);
+                Common::setCache('wechat_jsapi_ticket_' . $appid, $ticket, 7200);
             }
             if (empty($ticket)) {
-                P(date('Y/m/d H:i:s') . "\t 获取JsApiTicket失败。原因：" . var_export($res, true), false, RUNTIME_PATH . 'AccessToken.log');
+                p($url);
+                P(date('Y/m/d H:i:s') . "\t 获取JsApiAccessTicket失败。原因：" . var_export($res, true), false, RUNTIME_PATH . 'AccessToken.log');
             }
             return $ticket;
         }
@@ -239,13 +247,13 @@ class Service {
         $signature = sha1($tmpStr);
 
         $signPackage = array(
-            "cardType"      => 'GENERAL_COUPON', // 卡券类型
-            "timestamp"     => $timestamp, // 卡券签名时间戳
-            "nonceStr"      => $nonceStr, // 卡券签名随机串
-            "signType"      => 'SHA1', // 签名方式，默认'SHA1'
-            "cardSign"      => $signature,
+            "cardType" => 'GENERAL_COUPON', // 卡券类型
+            "timestamp" => $timestamp, // 卡券签名时间戳
+            "nonceStr" => $nonceStr, // 卡券签名随机串
+            "signType" => 'SHA1', // 签名方式，默认'SHA1'
+            "cardSign" => $signature,
             "cardApiTicket" => $cardApiTicket,
-            "tmpStr"        => $tmpStr,
+            "tmpStr" => $tmpStr,
         );
         return $signPackage;
     }
@@ -262,12 +270,12 @@ class Service {
         sort($tmpArr, SORT_STRING);
         $signature = sha1(implode($tmpArr));
         $cardInfo = array(
-            "card_id"  => $cardid,
+            "card_id" => $cardid,
             'card_ext' => json_encode(array(
                 'timestamp' => time(),
                 'signature' => $signature,
             )),
-            'sign'     => $signature,
+            'sign' => $signature,
         );
         return $cardInfo;
     }
@@ -525,7 +533,7 @@ class Service {
         $result = Common::http_get($url);
         $json = $this->parseJson($result);
         if ($json !== false) :
-            Common::setCache('OauthAccessToken_' . $json['openid'], $json);
+            //Common::setCache('OauthAccessToken_' . $json['openid'], $json,7200);
             return $json;
         endif;
         return false;
@@ -534,37 +542,15 @@ class Service {
     /**
      * 获取关注者详细信息
      * @param string $openid
-     * @param boolen $refresh 是否刷新Token 30天有效
+     * @param boolen $oauthAccessToken
      * @return array {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
      * 注意：unionid字段 只有在用户将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
-    public function getUserInfo($openid, $refresh = false) {
-        $_cache_key = 'wechat_oauth_token_' . $openid;
-        $AccessToken = Common::getCache($_cache_key);
-        /** @若没有对应的缓存，返回Null */
-        if (empty($AccessToken)) :
-            return false;
-        endif;
-        /** @刷新AccessToken */
-        if ($refresh) :
-            $url = "https://api.weixin.qq.com/sns/oauth2/refresh_token?"
-                    . "appid={$AccessToken['appid']}&"
-                    . "grant_type=refresh_token&"
-                    . "refresh_token={$AccessToken['refresh_token']}";
-            $result = Common::http_get($url);
-            $json = $this->parseJson($result);
-            if ($json === false) :
-                return false;
-            endif;
-            Common::setCache($_cache_key, $AccessToken = $json);
-        endif;
-
-        /** @接口获取详细信息 */
+    public function getOauthUserInfo($openid, $oauthAccessToken) {
         $url = "https://api.weixin.qq.com/sns/userinfo?"
-                . "access_token={$AccessToken['access_token']}&"
+                . "access_token=$oauthAccessToken&"
                 . "openid={$openid}&"
                 . "lang=zh_CN";
-
         $result = Common::http_get($url);
         $json = $this->parseJson($result);
         if ($json !== false) :
