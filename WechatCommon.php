@@ -149,7 +149,7 @@ class WechatCommon extends WechatBasic {
      * @param type $msg
      */
     protected function log($msg) {
-        p($msg, false, CACHEPATH . 'wechat_api.log');
+//        p($msg, false, CACHEPATH . 'wechat_api.log');
     }
 
 }
