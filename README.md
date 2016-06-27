@@ -6,6 +6,7 @@
 （主要用了CI中缓存，要去修改是很容易的！）
 ### 去除CI缓存依赖
 在整代码中可以搜索 $this->CI, 可以发现只有 WechatPay 与 WechatCommon 中存在
+
 具体修改方法如下：
 
 ```php
