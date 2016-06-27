@@ -256,7 +256,6 @@ class WechatBasic {
      * @return boolean
      */
     public function removeCache($cachename) {
-        var_dump($dir = $this->_init_cache_path());
         if (($dir = $this->_init_cache_path()) && file_exists($file = $dir . $cachename)) {
             var_dump($file);
             return unlink($file);
