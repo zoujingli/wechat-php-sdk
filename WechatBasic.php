@@ -268,9 +268,13 @@ class WechatBasic {
      */
     private function _init_cache_path($is_checked = FALSE) {
         #强制检测缓存 @默认当前目录
-        if (!$is_checked && $this->_init_cache_path(TRUE) === FALSE) {
-            $this->config['cache_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'cache';
-            return $this->_init_cache_path();
+        if (!$is_checked) {
+            if (($path = $this->_init_cache_path(TRUE)) === FALSE) {
+                $this->config['cache_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'cache';
+                return $this->_init_cache_path();
+            } else {
+                return $path;
+            }
         }
         if (isset($this->config['cache_path']) && ($path = $this->config['cache_path'])) {
             is_dir($path) || mkdir($path, 0755, TRUE);
