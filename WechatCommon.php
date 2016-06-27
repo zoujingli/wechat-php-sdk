@@ -31,8 +31,11 @@ class WechatCommon extends WechatBasic {
     const GET_TICKET_URL = '/ticket/getticket?';
     const AUTH_URL = '/token?grant_type=client_credential&';
 
+    /**
+     * 构造函数
+     * @param type $options
+     */
     public function __construct($options) {
-        parent::__construct();
         $this->token = isset($options['token']) ? $options['token'] : '';
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
@@ -145,11 +148,11 @@ class WechatCommon extends WechatBasic {
     }
 
     /**
-     * 公众SDK日志
+     * 公供SDK日志
      * @param type $msg
      */
     protected function log($msg) {
-//        p($msg, false, CACHEPATH . 'wechat_api.log');
+        
     }
 
 }

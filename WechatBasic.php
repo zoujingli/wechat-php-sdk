@@ -2,13 +2,6 @@
 
 class WechatBasic {
 
-    protected $CI;
-
-    public function __construct() {
-        $this->CI = &get_instance();
-        $this->CI->load->driver('cache');
-    }
-
     /**
      * 产生随机字符串
      * @param type $length
@@ -237,8 +230,12 @@ class WechatBasic {
      * @param int $expired
      * @return boolean
      */
-    protected function setCache($cachename, $value, $expired) {
-        return $this->CI->cache->save($cachename, $value, $expired);
+    public function setCache($cachename, $value, $expired) {
+        $dir = $this->_init_cache_path();
+
+        if (($dir = $this->_init_cache_path()) && ($file = $dir . $cachename)) {
+            return file_put_contents($file, $value . '######' . (time() + (int) $expired));
+        }
     }
 
     /**
@@ -246,8 +243,11 @@ class WechatBasic {
      * @param string $cachename
      * @return mixed
      */
-    protected function getCache($cachename) {
-        return $this->CI->cache->get($cachename);
+    public function getCache($cachename) {
+        if (($dir = $this->_init_cache_path()) && file_exists($file = $dir . $cachename)) {
+            list($content, $expired) = explode('######', file_get_contents($file));
+            return intval($expired) >= time() ? $content : NULL;
+        }
     }
 
     /**
@@ -255,8 +255,31 @@ class WechatBasic {
      * @param string $cachename
      * @return boolean
      */
-    protected function removeCache($cachename) {
-        $this->CI->cache->delete($cachename);
+    public function removeCache($cachename) {
+        var_dump($dir = $this->_init_cache_path());
+        if (($dir = $this->_init_cache_path()) && file_exists($file = $dir . $cachename)) {
+            var_dump($file);
+            return unlink($file);
+        }
+    }
+
+    /**
+     * 默认文件缓存
+     * @return boolean
+     */
+    private function _init_cache_path($is_checked = FALSE) {
+        #强制检测缓存 @默认当前目录
+        if (!$is_checked && $this->_init_cache_path(TRUE) === FALSE) {
+            $this->config['cache_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'cache';
+            return $this->_init_cache_path();
+        }
+        if (isset($this->config['cache_path']) && ($path = $this->config['cache_path'])) {
+            is_dir($path) || mkdir($path, 0755, TRUE);
+            if (is_dir($path)) {
+                return rtrim($path, '\/\\') . DIRECTORY_SEPARATOR;
+            }
+        }
+        return false;
     }
 
 }

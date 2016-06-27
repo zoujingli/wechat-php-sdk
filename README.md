@@ -3,60 +3,6 @@
 ### 运行环境说明
 此SDK是在CodeIgniter3的基础进行的开发调试，可根据实际开发环境进行微调。
 
-（主要用了CI中缓存，要去修改是很容易的！）
-### 去除CI缓存依赖
-在整代码中可以搜索 $this->CI, 可以发现只有 WechatPay 与 WechatCommon 中存在
-
-具体修改方法如下：
-
-```php
-/**
-    # 找到 WechatCommon.php 文件
-    # 修改 setCache,getCache,removeCache 方法
-    # 去除类头部 $this->CI 属性相关的声明
-
-     * 设置缓存，按需重载
-
-     * @param string $cachename
-
-     * @param mixed $value
-
-     * @param int $expired
-
-     * @return boolean
-
-     */
-    protected function setCache($cachename, $value, $expired) {
-        return $this->CI->cache->save($cachename, $value, $expired);
-    }
-
-    /**
-
-     * 获取缓存，按需重载
-
-     * @param string $cachename
-
-     * @return mixed
-
-     */
-    protected function getCache($cachename) {
-        return $this->CI->cache->get($cachename);
-    }
-
-    /**
-
-     * 清除缓存，按需重载
-
-     * @param string $cachename
-
-     * @return boolean
-
-     */
-    protected function removeCache($cachename) {
-        $this->CI->cache->delete($cachename);
-    }
-
-```
 ### SDK文件说明
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
 weixin developer SDK.
