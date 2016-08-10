@@ -76,6 +76,12 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
  * > 支付权限：仅认证后的服务号可以申请此权限
 
 ### 初始化动作 
+
+Composer 安装（不需要引用include.php）
+```
+composer require zoujingli/wechat-php-sdk
+```
+普通文件加载（需要引用include.php）
 ```php
     // 1. 引入SDK
     include include.php
