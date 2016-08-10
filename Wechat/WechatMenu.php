@@ -1,8 +1,6 @@
 <?php
 
-if (!class_exists('WechatCommon')) {
-    include __DIR__ . '/WechatCommon.php';
-}
+namespace Wechat;
 
 /**
  * 微信菜单操作相关

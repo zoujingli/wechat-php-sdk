@@ -1,8 +1,6 @@
 <?php
 
-if (!class_exists('WechatCommon')) {
-    include __DIR__ . '/WechatCommon.php';
-}
+namespace Wechat;
 
 class WechatExtends extends WechatCommon {
 
@@ -57,7 +55,7 @@ class WechatExtends extends WechatCommon {
      * 长链接转短链接接口
      * @param string $long_url 传入要转换的长url
      * @return boolean|string url 成功则返回转换后的短url
-     */ 
+     */
     public function getShortUrl($long_url) {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;

@@ -1,8 +1,6 @@
 <?php
 
-if (!class_exists('WechatCommon')) {
-    include __DIR__ . '/WechatCommon.php';
-}
+namespace Wechat;
 
 /**
  * 微信网页授权
@@ -128,7 +126,7 @@ class WechatOauth extends WechatCommon {
             }
             return $json['ip_list'];
         }
-        return false; 
+        return false;
     }
 
 }

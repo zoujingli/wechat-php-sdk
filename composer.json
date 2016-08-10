@@ -1,0 +1,37 @@
+{
+    "name": "zoujingli/wechat-php-sdk",
+    "type": "project",
+    "keywords": [
+        "event-loop",
+        "asynchronous"
+    ],
+    "homepage": "https://www.ctolog.com",
+    "license": "MIT",
+    "description": "An Wechat PHP SDK for easily building fast.",
+    "authors": [
+        {
+            "name": "Anyon",
+            "email": "zoujingli@qq.com",
+            "homepage": "https://www.ctolog.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "zoujingli@qq.com",
+        "issues": "https://git.oschina.net/zoujingli/wechat-php-sdk/issues",
+        "wiki": "https://git.oschina.net/zoujingli/wechat-php-sdk/wikis/home",
+        "source": "https://git.oschina.net/zoujingli/wechat-php-sdk"
+    },
+    "require": {
+        "php": ">=5.3"
+    },
+    "suggest": {
+        "ext-curl": "For better performance."
+    },
+    "autoload": {
+        "psr-4": {
+            "Wechat\\": "./Wechat/"
+        }
+    },
+    "minimum-stability": "dev"
+}

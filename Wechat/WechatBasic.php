@@ -1,5 +1,7 @@
 <?php
 
+namespace Wechat;
+
 class WechatBasic {
 
     /**

@@ -1,8 +1,6 @@
 <?php
 
-if (!class_exists('WechatBasic', false)) {
-    require __DIR__ . '/WechatBasic.php';
-}
+namespace Wechat;
 
 /**
  * 微信支付SDK 

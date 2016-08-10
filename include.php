@@ -10,11 +10,17 @@
 function &load_wechat($type = '', $config = array()) {
     static $wechat = array();
     if (!isset($wechat[$type])) {
-        $className = "Wechat" . ucfirst(strtolower($type));
-        if (!class_exists($className, false)) {
-            require __DIR__ . "/{$className}.php";
-        }
+        $className = "\\Wechat\\Wechat" . ucfirst(strtolower($type));
         $wechat[$type] = new $className($config);
     }
     return $wechat[$type];
 }
+
+/**
+ * 注册自动加载函数
+ */
+spl_autoload_register(function($class) {
+    if (stripos($class, 'Wechat\\') === 0) {
+        require __DIR__ . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+    }
+});
