@@ -1,12 +1,11 @@
 {
-    "name": "zoujingli/wechat-php-sdk",
+    "name": "zoujingli/php-sdk-wechat",
     "type": "project",
+    "license": "MIT",
     "keywords": [
-        "wechat",
-        "sdk"
+        "php-sdk-wechat"
     ],
     "homepage": "https://www.ctolog.com",
-    "license": "MIT",
     "description": "An Wechat PHP SDK for easily building fast.",
     "authors": [
         {
@@ -16,21 +15,15 @@
             "role": "Developer"
         }
     ],
-    "support": {
-        "email": "zoujingli@qq.com",
-        "issues": "https://git.oschina.net/zoujingli/wechat-php-sdk/issues",
-        "wiki": "https://git.oschina.net/zoujingli/wechat-php-sdk/wikis/home",
-        "source": "https://git.oschina.net/zoujingli/wechat-php-sdk"
-    },
     "require": {
         "php": ">=5.3"
     },
-    "suggest": {
-        "ext-curl": "For better performance."
-    },
     "autoload": {
         "psr-4": {
-            "Wechat\\": "./Wechat/"
+            "Wechat\\": "./Wechat"
         }
+    },
+    "suggest": {
+        "ext-curl": "For better performance."
     }
 }
