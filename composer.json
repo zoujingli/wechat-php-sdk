@@ -2,8 +2,8 @@
     "name": "zoujingli/wechat-php-sdk",
     "type": "project",
     "keywords": [
-        "event-loop",
-        "asynchronous"
+        "wechat",
+        "sdk"
     ],
     "homepage": "https://www.ctolog.com",
     "license": "MIT",
@@ -32,6 +32,5 @@
         "psr-4": {
             "Wechat\\": "./Wechat/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
