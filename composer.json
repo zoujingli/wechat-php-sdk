@@ -7,7 +7,6 @@
     ],
     "homepage": "https://www.ctolog.com",
     "description": "An Wechat PHP SDK for easily building fast.",
-    "minimum-stability": "stable",
     "authors": [
         {
             "name": "Anyon",
@@ -23,6 +22,7 @@
             "Wechat\\": "./Wechat"
         }
     },
+    "minimum-stability": "dev",
     "suggest": {
         "ext-curl": "For better performance."
     }
