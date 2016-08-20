@@ -1,37 +1,21 @@
-#WECHAT-PHP-SDK
-
+WECHAT-PHP-SDK
+---
 ### 运行环境说明
 此SDK是在CodeIgniter3的基础进行的开发调试，可根据实际开发环境进行微调。
 
 ### SDK文件说明
-微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目  
-weixin developer SDK.
+微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目
 
-WechatCustom.php 微信多客服接口
-
-WechatDevice.php 微信周边设备接口
-
-WechatExtends.php 微信其它工具接口
-
-WechatMedia.php 微信媒体素材接口
-
-WechatMenu.php 微信菜单操作接口
-
-WechatOauth.php 微信网页授权接口
-
-WechatPay.php 微信支付相关接口
-
-WechatReceive.php 微信被动消息处理SDK
-
-WechatScript.php 微信网页脚本工具
-
-WechatUser.php 微信粉丝操作接口
-
-#### 第三方平台库
-
-Service.class.php 微信开放平台接口
-
-Common.class.php 微信接口基础库
+>1. WechatCustom.php 微信多客服接口
+>2. WechatDevice.php 微信周边设备接口
+>3. WechatExtends.php 微信其它工具接口
+>4. WechatMedia.php 微信媒体素材接口
+>5. WechatMenu.php 微信菜单操作接口
+>6. WechatOauth.php 微信网页授权接口
+>7. WechatPay.php 微信支付相关接口
+>8. WechatReceive.php 微信被动消息处理SDK
+>9. WechatScript.php 微信网页脚本工具
+>10. WechatUser.php 微信粉丝操作接口
 
 #### 使用详解
 使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
