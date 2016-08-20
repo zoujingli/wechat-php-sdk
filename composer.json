@@ -1,9 +1,14 @@
 {
-    "name": "zoujingli/wechat-php-sdk",
-    "type": "library",
+    "name"  : "zoujingli/wechat-php-sdk",
+    "type"  : "project",
     "keywords": ["wechat-php-sdk"],
-    "autoload": {"psr-4": {"Wechat\\": "./src"}},
-    "license": "MIT",
-    "homepage": "https://github.com/zoujingli/wechat-php-sdk",
-    "description": "WeChat development of SDK."
+    "homepage": "https://www.ctolog.com",
+    "description": "WeChat development of SDK",
+    "license" : "MIT",
+    "require": {
+        "php" : ">=5.3.3"
+    },
+    "autoload": {
+        "psr-4": {"Wechat\\": "./src"}
+    }
 }
