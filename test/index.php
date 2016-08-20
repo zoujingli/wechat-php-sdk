@@ -14,6 +14,7 @@ $config = array(
 # 加载对应操作接口
 $wechat = & load_wechat('User', $config);
 $userlist = $wechat->getUserList();
+
 var_dump($userlist);
 var_dump($wechat->errMsg);
 var_dump($wechat->errCode);
