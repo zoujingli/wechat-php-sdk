@@ -20,6 +20,7 @@ composer require zoujingli/wechat-php-sdk
     include include.php
 ```
 * 准备配置参数 [token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key]
+
 ```php
 $options = array(
     'token'             =>  'tokenaccesskey',       //填写你设定的key
