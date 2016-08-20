@@ -57,7 +57,7 @@ class Cache {
      * @return boolean
      */
     static protected function check() {
-        empty(self::$cache_path) && self::$cache_path = __DIR__ . DIRECTORY_SEPARATOR . 'Cache';
+        empty(self::$cache_path) && self::$cache_path = dirname(__DIR__). DIRECTORY_SEPARATOR . 'Cache';
         if (!is_dir(self::$cache_path) && !mkdir(self::$cache_path, 0755, TRUE)) {
             return FALSE;
         }
