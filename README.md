@@ -19,7 +19,7 @@ composer require zoujingli/wechat-php-sdk
 ```php
     include include.php
 ```
-* 准备配置参数 [token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key]
+### 准备配置参数 
 
 ```php
 $options = array(
@@ -34,7 +34,7 @@ $options = array(
 );
 ```
 
-##### 加载需要操作对象
+### 实例SDK对象
 
 * 微信支付操作
 
