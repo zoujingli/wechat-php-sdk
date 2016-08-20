@@ -15,20 +15,6 @@ use CURLFile;
 abstract class WechatBasic {
 
     /**
-     * CI超级对象
-     * @var type 
-     */
-    protected $CI;
-
-    /**
-     * 构造方法
-     */
-    public function __construct() {
-        $this->CI = &get_instance();
-        $this->CI->load->driver('cache');
-    }
-
-    /**
      * 产生随机字符串
      * @param type $length
      * @return type
@@ -257,7 +243,7 @@ abstract class WechatBasic {
      * @return boolean
      */
     protected function setCache($cachename, $value, $expired) {
-        return $this->CI->cache->file->save($cachename, $value, $expired);
+        return Cache::set($cachename, $value, $expired);
     }
 
     /**
@@ -266,7 +252,7 @@ abstract class WechatBasic {
      * @return mixed
      */
     protected function getCache($cachename) {
-        return $this->CI->cache->file->get($cachename);
+        return Cache::get($cachename);
     }
 
     /**
@@ -275,7 +261,7 @@ abstract class WechatBasic {
      * @return boolean
      */
     protected function removeCache($cachename) {
-        $this->CI->cache->file->delete($cachename);
+        return Cache::del($cachename);
     }
 
 }
