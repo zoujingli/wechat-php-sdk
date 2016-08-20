@@ -1,9 +1,9 @@
 {
-    "name": "zoujingli/php-sdk-wechat",
+    "name": "zoujingli/wechat-php-sdk",
     "type": "project",
     "license": "MIT",
     "keywords": [
-        "php-sdk-wechat"
+        "wechat-php-sdk"
     ],
     "homepage": "https://www.ctolog.com",
     "description": "An Wechat PHP SDK for easily building fast.",
