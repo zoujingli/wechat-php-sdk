@@ -5,6 +5,9 @@
     "keywords": [
         "wechat-php-sdk"
     ],
+    "require": {
+        "php": "^5.3.3 || ^7.0"
+    },
     "autoload": {
         "files": [
             "include.php"
