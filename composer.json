@@ -1,6 +1,6 @@
 {
     "name": "zoujingli/wechat-php-sdk",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/zoujingli/wechat-php-sdk",
     "keywords": [
