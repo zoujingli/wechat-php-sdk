@@ -1,10 +1,10 @@
 <?php
 
 /**
- * 鑾峰彇寰俊鎿嶄綔瀵硅薄
+ * 获取微信操作对象
  * @staticvar array $wechat
- * @param type $type    鎺ュ彛绫诲瀷
- * @param type $config  SDK閰嶇疆(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
+ * @param type $type    接口类型
+ * @param type $config  SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
  * @return WechatBasic
  */
 function &load_wechat($type = '', $config = array()) {
@@ -17,7 +17,7 @@ function &load_wechat($type = '', $config = array()) {
 }
 
 /**
- * 娉ㄥ唽鑷姩鍔犺浇鍑芥暟
+ * 注册自动加载函数
  */
 spl_autoload_register(function($class) {
     if (stripos($class, 'Wechat\\') === 0) {
