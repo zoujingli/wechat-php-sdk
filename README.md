@@ -7,13 +7,13 @@
 ###初始化动作 
 
 
-#### A. 使用 Composer 安装，符合PSR-4标准。
+##### A. 使用 Composer 安装，符合PSR-4标准。
 > 不需要引入include.php文件，所有文件都可以自动加载。
 
 ```shell
 composer require zoujingli/wechat-php-sdk
 ```
-#### B. 普通文件加载（需要引用 include.php）
+##### B. 普通文件加载（需要引用 include.php）
 * 引入SDK
 
 ```php
