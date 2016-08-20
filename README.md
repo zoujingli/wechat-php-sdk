@@ -51,7 +51,7 @@ $menu = & load_wechat('Menu',$options);
 ```
 
 ### SDK文件说明
-微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目
+微信公众平台php开发包，细化各项接口操作，支持链式调用，欢迎Fork此项目！
 
 * WechatCustom.php 微信多客服接口
 * WechatDevice.php 微信周边设备接口
