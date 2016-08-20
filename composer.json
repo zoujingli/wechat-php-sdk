@@ -1,12 +1,11 @@
 {
     "name": "zoujingli/wechat-php-sdk",
-    "type": "library",
-    "version": "1.0.0",
+    "type": "project",
     "keywords": [
         "wechat-php-sdk"
     ],
     "require": {
-        "php": "^5.3.3 || ^7.0"
+        "php": "^5.3.3"
     },
     "autoload": {
         "psr-4": {
