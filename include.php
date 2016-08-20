@@ -3,11 +3,11 @@
 if (!function_exists('load_wechat')) {
 
     /**
-     * 获取微信操作对象
+     * 获取微信操作对象 
      * @staticvar array $wechat
      * @param type $type 接口类型(Card|Custom|Device|Extends|Media|Menu|Oauth|Pay|Receive|Script|User)
      * @param type $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
-     * @return \className
+     * @return \Wechat\WechatReceive
      */
     function &load_wechat($type = '', $config = array()) {
         static $wechat = array();
@@ -26,4 +26,5 @@ if (!function_exists('load_wechat')) {
         }
     });
 }
+
 
