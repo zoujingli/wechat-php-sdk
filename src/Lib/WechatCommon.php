@@ -37,7 +37,6 @@ class WechatCommon extends WechatBasic {
      * @param type $options
      */
     public function __construct($options) {
-        parent::__construct();
         $this->token = isset($options['token']) ? $options['token'] : '';
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
