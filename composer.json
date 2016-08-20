@@ -2,7 +2,16 @@
     "name": "zoujingli/wechat-php-sdk",
     "type": "project",
     "license": "MIT",
-    "keywords": ["wechat-php-sdk"],
     "homepage": "https://github.com/zoujingli/wechat-php-sdk",
-    "autoload": {"psr-4": {"Wechat\\": "./src"}}
+    "keywords": [
+        "wechat-php-sdk"
+    ],
+    "autoload": {
+        "psr-4": {
+            "files": [
+                "include.php"
+            ],
+            "Wechat\\": "./src"
+        }
+    }
 }
