@@ -7,10 +7,10 @@
         "wechat-php-sdk"
     ],
     "autoload": {
+        "files": [
+            "include.php"
+        ],
         "psr-4": {
-            "files": [
-                "include.php"
-            ],
             "Wechat\\": "./src"
         }
     }
