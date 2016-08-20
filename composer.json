@@ -1,7 +1,6 @@
 {
     "name": "zoujingli/wechat-php-sdk",
     "type": "library",
-    "minimum-stability": "dev",
     "keywords": [
         "wechat-php-sdk"
     ],
