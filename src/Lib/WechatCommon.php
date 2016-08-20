@@ -31,13 +31,13 @@ class WechatCommon extends WechatBasic {
     const API_URL_PREFIX = 'https://api.weixin.qq.com/cgi-bin';
     const GET_TICKET_URL = '/ticket/getticket?';
     const AUTH_URL = '/token?grant_type=client_credential&';
-    const CALLBACKSERVER_GET_URL = '/getcallbackip?';
 
     /**
      * 构造方法
      * @param type $options
      */
     public function __construct($options) {
+        parent::__construct();
         $this->token = isset($options['token']) ? $options['token'] : '';
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
@@ -76,6 +76,7 @@ class WechatCommon extends WechatBasic {
             $this->encrypt_type = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"] : '';
             if ($this->encrypt_type == 'aes') {
                 $encryptStr = $array['Encrypt'];
+                !class_exists('Prpcrypt') && (require(__DIR__ . '/Prpcrypt.php'));
                 $pc = new Prpcrypt($this->encodingAesKey);
                 $array = $pc->decrypt($encryptStr, $this->appid);
                 if (!isset($array[0]) || intval($array[0]) > 0) {
@@ -118,7 +119,7 @@ class WechatCommon extends WechatBasic {
             return $this->access_token = $token;
         }
         $authname = 'wechat_access_token_' . $appid;
-        if (($access_token = $this->getCache($authname)) && $this->getServerIp($access_token) !== FALSE) {
+        if (($access_token = $this->getCache($authname))) {
             return $this->access_token = $access_token;
         }
         $result = $this->http_get(self::API_URL_PREFIX . self::AUTH_URL . 'appid=' . $appid . '&secret=' . $appsecret);
@@ -154,28 +155,6 @@ class WechatCommon extends WechatBasic {
      */
     protected function log($msg) {
         method_exists('p') && p($msg, false, CACHEPATH . 'wechat_api.log');
-    }
-
-    /**
-     * 获取微信服务器IP地址列表
-     * @return array('127.0.0.1','127.0.0.1')
-     */
-    public function getServerIp($access_token = '') {
-        !empty($access_token) && $this->access_token = $access_token;
-        if (empty($this->access_token) && !$this->checkAuth()) {
-            return false;
-        }
-        $result = $this->http_get(self::API_URL_PREFIX . self::CALLBACKSERVER_GET_URL . "access_token={$this->access_token}");
-        if ($result) {
-            $json = json_decode($result, true);
-            if (!$json || isset($json['errcode'])) {
-                $this->errCode = $json['errcode'];
-                $this->errMsg = $json['errmsg'];
-                return false;
-            }
-            return $json['ip_list'];
-        }
-        return false;
     }
 
 }
