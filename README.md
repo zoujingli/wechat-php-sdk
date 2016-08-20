@@ -1,37 +1,77 @@
-WECHAT-PHP-SDK
+# WECHAT-PHP-SDK
 ---
-### 运行环境说明
+一、运行环境说明
+---
 此SDK是在CodeIgniter3的基础进行的开发调试，可根据实际开发环境进行微调。
+
+二、初始化动作 
+---
+
+#### A. 使用 Composer 安装，符合PSR-4标准。
+> 不需要引入include.php文件，所有文件都可以自动加载。
+
+```shell
+composer require zoujingli/wechat-php-sdk
+```
+#### B. 普通文件加载（需要引用 include.php）
+>1. 引入SDK
+
+```php
+    include include.php
+```
+>2. 准备配置参数 [token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key]
+```php
+$options = array(
+    'token'             =>  'tokenaccesskey',       //填写你设定的key
+    'appid'             =>  'wxdk1234567890',       //填写高级调用功能的app id, 请在微信开发模式后台查询
+    'appsecret'         =>  'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
+    'encodingaeskey'    =>  'encodingaeskey',       //填写加密用的EncodingAESKey（可选，接口传输选择加密时必需）
+    'mch_id'            =>  '',                     //微信支付，商户ID（可选）
+    'partnerkey'        =>  '',                     //微信支付，密钥（可选）
+    'ssl_cer'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
+    'ssl_key'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
+);
+```
+
+>3. 加载需要操作对象
+
+>>1. 微信支付操作
+
+```php
+$pay = & load_wechat('Pay',$options);
+//TODO：调用支付实例方法
+```
+
+>>2. 微信菜单操作
+
+```php
+$menu = & load_wechat('Menu',$options);
+//TODO：调用微信菜实例方法
+```
 
 ### SDK文件说明
 微信公众平台php开发包,细化各项接口操作,支持链式调用,欢迎Fork此项目
 
->1. WechatCustom.php 微信多客服接口
->2. WechatDevice.php 微信周边设备接口
->3. WechatExtends.php 微信其它工具接口
->4. WechatMedia.php 微信媒体素材接口
->5. WechatMenu.php 微信菜单操作接口
->6. WechatOauth.php 微信网页授权接口
->7. WechatPay.php 微信支付相关接口
->8. WechatReceive.php 微信被动消息处理SDK
->9. WechatScript.php 微信网页脚本工具
->10. WechatUser.php 微信粉丝操作接口
+* WechatCustom.php 微信多客服接口
+* WechatDevice.php 微信周边设备接口
+* WechatExtends.php 微信其它工具接口
+* WechatMedia.php 微信媒体素材接口
+* WechatMenu.php 微信菜单操作接口
+* WechatOauth.php 微信网页授权接口
+* WechatPay.php 微信支付相关接口
+* WechatReceive.php 微信被动消息处理SDK
+* WechatScript.php 微信网页脚本工具
+* WechatUser.php 微信粉丝操作接口
 
-#### 使用详解
-使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
+### 使用详解
+> 使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
+* 微信公众平台： http://mp.weixin.qq.com/wiki/
+* 微信企业平台： http://qydev.weixin.qq.com/wiki/
+* 微信开放平台：https://open.weixin.qq.com/
+* 微信支付接入文档：https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
+* 微信多客服：http://dkf.qq.com
 
-微信公众平台： http://mp.weixin.qq.com/wiki/
-
-微信企业平台： http://qydev.weixin.qq.com/wiki/
-
-微信开放平台：https://open.weixin.qq.com/
-
-微信支付接入文档：
-https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
-
-微信多客服：http://dkf.qq.com
-
-## 微信常用接口主要功能
+### 微信常用接口主要功能
 
 * 接入验证 （初级权限）
 * 自动回复（文本、图片、语音、视频、音乐、图文） （初级权限）
@@ -53,42 +93,8 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 * 数据统计(用户、图文、消息、接口分析数据) （认证权限）
 * 微信支付（网页支付、扫码支付、交易退款、给粉丝打款）（认证服务号并开通支付）
 
-备注：
- * > 初级权限：基本权限，任何正常的公众号都有此权限
- * > 菜单权限：正常的服务号、认证后的订阅号拥有此权限
- * > 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限，否则为认证后的订阅号、服务号都有此权限
- * > 支付权限：仅认证后的服务号可以申请此权限
-
-### 初始化动作 
-
-Composer 安装（不需要引用include.php）
-```
-composer require zoujingli/wechat-php-sdk
-```
-普通文件加载（需要引用include.php）
-```php
-    // 1. 引入SDK
-    include include.php
-
-    // 2. 准备配置参数 （token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key）
-    $options = array(
-        'token'             =>  'tokenaccesskey',       //填写你设定的key
-        'appid'             =>  'wxdk1234567890',       //填写高级调用功能的app id, 请在微信开发模式后台查询
-        'appsecret'         =>  'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
-        'encodingaeskey'    =>  'encodingaeskey',       //填写加密用的EncodingAESKey（可选，接口传输选择加密时必需）
-        'mch_id'            =>  '',                     //微信支付，商户ID（可选）
-        'partnerkey'        =>  '',                     //微信支付，密钥（可选）
-        'ssl_cer'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
-        'ssl_key'           =>  '',                     //微信支付，双向证书（可选，操作退款或打款时必需）
-	);
-
-    // 3. 加载需要操作对象
-
-    // 微信支付操作
-    $pay = & load_wechat('Pay',$options);
-    //TODO：调用支付实例方法
-
-    // 微信菜单操作
-    $menu = & load_wechat('Menu',$options);
-    //TODO：调用微信菜实例方法
-```
+#### 备注：
+* 初级权限：基本权限，任何正常的公众号都有此权限
+* 菜单权限：正常的服务号、认证后的订阅号拥有此权限
+* 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限，否则为认证后的订阅号、服务号都有此权限
+* 支付权限：仅认证后的服务号可以申请此权限
