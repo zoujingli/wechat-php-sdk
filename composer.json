@@ -1,8 +1,6 @@
 {
     "name": "zoujingli/wechat-php-sdk",
     "type": "library",
-    "license": "MIT",
-    "homepage": "https://github.com/zoujingli/wechat-php-sdk",
     "minimum-stability": "dev",
     "keywords": [
         "wechat-php-sdk"
@@ -14,5 +12,8 @@
         "psr-4": {
             "Wechat\\": "./src"
         }
-    }
+    },
+    "license": "MIT",
+    "homepage": "https://github.com/zoujingli/wechat-php-sdk",
+    "description": "微信快速开发SDK，集成常用接口操作。"
 }
