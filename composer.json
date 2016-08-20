@@ -3,6 +3,7 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/zoujingli/wechat-php-sdk",
+    "minimum-stability": "dev",
     "keywords": [
         "wechat-php-sdk"
     ],
