@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\library\WechatBasic;
+use Wechat\Lib\WechatBasic;
 
 /**
  * 微信支付SDK

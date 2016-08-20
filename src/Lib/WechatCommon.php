@@ -1,6 +1,6 @@
 <?php
 
-namespace Wechat\library;
+namespace Wechat\Lib;
 
 /**
  * 微信SDK基础类

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wechat\library;
+namespace Wechat\Lib;
 
 use CURLFile;
 
