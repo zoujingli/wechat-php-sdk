@@ -14,12 +14,12 @@
 composer require zoujingli/wechat-php-sdk
 ```
 #### B. 普通文件加载（需要引用 include.php）
->1. 引入SDK
+* 引入SDK
 
 ```php
     include include.php
 ```
->2. 准备配置参数 [token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key]
+* 准备配置参数 [token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key]
 ```php
 $options = array(
     'token'             =>  'tokenaccesskey',       //填写你设定的key
@@ -35,14 +35,14 @@ $options = array(
 
 >3. 加载需要操作对象
 
->>1. 微信支付操作
+* 微信支付操作
 
 ```php
 $pay = & load_wechat('Pay',$options);
 //TODO：调用支付实例方法
 ```
 
->>2. 微信菜单操作
+* 微信菜单操作
 
 ```php
 $menu = & load_wechat('Menu',$options);
