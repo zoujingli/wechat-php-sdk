@@ -3,7 +3,7 @@
     "type": "project",
     "license": "MIT",
     "description": "An Wechat PHP SDK for easily building fast.",
-    "homepage": "https://www.ctolog.com",
+    "homepage": "https://github.com/zoujingli/wechat-php-sdk",
     "keywords": [
         "wechat-php-sdk"
     ],
