@@ -12,7 +12,7 @@ $config = array(
 );
 
 # 加载对应操作接口
-$wechat = & load_wechat('User', $config);
+$wechat = & \Wechat\Loader::get_instance('User', $config);
 $userlist = $wechat->getUserList();
 
 var_dump($userlist);

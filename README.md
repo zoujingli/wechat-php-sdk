@@ -37,18 +37,41 @@ $options = array(
 
 ### 实例SDK对象
 
-* 微信支付操作
 
 ```php
-$pay = & load_wechat('Pay',$options);
+$pay = & \Wechat\Loader::get_instance('Pay',$options);
 //TODO：调用支付实例方法
 ```
 
 * 微信菜单操作
 
 ```php
-$menu = & load_wechat('Menu',$options);
+$menu = & \Wechat\Loader::get_instance('Menu',$options);
 //TODO：调用微信菜实例方法
+```
+
+#### 可以在项目中放置这样的函数，方便加载
+
+```php
+* 微信支付操作
+/**
+ * 获取微信操作对象
+ * @staticvar array $wechat
+ * @param type $type
+ * @return WechatReceive
+ */
+function &load_wechat($type = '') {
+    static $wechat = array();
+    $index = md5(strtolower($type));
+    if (!isset($wechat[$index])) {
+        $CI = & get_instance();
+        $CI->db->reset_query();
+        $CI->db->select('token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img');
+        $config = $CI->db->get('wechat_config')->first_row('array');
+        $wechat[$index] = \Wechat\Loader::get_instance($type, $config);
+    }
+    return $wechat[$index];
+}
 ```
 
 ### SDK文件说明
