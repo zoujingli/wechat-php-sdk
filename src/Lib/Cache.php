@@ -25,7 +25,7 @@ class Cache {
      */
     static public function set($name, $value, $expired = 0) {
         $data = serialize(array('value' => $value, 'expired' => $expired > 0 ? time() + $expired : 0));
-        return self::check() && file_put_contents(self::$cache_path . DIRECTORY_SEPARATOR . $name, $data, $expired);
+        return self::check() && file_put_contents(self::$cache_path . DIRECTORY_SEPARATOR . $name, $data);
     }
 
     /**
