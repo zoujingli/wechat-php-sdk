@@ -1,6 +1,5 @@
 <?php
 
-namespace Wechat\Lib;
 
 /**
  * PKCS7算法 加解密

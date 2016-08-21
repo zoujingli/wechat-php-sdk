@@ -2,6 +2,8 @@
 
 namespace Wechat\Lib;
 
+use Prpcrypt;
+
 /**
  * 微信SDK基础类
  * 
@@ -75,6 +77,7 @@ class WechatCommon extends WechatBasic {
             $this->encrypt_type = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"] : '';
             if ($this->encrypt_type == 'aes') {
                 $encryptStr = $array['Encrypt'];
+                class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Prpcrypt.php';
                 $pc = new Prpcrypt($this->encodingAesKey);
                 $array = $pc->decrypt($encryptStr, $this->appid);
                 if (!isset($array[0]) || intval($array[0]) > 0) {
