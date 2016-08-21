@@ -1,30 +1,20 @@
 <?php
 
-if (!function_exists('load_wechat')) {
+use Wechat\Loader;
 
-    /**
-     * 获取微信操作对象 
-     * @staticvar array $wechat
-     * @param type $type 接口类型(Card|Custom|Device|Extends|Media|Menu|Oauth|Pay|Receive|Script|User)
-     * @param type $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
-     * @return \Wechat\WechatReceive
-     */
-    function &load_wechat($type = '', $config = array()) {
-        static $wechat = array();
-        $index = md5(strtolower($type));
-        if (!isset($wechat[$index])) {
-            $className = "\\Wechat\\Wechat" . ucfirst(strtolower($type));
-            $wechat[$index] = new $className($config);
-        }
-        return $wechat[$index];
-    }
+/**
+ * 微信SDK引用文件（非Composer模式加载）
+ * 
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2016-08-21 11:26
+ */
+if (!class_exists('Wechat\Loader', FALSE)) {
 
-    /** 注册自动加载函数 */
-    spl_autoload_register(function($class) {
-        if (stripos($class, 'Wechat\\') === 0) {
-            require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
-        }
-    });
+    /** 加载SKD自动器 */
+    require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Loader.php';
+
+    /** 注册SDK自动加载 */
+    Loader::register();
 }
 
 
