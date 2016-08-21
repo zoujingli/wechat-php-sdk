@@ -10,11 +10,29 @@ use Wechat\Loader;
  */
 if (!class_exists('Wechat\Loader', FALSE)) {
 
-    /** 加载SKD自动器 */
-    require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Loader.php';
+    /** 注册自动加载函数 */
+    spl_autoload_register(function($class) {
+        if (stripos($class, 'Wechat\\') === 0) {
+            require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
+        }
+    });
 
-    /** 注册SDK自动加载 */
-    Loader::register();
+    /**
+     * 请设置微信配置信息
+     * (token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
+     */
+    $options = array(
+        'token'          => '',
+        'appid'          => '',
+        'appsecret'      => '',
+        'encodingaeskey' => '',
+        'mch_id'         => '',
+        'partnerkey'     => 'partnerkey',
+        'ssl_cer'        => '',
+        'ssl_key'        => '',
+    );
+
+    Loader::set_config($options);
 }
 
 
