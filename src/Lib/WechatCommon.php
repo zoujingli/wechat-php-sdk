@@ -75,7 +75,6 @@ class WechatCommon extends WechatBasic {
             $this->encrypt_type = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"] : '';
             if ($this->encrypt_type == 'aes') {
                 $encryptStr = $array['Encrypt'];
-                !class_exists('Prpcrypt') && (require(__DIR__ . '/Prpcrypt.php'));
                 $pc = new Prpcrypt($this->encodingAesKey);
                 $array = $pc->decrypt($encryptStr, $this->appid);
                 if (!isset($array[0]) || intval($array[0]) > 0) {
@@ -117,8 +116,7 @@ class WechatCommon extends WechatBasic {
         if ($token) {
             return $this->access_token = $token;
         }
-        $authname = 'wechat_access_token_' . $appid;
-        if (($access_token = $this->getCache($authname))) {
+        if (($access_token = $this->getCache($authname = 'wechat_access_token_' . $appid)) && empty($access_token)) {
             return $this->access_token = $access_token;
         }
         $result = $this->http_get(self::API_URL_PREFIX . self::AUTH_URL . 'appid=' . $appid . '&secret=' . $appsecret);
@@ -130,8 +128,7 @@ class WechatCommon extends WechatBasic {
                 return false;
             }
             $this->access_token = $json['access_token'];
-            $expire = $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600;
-            $this->setCache($authname, $this->access_token, $expire);
+            $this->setCache($authname, $this->access_token, 5000);
             return $this->access_token;
         }
         return false;
