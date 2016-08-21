@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * PKCS7算法 加解密
  * @category WechatSDK

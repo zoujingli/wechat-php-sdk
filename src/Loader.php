@@ -44,7 +44,12 @@ namespace Wechat {
             $index = md5(strtolower($type));
             if (!isset($wechat[$index])) {
                 $className = "\\Wechat\\Wechat" . ucfirst(strtolower($type));
-                $wechat[$index] = new $className(empty($config) ? self::$config : $config);
+                $classObj = 'Wechat' . ucfirst(strtolower($type));
+                if (class_alias($className, $classObj, TRUE)) {
+                    $wechat[$index] = new $classObj($config);
+                } else {
+                    return false;
+                }
             }
             return $wechat[$index];
         }

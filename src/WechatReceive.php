@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\Lib\Prpcrypt;
+use Prpcrypt;
 use Wechat\Lib\WechatCommon;
 
 /**
@@ -929,6 +929,7 @@ class WechatReceive extends WechatCommon {
         }
         $xmldata = self::array2xml($msg);
         if ($this->encrypt_type == 'aes') { //如果来源消息为加密方式
+            !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Lib/Prpcrypt.php';
             $pc = new Prpcrypt($this->encodingAesKey);
             $array = $pc->encrypt($xmldata, $this->appid);
             $ret = $array[0];
