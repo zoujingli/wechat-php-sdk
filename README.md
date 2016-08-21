@@ -8,13 +8,14 @@
 
 
 ##### A. 使用 Composer 安装，符合PSR-4标准。
-> 不需要引入include.php文件，所有文件都可以自动加载。
+>1. 不需要引入include.php文件，所有文件都可以自动加载。
+>2. 可使用Wechat\Loader::set_config()来配置全局参数。
 
 ```shell
 composer require zoujingli/wechat-php-sdk
 ```
 ##### B. 普通文件加载（需要引用 include.php）
-* 引入SDK
+* 引入SDK，可在include中配置全局微信参数。
 
 ```php
     include include.php
