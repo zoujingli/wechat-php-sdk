@@ -37,6 +37,7 @@ $options = array(
 
 ### 实例SDK对象
 
+* 微信支付操作
 
 ```php
 $pay = & \Wechat\Loader::get_instance('Pay',$options);
@@ -53,7 +54,7 @@ $menu = & \Wechat\Loader::get_instance('Menu',$options);
 #### 可以在项目中放置这样的函数，方便加载
 
 ```php
-* 微信支付操作
+
 /**
  * 获取微信操作对象
  * @staticvar array $wechat
