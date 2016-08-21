@@ -15,7 +15,7 @@
 composer require zoujingli/wechat-php-sdk
 ```
 ##### B. 普通文件加载（需要引用 include.php）
-* 引入SDK，可在include中配置全局微信参数。
+>1. 引入SDK，可在include中配置全局微信参数。
 
 ```php
     include include.php
