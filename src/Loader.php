@@ -46,7 +46,7 @@ class Loader {
             $className = "\\Wechat\\Wechat" . ucfirst(strtolower($type));
             $classAlias = 'Wechat' . ucfirst(strtolower($type));
             !class_exists($classAlias, FALSE) && class_alias($className, $classAlias);
-            $wechat[$index] = new $className($config);
+            $wechat[$index] = new $className(empty($config)?self::$config:$config);
         }
         return $wechat[$index];
     }
