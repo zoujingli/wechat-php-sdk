@@ -51,6 +51,13 @@ class WechatUser extends WechatCommon {
     /* 批量修改粉丝所在分组 */
     const GROUP_MEMBER_BATCHUPDATE_URL = '/groups/members/batchupdate?';
 
+    /** 获取黑名单列表 */
+    const BACKLIST_GET_URL = '/tags/members/getblacklist?';
+    /* 批量拉黑粉丝 */
+    const BACKLIST_ADD_URL = '/tags/members/batchblacklist?';
+    /* 批量取消拉黑粉丝 */
+    const BACKLIST_DEL_URL = '/tags/members/batchunblacklist?';
+
     /**
      * 批量获取关注粉丝列表
      * @param unknown $next_openid
@@ -462,6 +469,75 @@ class WechatUser extends WechatCommon {
                 return false;
             }
             return $json['tagid_list'];
+        }
+        return false;
+    }
+
+    /**
+     * 批量获取黑名单粉丝
+     * @param type $begin_openid
+     * @return boolean
+     */
+    public function getBacklist($begin_openid = '') {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $data = empty($begin_openid) ? array() : array('begin_openid' => $begin_openid);
+        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_GET_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (isset($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return false;
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
+     * 批量拉黑粉丝
+     * @param string $openids
+     * @return boolean|array
+     */
+    public function addBacklist($openids) {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $data = array('opened_list' => $openids);
+        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return false;
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
+     * 批量取消拉黑粉丝
+     * @param string $openids
+     * @return boolean|array
+     */
+    public function delBacklist($openids) {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $data = array('opened_list' => $openids);
+        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_DEL_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return false;
+            }
+            return $json;
         }
         return false;
     }
