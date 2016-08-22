@@ -14,7 +14,7 @@ class Cache {
      * 缓存位置
      * @var type 
      */
-    static public $cache_path;
+    static public $cachePath;
 
     /**
      * 设置缓存
@@ -25,7 +25,7 @@ class Cache {
      */
     static public function set($name, $value, $expired = 0) {
         $data = serialize(array('value' => $value, 'expired' => $expired > 0 ? time() + $expired : 0));
-        return self::check() && file_put_contents(self::$cache_path . DIRECTORY_SEPARATOR . $name, $data);
+        return self::check() && file_put_contents(self::$cachePath . $name, $data);
     }
 
     /**
@@ -34,7 +34,7 @@ class Cache {
      * @return type
      */
     static public function get($name) {
-        if (self::check() && ($file = self::$cache_path . DIRECTORY_SEPARATOR . $name) && file_exists($file) && ($data = file_get_contents($file)) && !empty($data)) {
+        if (self::check() && ($file = self::$cachePath . $name) && file_exists($file) && ($data = file_get_contents($file)) && !empty($data)) {
             $data = unserialize($data);
             if (isset($data['expired']) && ($data['expired'] > time() || $data['expired'] === 0)) {
                 return isset($data['value']) ? $data['value'] : null;
@@ -49,7 +49,7 @@ class Cache {
      * @return type
      */
     static public function del($name) {
-        return self::check() && unlink(self::$cache_path . DIRECTORY_SEPARATOR . $name);
+        return self::check() && unlink(self::$cachePath . $name);
     }
 
     /**
@@ -57,8 +57,8 @@ class Cache {
      * @return boolean
      */
     static protected function check() {
-        empty(self::$cache_path) && self::$cache_path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache';
-        if (!is_dir(self::$cache_path) && !mkdir(self::$cache_path, 0755, TRUE)) {
+        empty(self::$cachePath) && self::$cachePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;
+        if (!is_dir(self::$cachePath) && !mkdir(self::$cachePath, 0755, TRUE)) {
             return FALSE;
         }
         return TRUE;
