@@ -14,7 +14,7 @@ class Loader {
      * 表态配置参数
      * @var type 
      */
-    static protected $config;
+    static protected $config=array();
 
     /**
      * 设置配置参数
