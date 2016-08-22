@@ -14,7 +14,7 @@ class Loader {
      * 表态配置参数
      * @var type 
      */
-    static protected $config=array();
+    static protected $config = array();
 
     /**
      * 设置配置参数
@@ -43,10 +43,10 @@ class Loader {
         static $wechat = array();
         $index = md5(strtolower($type));
         if (!isset($wechat[$index])) {
-            $className = "\\Wechat\\Wechat" . ucfirst(strtolower($type));
-            $classAlias = 'Wechat' . ucfirst(strtolower($type));
-            !class_exists($classAlias, FALSE) && class_alias($className, $classAlias);
-            $wechat[$index] = new $className(empty($config)?self::$config:$config);
+            $basicName = 'Wechat' . ucfirst(strtolower($type));
+            $className = "\\Wechat\\{$basicName}";
+            !class_exists($basicName, FALSE) && class_alias($className, $basicName);
+            $wechat[$index] = new $className(empty($config) ? self::$config : $config);
         }
         return $wechat[$index];
     }
