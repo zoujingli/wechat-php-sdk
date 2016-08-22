@@ -69,8 +69,11 @@ function &load_wechat($type = '') {
         $CI = & get_instance();
         $CI->db->reset_query();
         $CI->db->select('token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img');
+        // 读取SDK动态配置
         $config = $CI->db->get('wechat_config')->first_row('array');
-        $wechat[$index] = \Wechat\Loader::get_instance($type, $config);
+        // 设置SDK缓存路径
+        $config['cachepath'] = CACHEPATH . 'data/';
+        $wechat[$index] = & \Wechat\Loader::get_instance($type, $config);
     }
     return $wechat[$index];
 }
