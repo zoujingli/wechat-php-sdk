@@ -45,7 +45,7 @@ class WechatCommon extends WechatBasic {
         $this->encodingAesKey = isset($options['encodingaeskey']) ? $options['encodingaeskey'] : '';
         $this->config = $options;
         if (isset($options['cachepath'])) {
-            Cache::$cachePath = $options['cachepath'];
+            Cache::$cachepath = $options['cachepath'];
         }
     }
 
