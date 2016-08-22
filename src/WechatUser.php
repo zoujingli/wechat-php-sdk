@@ -267,7 +267,7 @@ class WechatUser extends WechatCommon {
     /**
      * 批量移动粉丝分组
      * @param type $groupid 分组ID
-     * @param type $openid_list 粉丝openid数组，一次不能超过50个
+     * @param type $openid_list 粉丝openid数组(一次不能超过50个)
      * @return boolean|array
      */
     public function batchUpdateGroupMembers($groupid, $openid_list) {
