@@ -4,6 +4,12 @@ namespace Wechat;
 
 use Wechat\Lib\WechatCommon;
 
+/**
+ * 微信扩展功能
+ * 
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2016-08-22 10:32
+ */
 class WechatExtends extends WechatCommon {
 
     const QR_LIMIT_SCENE = 1;
