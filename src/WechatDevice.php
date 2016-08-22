@@ -4,9 +4,13 @@ namespace Wechat;
 
 use Wechat\Lib\WechatCommon;
 
+/**
+ * 微信设备相关SDK
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2016-08-22 10:35
+ */
 class WechatDevice extends WechatCommon {
 
-    ///微信摇一摇周边
     const SHAKEAROUND_DEVICE_APPLYID = '/shakearound/device/applyid?'; //申请设备ID
     const SHAKEAROUND_DEVICE_UPDATE = '/shakearound/device/update?'; //编辑设备信息
     const SHAKEAROUND_DEVICE_SEARCH = '/shakearound/device/search?'; //查询设备列表
