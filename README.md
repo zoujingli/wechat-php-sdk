@@ -1,7 +1,5 @@
 # WECHAT-PHP-SDK
 
-[![Build Status](https://img.shields.io/travis/zoujingli/wechat-php-sdk.svg)](https://travis-ci.org/zoujingli/wechat-php-sdk)
-[![Coverage Status](https://img.shields.io/codecov/c/github/zoujingli/wechat-php-sdk.svg)](https://codecov.io/github/zoujingli/wechat-php-sdk)
 [![Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases)
 [![Releases](https://img.shields.io/github/release/zoujingli/wechat-php-sdk.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
 [![Releases Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/latest/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
