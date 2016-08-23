@@ -3,8 +3,8 @@
 [![Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases)
 [![Releases](https://img.shields.io/github/release/zoujingli/wechat-php-sdk.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
 [![Releases Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/latest/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
-[![Packagist Status](https://img.shields.io/packagist/v/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/topthink/framework)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/topthink/framework)
+[![Packagist Status](https://img.shields.io/packagist/v/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 
 ### 运行环境说明
 
