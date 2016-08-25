@@ -122,7 +122,7 @@ class WechatCommon extends WechatBasic {
         if ($token) {
             return $this->access_token = $token;
         }
-        if (($access_token = $this->getCache($authname = 'wechat_access_token_' . $appid)) && empty($access_token)) {
+        if (($access_token = $this->getCache($authname = 'wechat_access_token_' . $appid)) && !empty($access_token)) {
             return $this->access_token = $access_token;
         }
         $result = $this->http_get(self::API_URL_PREFIX . self::AUTH_URL . 'appid=' . $appid . '&secret=' . $appsecret);
