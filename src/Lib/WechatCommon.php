@@ -27,6 +27,7 @@ class WechatCommon extends WechatBasic {
     public $errCode = 40001;
     public $errMsg = "no access";
     public $config = array();
+    public $retry = FALSE;
 
     /** API接口URL需要使用此前缀 */
     const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
@@ -149,6 +150,18 @@ class WechatCommon extends WechatBasic {
         $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
         $this->removeCache($authname);
         return true;
+    }
+
+    /**
+     * 重试检测
+     * @return boolean
+     */
+    protected function _checkRetry() {
+        if (!$this->retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
+            $this->retry = true;
+            return $this->resetAuth();
+        }
+        return false;
     }
 
     /**
