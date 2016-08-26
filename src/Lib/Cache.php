@@ -65,4 +65,15 @@ class Cache {
         return TRUE;
     }
 
+    /**
+     * 输出内容到日志
+     * @param type $line
+     * @param type $filename
+     * @return type
+     */
+    static public function put($line, $filename = '') {
+        empty($filename) && $filename = date('Ymd') . '.log';
+        return self::check() && file_put_contents(self::$cachepath . $filename, '[' . date('Y/m/d H:i:s') . "] {$line}\n", FILE_APPEND);
+    }
+
 }

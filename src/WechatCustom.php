@@ -58,7 +58,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -90,7 +90,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -126,7 +126,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -162,7 +162,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -190,7 +190,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -224,7 +224,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -261,7 +261,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -296,7 +296,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -331,7 +331,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -359,7 +359,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -388,7 +388,7 @@ class WechatCustom extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }

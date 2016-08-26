@@ -78,7 +78,7 @@ class WechatExtends extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json['short_url'];
         }
@@ -111,7 +111,7 @@ class WechatExtends extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -154,7 +154,7 @@ class WechatExtends extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -186,7 +186,7 @@ class WechatExtends extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return isset($json['list']) ? $json['list'] : $json;
         }

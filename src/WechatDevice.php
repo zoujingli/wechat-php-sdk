@@ -75,7 +75,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -106,15 +106,16 @@ class WechatDevice extends WechatCommon {
      * @version 2015-4-20 23:45:00
      */
     public function updateShakeAroundDevice($data) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_UPDATE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -193,15 +194,16 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function searchShakeAroundDevice($data) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_SEARCH . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -229,8 +231,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function bindLocationShakeAroundDevice($device_id, $poi_id, $uuid = '', $major = 0, $minor = 0) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         if (!$device_id) {
             if (!$uuid || !$major || !$minor) {
                 return false;
@@ -255,7 +258,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json; //这个可以更改为返回true
         }
@@ -288,8 +291,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function bindPageShakeAroundDevice($device_id, $page_ids = array(), $bind = 1, $append = 1, $uuid = '', $major = 0, $minor = 0) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         if (!$device_id) {
             if (!$uuid || !$major || !$minor) {
                 return false;
@@ -316,7 +320,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -340,15 +344,16 @@ class WechatDevice extends WechatCommon {
      * @version 2015-4-21 00:51:00
      */
     public function uploadShakeAroundMedia($data) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $result = $this->http_post(self::API_URL_PREFIX . self::SHAKEAROUND_MATERIAL_ADD . 'access_token=' . $this->access_token, $data, true);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -377,8 +382,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function addShakeAroundPage($title, $description, $icon_url, $page_url, $comment = '') {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $data = array(
             "title"       => $title,
             "description" => $description,
@@ -392,7 +398,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -422,8 +428,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function updateShakeAroundPage($page_id, $title, $description, $icon_url, $page_url, $comment = '') {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $data = array(
             "page_id"     => $page_id,
             "title"       => $title,
@@ -438,7 +445,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -503,8 +510,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function searchShakeAroundPage($page_ids = array(), $begin = 0, $count = 1) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         if (!empty($page_ids)) {
             $data = array(
                 'page_ids' => $page_ids
@@ -521,7 +529,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -549,8 +557,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function deleteShakeAroundPage($page_ids = array()) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $data = array(
             'page_ids' => $page_ids
         );
@@ -560,7 +569,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -599,8 +608,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function getShakeInfoShakeAroundUser($ticket) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $data = array('ticket' => $ticket);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_USER_GETSHAKEINFO . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
@@ -608,7 +618,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -658,8 +668,9 @@ class WechatDevice extends WechatCommon {
      * @copyright Show More
      */
     public function deviceShakeAroundStatistics($device_id, $begin_date, $end_date, $uuid = '', $major = 0, $minor = 0) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         if (!$device_id) {
             if (!$uuid || !$major || !$minor) {
                 return false;
@@ -685,7 +696,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -730,8 +741,9 @@ class WechatDevice extends WechatCommon {
      * @version 2015-4-21 00:43:00
      */
     public function pageShakeAroundStatistics($page_id, $begin_date, $end_date) {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
+        }
         $data = array(
             'page_id'    => $page_id,
             'begin_date' => $begin_date,
@@ -743,7 +755,7 @@ class WechatDevice extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }

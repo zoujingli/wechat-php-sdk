@@ -4,8 +4,6 @@ namespace Wechat;
 
 use Wechat\Lib\WechatCommon;
 
-
-
 /**
  * 微信卡卷
  */
@@ -123,6 +121,9 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
+                if ($this->checkRetry()) {
+                    return $this->getJsCardTicket($appid, $jsapi_ticket);
+                }
                 return false;
             }
             $this->jsapi_ticket = $json['ticket'];
@@ -166,7 +167,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -189,7 +190,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -216,7 +217,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -241,7 +242,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -263,7 +264,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -291,7 +292,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -314,7 +315,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -351,7 +352,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -386,7 +387,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -416,7 +417,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -451,7 +452,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -487,7 +488,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -518,7 +519,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -548,7 +549,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -570,7 +571,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -592,7 +593,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -614,7 +615,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -637,7 +638,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return $json;
         }
@@ -667,7 +668,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }
@@ -698,7 +699,8 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return false;
+                
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
         }

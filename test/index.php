@@ -15,6 +15,6 @@ $config = array(
 $wechat = & \Wechat\Loader::get_instance('User', $config);
 $userlist = $wechat->getUserList();
 
-var_dump($userlist);
+//var_dump($userlist);
 var_dump($wechat->errMsg);
 var_dump($wechat->errCode);

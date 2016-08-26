@@ -27,7 +27,7 @@ class WechatCommon extends WechatBasic {
     public $errCode = 40001;
     public $errMsg = "no access";
     public $config = array();
-    public $retry = FALSE;
+    private $_retry = FALSE;
 
     /** API接口URL需要使用此前缀 */
     const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
@@ -87,6 +87,7 @@ class WechatCommon extends WechatBasic {
                 if (!isset($array[0]) || intval($array[0]) > 0) {
                     $this->errCode = $array[0];
                     $this->errMsg = $array[1];
+                    $this->log("Api Valid Error. {$this->errMsg}[{$this->errCode}]", 'ERR');
                     return false;
                 }
                 $this->postxml = $array[1];
@@ -95,9 +96,8 @@ class WechatCommon extends WechatBasic {
                 $this->postxml = $postStr;
             }
         } elseif (isset($_GET["echostr"])) {
-            $echoStr = $_GET["echostr"];
             if ($this->checkSignature()) {
-                exit($echoStr);
+                exit($_GET["echostr"]);
             } else {
                 return false;
             }
@@ -132,9 +132,11 @@ class WechatCommon extends WechatBasic {
             if (!$json || isset($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
+                $this->log("Get New AccessToken Error. {$this->errMsg}[{$this->errCode}]", 'ERR');
                 return false;
             }
             $this->access_token = $json['access_token'];
+            $this->log("Get New AccessToken Success.");
             $this->setCache($authname, $this->access_token, 5000);
             return $this->access_token;
         }
@@ -146,6 +148,7 @@ class WechatCommon extends WechatBasic {
      * @param string $appid
      */
     public function resetAuth($appid = '') {
+        $this->log("Reset Auth.");
         $this->access_token = '';
         $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
         $this->removeCache($authname);
@@ -156,20 +159,25 @@ class WechatCommon extends WechatBasic {
      * 重试检测
      * @return boolean
      */
-    protected function _checkRetry() {
-        if (!$this->retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
-            $this->retry = true;
-            return $this->resetAuth();
+    protected function checkRetry($method, $arguments = array()) {
+        if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
+            $this->log("{$method} Error. {$this->errMsg}[{$this->errCode}]", 'ERR');
+            ($this->_retry = true) && $this->resetAuth();
+            $this->errCode = 40001;
+            $this->errMsg = 'no access';
+            $this->log("Retry Call {$method}.");
+            return call_user_func_array(array($this, $method), $arguments);
         }
         return false;
     }
 
     /**
-     * 公众SDK日志
+     * SDK日志处理方法
      * @param type $msg
+     * @param type $type
      */
-    protected function log($msg) {
-        method_exists('p') && p($msg, false, CACHEPATH . 'wechat_api.log');
+    protected function log($msg, $type = 'MSG') {
+        Cache::put($type . ' - ' . $msg);
     }
 
 }
