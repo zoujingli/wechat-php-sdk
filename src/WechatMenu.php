@@ -12,68 +12,31 @@ use Wechat\Lib\WechatCommon;
  */
 class WechatMenu extends WechatCommon {
 
-    const MENU_CREATE_URL = '/menu/create?';
+    /** 创建自定义菜单 */
+    const MENU_ADD_URL = '/menu/create?';
+    /* 获取自定义菜单 */
     const MENU_GET_URL = '/menu/get?';
-    const MENU_DELETE_URL = '/menu/delete?';
+    /* 删除自定义菜单 */
+    const MENU_DEL_URL = '/menu/delete?';
+
+    /** 添加个性菜单 */
+    const COND_MENU_ADD_URL = '/menu/addconditional?';
+    /* 删除个性菜单 */
+    const COND_MENU_DEL_URL = '/menu/delconditional?';
+    /* 测试个性菜单 */
+    const COND_MENU_TRY_URL = '/menu/trymatch?';
 
     /**
-     * 创建菜单(认证后的订阅号可用)
+     * 创建自定义菜单
      * @param array $data 菜单数组数据
-     * example:
-     * 	array (
-     * 	    'button' => array (
-     * 	      0 => array (
-     * 	        'name' => '扫码',
-     * 	        'sub_button' => array (
-     * 	            0 => array (
-     * 	              'type' => 'scancode_waitmsg',
-     * 	              'name' => '扫码带提示',
-     * 	              'key' => 'rselfmenu_0_0',
-     * 	            ),
-     * 	            1 => array (
-     * 	              'type' => 'scancode_push',
-     * 	              'name' => '扫码推事件',
-     * 	              'key' => 'rselfmenu_0_1',
-     * 	            ),
-     * 	        ),
-     * 	      ),
-     * 	      1 => array (
-     * 	        'name' => '发图',
-     * 	        'sub_button' => array (
-     * 	            0 => array (
-     * 	              'type' => 'pic_sysphoto',
-     * 	              'name' => '系统拍照发图',
-     * 	              'key' => 'rselfmenu_1_0',
-     * 	            ),
-     * 	            1 => array (
-     * 	              'type' => 'pic_photo_or_album',
-     * 	              'name' => '拍照或者相册发图',
-     * 	              'key' => 'rselfmenu_1_1',
-     * 	            )
-     * 	        ),
-     * 	      ),
-     * 	      2 => array (
-     * 	        'type' => 'location_select',
-     * 	        'name' => '发送位置',
-     * 	        'key' => 'rselfmenu_2_0'
-     * 	      ),
-     * 	    ),
-     * 	)
-     * type可以选择为以下几种，其中5-8除了收到菜单事件以外，还会单独收到对应类型的信息。
-     * 1、click：点击推事件
-     * 2、view：跳转URL
-     * 3、scancode_push：扫码推事件
-     * 4、scancode_waitmsg：扫码推事件且弹出“消息接收中”提示框
-     * 5、pic_sysphoto：弹出系统拍照发图
-     * 6、pic_photo_or_album：弹出拍照或者相册发图
-     * 7、pic_weixin：弹出微信相册发图器
-     * 8、location_select：弹出地理位置选择器
+     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN 文档
+     * @return boolean
      */
     public function createMenu($data) {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MENU_CREATE_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MENU_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -87,8 +50,8 @@ class WechatMenu extends WechatCommon {
     }
 
     /**
-     * 获取菜单(认证后的订阅号可用)
-     * @return array('menu'=>array(....s))
+     * 获取所有菜单
+     * @return array('menu'=>array())
      */
     public function getMenu() {
         if (!$this->access_token && !$this->checkAuth()) {
@@ -108,13 +71,14 @@ class WechatMenu extends WechatCommon {
     }
 
     /**
-     * 删除菜单(认证后的订阅号可用)
+     * 删除所有菜单
      * @return boolean
      */
     public function deleteMenu() {
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->checkAuth()) {
             return false;
-        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_DELETE_URL . 'access_token=' . $this->access_token);
+        }
+        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_DEL_URL . 'access_token=' . $this->access_token);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -123,6 +87,75 @@ class WechatMenu extends WechatCommon {
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * 创建个性菜单
+     * @param array $data 菜单数组数据
+     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
+     * @return boolean
+     */
+    public function createCondMenu($data) {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode']) || empty($json['menuid'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return empty($json['menuid']);
+        }
+        return false;
+    }
+
+    /**
+     * 删除个性菜单
+     * @param type $menuid
+     * @return boolean
+     */
+    public function deleteCondMenu($menuid) {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $data = array('menuid' => $menuid);
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_DEL_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 测试并返回个性化菜单
+     * @param type $openid
+     * @return boolean
+     */
+    public function tryCondMenu($openid) {
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $data = array('user_id' => $openid);
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_TRY_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
         }
         return false;
     }
