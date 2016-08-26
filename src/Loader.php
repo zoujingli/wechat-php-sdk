@@ -20,7 +20,7 @@ class Loader {
      * 设置配置参数
      * @param type $config
      */
-    static public function set_config($config) {
+    static public function setConfig($config) {
         self::$config;
     }
 
@@ -28,7 +28,7 @@ class Loader {
      * 获取配置参数
      * @return type
      */
-    static public function get_config() {
+    static public function getConfig() {
         return self::$config;
     }
 

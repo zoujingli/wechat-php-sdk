@@ -32,7 +32,7 @@ if (!class_exists('Wechat\Loader', FALSE)) {
         'ssl_key'        => '',
     );
 
-    Loader::set_config($options);
+    Loader::setConfig($options);
 }
 
 
