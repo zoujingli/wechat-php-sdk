@@ -240,7 +240,7 @@ abstract class WechatBasic {
      * @return type
      */
     public function ipAddress() {
-        foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP') as $header) {
+        foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
             if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === NULL) {
                 continue;
             }
