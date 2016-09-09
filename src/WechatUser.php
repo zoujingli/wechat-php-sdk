@@ -60,7 +60,8 @@ class WechatUser extends WechatCommon {
 
     /**
      * 批量获取关注粉丝列表
-     * @param unknown $next_openid
+     * @param type $next_openid
+     * @return boolean
      */
     public function getUserList($next_openid = '') {
         if (!$this->access_token && !$this->checkAuth()) {
@@ -83,10 +84,9 @@ class WechatUser extends WechatCommon {
      * 获取关注者详细信息
      * @param string $openid
      * @return array {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
-     * 注意：unionid字段 只有在粉丝将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
+     * @注意：unionid字段 只有在粉丝将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getUserInfo($openid) {
-
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
@@ -150,7 +150,8 @@ class WechatUser extends WechatCommon {
 
     /**
      * 删除粉丝分组
-     * @return boolean|array
+     * @param type $id
+     * @return boolean
      */
     public function delGroup($id) {
         if (!$this->access_token && !$this->checkAuth()) {
@@ -359,7 +360,8 @@ class WechatUser extends WechatCommon {
 
     /**
      * 删除粉丝标签
-     * @return boolean|array
+     * @param type $id
+     * @return boolean
      */
     public function delTag($id) {
         if (!$this->access_token && !$this->checkAuth()) {
