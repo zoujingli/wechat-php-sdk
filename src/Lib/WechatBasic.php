@@ -236,6 +236,25 @@ abstract class WechatBasic {
     }
 
     /**
+     * 读取客户端IP
+     * @return type
+     */
+    public function ipAddress() {
+        foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP') as $header) {
+            if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === NULL) {
+                continue;
+            }
+            sscanf($spoof, '%[^,]', $spoof);
+            if (!filter_var($spoof, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $spoof = NULL;
+            } else {
+                return $spoof;
+            }
+        }
+        return '0.0.0.0';
+    }
+
+    /**
      * 设置缓存，按需重载
      * @param string $cachename
      * @param mixed $value
