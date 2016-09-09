@@ -36,8 +36,6 @@ class WechatPay extends WechatBasic {
      * @param type $options
      */
     public function __construct($options) {
-        $this->CI = &get_instance();
-        $this->CI->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : '';
         $this->partnerKey = isset($options['partnerkey']) ? $options['partnerkey'] : '';
@@ -134,7 +132,7 @@ class WechatPay extends WechatBasic {
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
-            "spbill_create_ip" => $this->CI->input->ip_address(),
+            "spbill_create_ip" => $this->ipAddress(),
         );
         empty($openid) || $postdata['openid'] = $openid;
         $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
