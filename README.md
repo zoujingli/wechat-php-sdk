@@ -88,6 +88,36 @@ function &load_wechat($type = '') {
     return $wechat[$index];
 }
 ```
+* 获取粉丝列表
+```
+//加载SDK对象,load_wechat方法参与上面进行定义
+$user = & load_wechat('User');
+//读取调用接口，读取微信官方粉丝列表
+$result = $user->getUserList();
+//接口异常的处理
+if ($result === FALSE) {
+    echo $user->errMsg;
+    echo $user->errCode;
+} else {
+//接口正常的处理
+}
+```
+
+*读取单个粉丝的信息
+```
+//加载SDK对象,load_wechat方法参与上面进行定义
+$user = & load_wechat('User');
+//读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
+$result = $user->getUserInfo($openid);
+//接口异常的处理
+if ($result === FALSE) {
+    echo $user->errMsg;
+    echo $user->errCode;
+} else {
+//接口正常的处理
+}
+```
+* 接口以此类推，调用方法一样。
 
 ### SDK文件说明
 微信公众平台php开发包，细化各项接口操作，支持链式调用，欢迎Fork此项目！
@@ -138,39 +168,6 @@ function &load_wechat($type = '') {
 * 菜单权限：正常的服务号、认证后的订阅号拥有此权限
 * 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限，否则为认证后的订阅号、服务号都有此权限
 * 支付权限：仅认证后的服务号可以申请此权限
-
-### 接口调用
-
-* 获取粉丝列表
-```
-//加载SDK对象,load_wechat方法参与上面进行定义
-$user = & load_wechat('User');
-//读取调用接口，读取微信官方粉丝列表
-$result = $user->getUserList();
-//接口异常的处理
-if ($result === FALSE) {
-    echo $user->errMsg;
-    echo $user->errCode;
-} else {
-//接口正常的处理
-}
-```
-
-*读取单个粉丝的信息
-```
-//加载SDK对象,load_wechat方法参与上面进行定义
-$user = & load_wechat('User');
-//读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
-$result = $user->getUserInfo($openid);
-//接口异常的处理
-if ($result === FALSE) {
-    echo $user->errMsg;
-    echo $user->errCode;
-} else {
-//接口正常的处理
-}
-```
-* 接口以此类推，调用方法一样。
 
 ==============================================================
 #### 微信的两种支付封装，基于CI框架
