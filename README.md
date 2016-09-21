@@ -88,9 +88,9 @@ function &load_wechat($type = '') {
     return $wechat[$index];
 }
 ```
-* 获取粉丝列表
+> 获取粉丝列表
 ```
-//加载SDK对象,load_wechat方法参与上面进行定义
+//加载SDK对象
 $user = & load_wechat('User');
 //读取调用接口，读取微信官方粉丝列表
 $result = $user->getUserList();
@@ -103,9 +103,9 @@ if ($result === FALSE) {
 }
 ```
 
-*读取单个粉丝的信息
+> 读取单个粉丝的信息
 ```
-//加载SDK对象,load_wechat方法参与上面进行定义
+//加载SDK对象
 $user = & load_wechat('User');
 //读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
 $result = $user->getUserInfo($openid);
@@ -117,7 +117,7 @@ if ($result === FALSE) {
 //接口正常的处理
 }
 ```
-* 接口以此类推，调用方法一样。
+> 接口以此类推，调用方法一样。
 
 ### SDK文件说明
 微信公众平台php开发包，细化各项接口操作，支持链式调用，欢迎Fork此项目！
