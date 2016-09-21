@@ -121,27 +121,36 @@ if ($result === FALSE) {
 }
 ```
 
-> 接口以此类推，调用方法一样。
+> 接口以此类推，调用方法一样，具体方法与参与，可以查看对应的源文件
 
 ```
 // 微信多客服接口
 $custom = & load_wechat('Custom');
+
 // 微信周边设备接口
 $device = & load_wechat('Device');
+
 // 微信其它工具接口
 $extends = & load_wechat('Extends');
+
 // 微信媒体素材接口
 $media = & load_wechat('Media');
+
 // 微信菜单操作接口
 $menu = & load_wechat('Menu');
+
 // 微信网页授权接口
 $oauth = & load_wechat('Oauth');
+
 // 微信支付相关接口
 $pay = & load_wechat('Pay');
+
 // 微信被动消息处理SDK
 $receive = & load_wechat('Receive');
+
 // 微信网页脚本工具
 $script = & load_wechat('Script');
+
 // 微信粉丝操作接口
 $user = & load_wechat('User');
 
