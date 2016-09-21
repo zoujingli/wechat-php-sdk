@@ -92,35 +92,60 @@ function &load_wechat($type = '') {
 > 获取粉丝列表
 
 ```
-//加载SDK对象
+// 加载SDK对象
 $user = & load_wechat('User');
-//读取调用接口，读取微信官方粉丝列表
+// 读取调用接口，读取微信官方粉丝列表
 $result = $user->getUserList();
-//接口异常的处理
+// 接口异常的处理
 if ($result === FALSE) {
     echo $user->errMsg;
     echo $user->errCode;
 } else {
-    //接口正常的处理
+    // 接口正常的处理
 }
 ```
 
 > 读取单个粉丝的信息
 
 ```
-//加载SDK对象
+// 加载SDK对象
 $user = & load_wechat('User');
-//读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
+// 读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
 $result = $user->getUserInfo($openid);
-//接口异常的处理
+// 接口异常的处理
 if ($result === FALSE) {
     echo $user->errMsg;
     echo $user->errCode;
 } else {
-   //接口正常的处理
+   // 接口正常的处理
 }
 ```
+
 > 接口以此类推，调用方法一样。
+
+```
+// 微信多客服接口
+$custom = & load_wechat('Custom');
+// 微信周边设备接口
+$device = & load_wechat('Device');
+// 微信其它工具接口
+$extends = & load_wechat('Extends');
+// 微信媒体素材接口
+$media = & load_wechat('Media');
+// 微信菜单操作接口
+$menu = & load_wechat('Menu');
+// 微信网页授权接口
+$oauth = & load_wechat('Oauth');
+// 微信支付相关接口
+$pay = & load_wechat('Pay');
+// 微信被动消息处理SDK
+$receive = & load_wechat('Receive');
+// 微信网页脚本工具
+$script = & load_wechat('Script');
+// 微信粉丝操作接口
+$user = & load_wechat('User');
+
+```
 
 ### SDK文件说明
 微信公众平台php开发包，细化各项接口操作，支持链式调用，欢迎Fork此项目！
