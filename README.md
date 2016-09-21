@@ -143,6 +143,9 @@ function &load_wechat($type = '') {
 ```
 /**
  * 通用支付入口
+ * 
+ * @author Anyon<zoujingli@qq.com>
+ * @date 2016-09-21 13:27
  */
 class PayData {
 
