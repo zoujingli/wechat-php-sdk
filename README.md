@@ -88,7 +88,9 @@ function &load_wechat($type = '') {
     return $wechat[$index];
 }
 ```
+
 > 获取粉丝列表
+
 ```
 //加载SDK对象
 $user = & load_wechat('User');
@@ -104,6 +106,7 @@ if ($result === FALSE) {
 ```
 
 > 读取单个粉丝的信息
+
 ```
 //加载SDK对象
 $user = & load_wechat('User');
