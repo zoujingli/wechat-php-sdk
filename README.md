@@ -138,3 +138,127 @@ function &load_wechat($type = '') {
 * 菜单权限：正常的服务号、认证后的订阅号拥有此权限
 * 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限，否则为认证后的订阅号、服务号都有此权限
 * 支付权限：仅认证后的服务号可以申请此权限
+
+#### 微信的两种支付
+```
+/**
+ * 通用支付入口
+ */
+class PayData {
+
+    /**
+     * 微信支付操作SDK
+     * @var type 
+     */
+    protected $pay;
+
+    /**
+     * CI超级对象
+     * @var type 
+     */
+    protected $CI;
+
+    /**
+     * 构造函数
+     */
+    public function __construct() {
+        $this->pay = & load_wechat('Pay');
+        $this->CI = & get_instance();
+    }
+
+    /**
+     *  创建微信二维码支付
+     * @param type $order_no	系统订单号
+     * @param type $fee			支付金额
+     * @param type $title		订单标题
+     * @return boolean
+     */
+    public function createQrc($order_no, $fee, $title) {
+        if (($prepayid = $this->_createPrepayid(null, $order_no, $fee, $title, 'NATIVE')) === FALSE) {
+            return FALSE;
+        }
+        $fileename = FCPATH . 'static/upload/payqrc/' . join('/', str_split(md5($prepayid), 16)) . '.png';
+        $dirname = dirname($fileename);
+        !is_dir($dirname) && mkdir($dirname, 0777, true);
+        if (!file_exists($fileename)) {
+            $qrCode = new QRcode();
+            $qrCode->png($prepayid, $fileename, QR_ECLEVEL_L, 8);
+        }
+        ob_clean();
+        flush();
+        header("Content-type: image/png");
+        exit(readfile($fileename));
+    }
+
+    /**
+     * 创建微信JSAPI支付签名包
+     * @param type $openid		微信用户openid  
+     * @param type $order_no	系统订单号
+     * @param type $fee			支付金额
+     * @param type $title		订单标题
+     * @return boolean
+     */
+    public function createJs($openid, $order_no, $fee, $title) {
+        if (($prepayid = $this->_createPrepayid($openid, $order_no, $fee, $title, 'JSAPI')) === FALSE) {
+            return FALSE;
+        }
+        return $this->pay->createMchPay($prepayid);
+    }
+
+    /**
+     * 微信退款操作
+     * @param type $order_no	系统订单号
+     * @param type $fee			退款金额
+     * @return boolean
+     */
+    public function refund($order_no, $fee = 0, $refund_no = NULL) {
+        $map = array('order_no' => $order_no, 'is_pay' => '1');
+        $notify = $this->CI->db->where($map)->get('wechat_pay_prepayid')->first_row('array');
+        if (empty($notify)) {
+            log_message('error', "内部订单号{$order_no}验证退款失败");
+            return FALSE;
+        }
+        if (FALSE !== $this->pay->refund($notify['out_trade_no'], $notify['transaction_id'], is_null($refund_no) ? "T{$order_no}" : $refund_no, $notify['fee'], empty($fee) ? $notify['fee'] : $fee)) {
+            $this->CI->load->library('FormData');
+            $data = array('out_trade_no' => $notify['out_trade_no'], 'is_refund' => "1", 'refund_at' => date('Y-m-d H:i:s'), 'expires_in' => time() + 7000);
+            if (FALSE !== $this->CI->formdata->save('wechat_pay_prepayid', $data, 'out_trade_no')) {
+                return TRUE;
+            }
+            log_message('error', "内部订单号{$order_no}退款成功，系统更新异常");
+            return FALSE;
+        }
+        log_message('error', "内部订单号{$order_no}退款失败，{$this->pay->errMsg}");
+        return FALSE;
+    }
+
+    /**
+     * 创建微信预支付码
+     * @param type $openid		支付者Openid
+     * @param type $order_no	实际订单号
+     * @param type $fee			实际订单支付费用
+     * @param type $title		订单标题
+     * @param type $trade_type	付款方式
+     * @return boolean
+     */
+    protected function _createPrepayid($openid, $order_no, $fee, $title, $trade_type = 'JSAPI') {
+        /* 预支付ID缓存5000秒 */
+        $prepayinfo = $this->CI->db->where('order_no', $order_no)->where('(is_pay', '1')->or_where('expires_in>' . time() . ')')->get('wechat_pay_prepayid')->first_row('array');
+        if (empty($prepayinfo) || empty($prepayinfo['prepayid'])) {
+            $this->CI->load->library('BaseData');
+            $out_trade_no = BaseData::createSequence(18, 'WXPAY-OUTER-NO');
+            $prepayid = $this->pay->getPrepayId($openid, $title, $out_trade_no, $fee, site_url('api/notify'), $trade_type);
+            if (empty($prepayid)) {
+                log_message('error', "内部订单号{$order_no}生成预支付失败，{$this->pay->errMsg}");
+                return FALSE;
+            }
+            $data = array('prepayid' => $prepayid, 'order_no' => $order_no, 'out_trade_no' => $out_trade_no, 'fee' => $fee, 'trade_type' => $trade_type, 'expires_in' => time() + 5000);
+            if ($this->CI->db->insert('wechat_pay_prepayid', $data) > 0) {
+                log_message('info', "内部订单号{$order_no}生成预支付成功,{$prepayid}");
+                return $prepayid;
+            }
+        }
+        return $prepayinfo['prepayid'];
+    }
+
+}
+```
