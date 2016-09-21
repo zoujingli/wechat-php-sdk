@@ -144,14 +144,14 @@ function &load_wechat($type = '') {
 * 获取粉丝列表
 ```
 //加载SDK对象,load_wechat方法参与上面进行定义
- $user = & load_wechat('User');
+$user = & load_wechat('User');
 //读取调用接口，读取微信官方粉丝列表
- $result = $user->getUserList();
+$result = $user->getUserList();
 //接口异常的处理
- if($result===FALSE){
-   echo $user->errMsg;
-   echo $user->errCode;
- }else{
+if ($result === FALSE) {
+    echo $user->errMsg;
+    echo $user->errCode;
+} else {
 //接口正常的处理
 }
 ```
@@ -159,14 +159,14 @@ function &load_wechat($type = '') {
 *读取单个粉丝的信息
 ```
 //加载SDK对象,load_wechat方法参与上面进行定义
- $user = & load_wechat('User');
+$user = & load_wechat('User');
 //读取调用接口，读取微信粉丝信息，需要传入粉丝的openid
- $result =  $user->getUserInfo($openid);
+$result = $user->getUserInfo($openid);
 //接口异常的处理
- if($result===FALSE){
-   echo $user->errMsg;
-   echo $user->errCode;
- }else{
+if ($result === FALSE) {
+    echo $user->errMsg;
+    echo $user->errCode;
+} else {
 //接口正常的处理
 }
 ```
