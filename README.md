@@ -101,7 +101,7 @@ if ($result === FALSE) {
     echo $user->errMsg;
     echo $user->errCode;
 } else {
-//接口正常的处理
+    //接口正常的处理
 }
 ```
 
@@ -117,7 +117,7 @@ if ($result === FALSE) {
     echo $user->errMsg;
     echo $user->errCode;
 } else {
-//接口正常的处理
+   //接口正常的处理
 }
 ```
 > 接口以此类推，调用方法一样。
