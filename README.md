@@ -19,11 +19,11 @@
 --
 
 >使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
->1. 微信公众平台： http://mp.weixin.qq.com/wiki/
->2. 微信企业平台： http://qydev.weixin.qq.com/wiki/
->3. 微信开放平台：https://open.weixin.qq.com/
->4. 微信支付接入文档：https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
->5. 微信商户平台：https://pay.weixin.qq.com
+>* 微信公众平台： http://mp.weixin.qq.com/wiki/
+>* 微信企业平台： http://qydev.weixin.qq.com/wiki/
+>* 微信开放平台：https://open.weixin.qq.com/
+>* 微信支付接入文档：https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
+>* 微信商户平台：https://pay.weixin.qq.com
 
 SDK 封装对接及功能
 --
