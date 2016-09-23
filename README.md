@@ -13,13 +13,17 @@
 * SDK 已经过数个线上项目验证，可靠性极高，欢迎阅读 SDK 相关源码。
 * 我们鼓励大家使用 composer 来管理您的第三方库，方便后期更新操作（尤其是接口类）。
 * 近期发现 access_token 经常无故失效，此 SDK 加入失败状态检测，重新生成 access_token 并试图再次返回结果.
+
 ---
+
 [PHP微信SDK文档，欢迎阅读！](http://www.kancloud.cn/zoujingli/wechat-php-sdk)
 --
+
 http://www.kancloud.cn/zoujingli/wechat-php-sdk
 ---
 官方接口文档链接
 --
+
 >使用前需先打开微信帐号的开发模式，详细步骤请查看微信公众平台接口使用说明：  
 >1. 微信公众平台： http://mp.weixin.qq.com/wiki/
 >2. 微信企业平台： http://qydev.weixin.qq.com/wiki/
@@ -29,6 +33,7 @@ http://www.kancloud.cn/zoujingli/wechat-php-sdk
 
 SDK 封装对接及功能
 --
+
 * 接入验证 （初级权限）
 * 自动回复（文本、图片、语音、视频、音乐、图文） （初级权限）
 * 菜单操作（查询、创建、删除） （菜单权限）
@@ -51,6 +56,7 @@ SDK 封装对接及功能
 
 接口权限备注：
 --
+
 * 初级权限：基本权限，任何正常的公众号都有此权限
 * 菜单权限：正常的服务号、认证后的订阅号拥有此权限
 * 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限，否则为认证后的订阅号、服务号都有此权限
