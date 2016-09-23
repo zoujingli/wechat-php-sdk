@@ -6,8 +6,6 @@
 [![Packagist Status](https://img.shields.io/packagist/v/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 
----
-
 * 此 SDK 运行最底要求 PHP 版本 5.3.3 , 建议在 PHP7 运行以获取最佳性能。
 * 微信的部分接口需要缓存数据在本地，因此对目录需要有写权限。
 * SDK 已经过数个线上项目验证，可靠性极高，欢迎阅读 SDK 相关源码。
