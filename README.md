@@ -26,6 +26,7 @@ SDK开发文档
 * 微信支付接入文档：https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 * 微信商户平台：https://pay.weixin.qq.com
 
+
 SDK 封装对接及功能
 --
 
@@ -48,6 +49,7 @@ SDK 封装对接及功能
 * 微信JSAPI授权(获取ticket、获取签名) （初级权限）
 * 数据统计(用户、图文、消息、接口分析数据) （认证权限）
 * 微信支付（网页支付、扫码支付、交易退款、给粉丝打款）（认证服务号并开通支付）
+
 
 接口权限备注：
 --
