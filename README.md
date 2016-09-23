@@ -14,12 +14,8 @@
 * 我们鼓励大家使用 composer 来管理您的第三方库，方便后期更新操作（尤其是接口类）。
 * 近期发现 access_token 经常无故失效，此 SDK 加入失败状态检测，重新生成 access_token 并试图再次返回结果.
 
----
-
-[PHP微信SDK文档](http://www.kancloud.cn/zoujingli/wechat-php-sdk)：http://www.kancloud.cn/zoujingli/wechat-php-sdk
+[开发文档](http://www.kancloud.cn/zoujingli/wechat-php-sdk)：http://www.kancloud.cn/zoujingli/wechat-php-sdk
 --
-
----
 
 官方接口文档链接
 --
