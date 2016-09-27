@@ -13,7 +13,7 @@ if (!class_exists('Wechat\Loader', FALSE)) {
     /** 注册自动加载函数 */
     spl_autoload_register(function($class) {
         if (stripos($class, 'Wechat\\') === 0) {
-            require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
+            require __DIR__ . DIRECTORY_SEPARATOR . 'Wechat' . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 7)) . '.php';
         }
     });
 
