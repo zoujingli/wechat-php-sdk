@@ -199,11 +199,11 @@ abstract class WechatBasic {
         /* 要求结果为字符串且输出到屏幕上 */
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         /* 设置证书 */
-        if (!is_null($ssl_cer) && is_file($ssl_cer)) {
+        if (!is_null($ssl_cer) && file_exists($ssl_cer) && is_file($ssl_cer)) {
             curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
             curl_setopt($ch, CURLOPT_SSLCERT, $ssl_cer);
         }
-        if (!is_null($ssl_key) && is_file($ssl_key)) {
+        if (!is_null($ssl_key) && file_exists($ssl_key) && is_file($ssl_key)) {
             curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
             curl_setopt($ch, CURLOPT_SSLKEY, $ssl_key);
         }
