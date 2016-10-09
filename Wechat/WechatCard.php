@@ -135,6 +135,60 @@ class WechatCard extends WechatCommon {
     }
 
     /**
+     * 生成选择卡卷JS签名包
+     * @param type $cardid 卡券Id
+     * @param type $cardtype 卡券类型
+     * @param type $shopid  门店Id
+     * @return string
+     */
+    public function createChooseCardJsPackage($cardid = NULL, $cardtype = NULL, $shopid = NULL) {
+        $data = array();
+        $data['api_ticket'] = $this->getJsCardTicket();
+        $data['app_id'] = $this->appid;
+        $data['timestamp'] = time();
+        $data['nonceStr'] = $this->createNoncestr();
+
+        !empty($cardid) && $data['cardId'] = $cardid;
+        !empty($cardtype) && $data['cardType'] = $cardtype;
+        !empty($shopid) && $data['shopId'] = $shopid;
+
+        $data['cardSign'] = $this->getTicketSignature($data);
+        $data['signType'] = 'SHA1';
+        unset($data['api_ticket'], $data['app_id']);
+        return $data;
+    }
+
+    /**
+     * 生成添加卡卷JS签名包
+     * @param type $cardid 卡卷ID
+     * @param type $data 其它限定参数
+     * @return type
+     */
+    public function createAddCardJsPackage($cardid = NULL, $data = array()) {
+
+        function _sign($cardid = NULL, $attr = array(), $self) {
+            unset($attr['outer_id']);
+            $attr['cardId'] = $cardid;
+            $attr['timestamp'] = time();
+            $attr['api_ticket'] = $self->getJsCardTicket();
+            $attr['nonce_str'] = $self->createNoncestr();
+            $attr['signature'] = $self->getTicketSignature($attr);
+            unset($attr['api_ticket']);
+            return $attr;
+        }
+
+        $cardList = array();
+        if (is_array($cardid)) {
+            foreach ($cardid as $id) {
+                $cardList[] = array('cardId' => $id, 'cardExt' => json_encode(_sign($id, $data, $this)));
+            }
+        } else {
+            $cardList[] = array('cardId' => $cardid, 'cardExt' => json_encode(_sign($cardid, $data, $this)));
+        }
+        return array('cardList' => $cardList);
+    }
+
+    /**
      * 获取微信卡券签名
      * @param array $arrdata 签名数组
      * @param string $method 签名方法
@@ -699,7 +753,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                
+
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
