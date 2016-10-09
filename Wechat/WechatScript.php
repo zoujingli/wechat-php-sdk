@@ -92,8 +92,8 @@ class WechatScript extends WechatCommon {
                 'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',
                 'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'closeWindow', 'scanQRCode', 'chooseWXPay',
                 'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',
-            #	'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice',
-            #	'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
+                'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
+                'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice',
             )
         );
     }
