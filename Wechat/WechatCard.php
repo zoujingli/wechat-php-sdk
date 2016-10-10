@@ -21,6 +21,8 @@ class WechatCard extends WechatCommon {
     const CARD_USER_GET_LIST = '/card/user/getcardlist?';
     // 卡卷核查接口
     const CARD_CHECKCODE = '/card/code/checkcode?';
+    // 卡卷图文群发获取HTML
+    const CARD_SEND_HTML = '/card/mpnews/gethtml?';
     const CARD_BATCHGET = '/card/batchget?';
     const CARD_MODIFY_STOCK = '/card/modifystock?';
     const CARD_LOCATION_BATCHADD = '/card/location/batchadd?';
@@ -297,6 +299,30 @@ class WechatCard extends WechatCommon {
             return false;
         }
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_USER_GET_LIST . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
+     * 获取图文消息群发卡券HTML
+     * @param type $card_id 卡卷ID
+     * @return boolean
+     */
+    public function getCardMpHtml($card_id) {
+        $data = array('card_id' => $card_id);
+        !empty($card_id) && $data['card_id'] = $card_id;
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_SEND_HTML . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
