@@ -1,7 +1,7 @@
 <?php
 
 # 引入文件
-require '../include.php';
+require 'include.php';
 
 # 配置参数
 $config = array(
@@ -12,7 +12,7 @@ $config = array(
 );
 
 # 加载对应操作接口
-$wechat = & \Wechat\Loader::get_instance('User', $config);
+$wechat = & \Wechat\Loader::get('User', $config);
 $userlist = $wechat->getUserList();
 
 //var_dump($userlist);
