@@ -11,9 +11,14 @@ class WechatCard extends WechatCommon {
 
     /** 卡券相关地址 */
     const CARD_CREATE = '/card/create?';
+    // 删除卡卷
     const CARD_DELETE = '/card/delete?';
+    // 更新卡卷信息
     const CARD_UPDATE = '/card/update?';
+    // 获取卡卷详细信息
     const CARD_GET = '/card/get?';
+    // 读取粉丝拥有的卡卷列表
+    const CARD_USER_GET_LIST = '/card/user/getcardlist?';
     const CARD_BATCHGET = '/card/batchget?';
     const CARD_MODIFY_STOCK = '/card/modifystock?';
     const CARD_LOCATION_BATCHADD = '/card/location/batchadd?';
@@ -279,14 +284,36 @@ class WechatCard extends WechatCommon {
     }
 
     /**
+     * 获取粉丝下所有卡卷列表
+     * @param type $openid 粉丝openid
+     * @param type $card_id 卡卷ID（可不给）
+     */
+    public function getCardList($openid, $card_id = '') {
+        $data = array('openid' => $openid);
+        !empty($card_id) && $data['card_id'] = $card_id;
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_USER_GET_LIST . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
      * 查询卡券详情
      * @param string $card_id
      * @return boolean|array    返回数组信息比较复杂，请参看卡券接口文档
      */
     public function getCardInfo($card_id) {
-        $data = array(
-            'card_id' => $card_id,
-        );
+        $data = array('card_id' => $card_id);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
