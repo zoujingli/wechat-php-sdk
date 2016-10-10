@@ -19,6 +19,8 @@ class WechatCard extends WechatCommon {
     const CARD_GET = '/card/get?';
     // 读取粉丝拥有的卡卷列表
     const CARD_USER_GET_LIST = '/card/user/getcardlist?';
+    // 卡卷核查接口
+    const CARD_CHECKCODE = '/card/code/checkcode?';
     const CARD_BATCHGET = '/card/batchget?';
     const CARD_MODIFY_STOCK = '/card/modifystock?';
     const CARD_LOCATION_BATCHADD = '/card/location/batchadd?';
@@ -308,6 +310,30 @@ class WechatCard extends WechatCommon {
     }
 
     /**
+     * 卡卷code核查
+     * @param type $card_id 卡卷ID
+     * @param type $code_list 卡卷code列表，一维数组
+     * @return boolean
+     */
+    public function checkCardCodeList($card_id, $code_list) {
+        $data = array('card_id' => $card_id, 'code' => $code_list);
+        if (!$this->access_token && !$this->checkAuth()) {
+            return false;
+        }
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CHECKCODE . 'access_token=' . $this->access_token, self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode']) || empty($json['card_list'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
      * 查询卡券详情
      * @param string $card_id
      * @return boolean|array    返回数组信息比较复杂，请参看卡券接口文档
@@ -420,11 +446,11 @@ class WechatCard extends WechatCommon {
             return false;
         }
         $card = array('card_id' => $card_id);
-        $data = array('action_name' => "QR_CARD");
         !empty($code) && $card['code'] = $code;
         !empty($openid) && $card['openid'] = $openid;
         !empty($is_unique_code) && $card['is_unique_code'] = $is_unique_code;
         !empty($balance) && $card['balance'] = $balance;
+        $data = array('action_name' => "QR_CARD");
         !empty($expire_seconds) && $data['expire_seconds'] = $expire_seconds;
         $data['action_info'] = array('card' => $card);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_QRCODE_CREATE . 'access_token=' . $this->access_token, self::json_encode($data));
@@ -521,9 +547,7 @@ class WechatCard extends WechatCommon {
      * }
      */
     public function checkCardCode($code) {
-        $data = array(
-            'code' => $code,
-        );
+        $data = array('code' => $code);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
