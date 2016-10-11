@@ -17,13 +17,6 @@
 * 文档链接地址：http://www.kancloud.cn/zoujingli/wechat-php-sdk
 
 
-
-若对您有帮助，可以赞助并支持下作者哦，谢谢！ ^_^
---
-![](http://zoujingli.oschina.io/static/doc-image/pay.png)
-
-
-
 官方接口文档链接
 --
 
@@ -65,3 +58,8 @@ SDK 封装对接及功能
 * 菜单权限：正常的服务号、认证后的订阅号拥有此权限
 * 认证权限：分为订阅号、服务号认证，如前缀服务号则仅认证的服务号有此权限
 * 支付权限：仅认证后的服务号可以申请此权限
+
+
+若对您有帮助，可以赞助并支持下作者哦，谢谢！ ^_^
+--
+![](http://zoujingli.oschina.io/static/doc-image/pay.png)
