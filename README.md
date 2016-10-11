@@ -1,20 +1,27 @@
 # WECHAT-PHP-SDK
 
-[![Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases)
-[![Releases](https://img.shields.io/github/release/zoujingli/wechat-php-sdk.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
-[![Releases Downloads](https://img.shields.io/github/downloads/zoujingli/wechat-php-sdk/latest/total.svg)](https://github.com/zoujingli/wechat-php-sdk/releases/latest)
-[![Packagist Status](https://img.shields.io/packagist/v/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/zoujingli/wechat-php-sdk.svg)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
+[![Latest Stable Version](https://poser.pugx.org/zoujingli/wechat-php-sdk/v/stable)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
+[![Total Downloads](https://poser.pugx.org/zoujingli/wechat-php-sdk/downloads)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
+[![Latest Unstable Version](https://poser.pugx.org/zoujingli/wechat-php-sdk/v/unstable)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
+[![License](https://poser.pugx.org/zoujingli/wechat-php-sdk/license)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 
-* 此 SDK 运行最底要求 PHP 版本 5.3.3 , 建议在 PHP7 运行以获取最佳性能。
+* 此`SDK`运行最底要求`PHP`版本`5.3.3`, 建议在`PHP7`运行以获取最佳性能。
 * 微信的部分接口需要缓存数据在本地，因此对目录需要有写权限。
-* SDK 已经过数个线上项目验证，可靠性极高，欢迎阅读 SDK 相关源码。
-* 我们鼓励大家使用 composer 来管理您的第三方库，方便后期更新操作（尤其是接口类）。
-* 近期发现 access_token 经常无故失效，此 SDK 加入失败状态检测，重新生成 access_token 并试图再次返回结果.
+* 我们鼓励大家使用`composer`来管理您的第三方库，方便后期更新操作（尤其是接口类）。
+* 近期`access_token`经常无故失效，`SDK`已经加入失败状态检测，重新获取`access_token`并返回结果.
+* 此`SDK`已经历经数个线上项目验证及考验，可靠性与稳定性极高，欢迎`fork`此项目。
 
-SDK开发文档
+微信SDK开发帮助及交流
 --
-* 在线阅读地址：http://www.kancloud.cn/zoujingli/wechat-php-sdk
+* 文档链接地址：http://www.kancloud.cn/zoujingli/wechat-php-sdk
+
+* 开发交流QQ群：513350915（新）
+---
+
+若对您有帮助，可以赞助并支持下作者哦，谢谢！ ^_^
+--
+![](https://git.kancloud.cn/repos/zoujingli/wechat-php-sdk/raw/master/image/%E8%B5%9E%E5%8A%A9.png?access-token=49255b63935edafaf42aec9376136528)
+
 
 
 官方接口文档链接
