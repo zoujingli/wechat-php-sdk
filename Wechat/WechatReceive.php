@@ -122,6 +122,66 @@ class WechatReceive extends WechatCommon {
     }
 
     /**
+     * 获取卡券事件推送 - 卡卷审核是否通过
+     * 当Event为 card_pass_check(审核通过) 或 card_not_pass_check(未通过)
+     * @return string|boolean  返回卡券ID
+     */
+    public function getRevCardPass() {
+        if (isset($this->_receive['CardId'])) {
+            return $this->_receive['CardId'];
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取卡券事件推送 - 领取卡券
+     * 当Event为 user_get_card(用户领取卡券)
+     * @return array|boolean
+     */
+    public function getRevCardGet() {
+        $array = array();
+        if (isset($this->_receive['CardId'])) {
+            /* 卡券 ID */
+            $array['CardId'] = $this->_receive['CardId'];
+        }
+        if (isset($this->_receive['IsGiveByFriend'])) {
+            /* 是否为转赠，1 代表是，0 代表否。 */
+            $array['IsGiveByFriend'] = $this->_receive['IsGiveByFriend'];
+        }
+        $array['OldUserCardCode'] = $this->_receive['OldUserCardCode'];
+        if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
+            /* code 序列号。自定义 code 及非自定义 code的卡券被领取后都支持事件推送。 */
+            $array['UserCardCode'] = $this->_receive['UserCardCode'];
+        }
+        if (isset($array) && count($array) > 0) {
+            return $array;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取卡券事件推送 - 删除卡券
+     * 当Event为 user_del_card(用户删除卡券)
+     * @return array|boolean
+     */
+    public function getRevCardDel() {
+        if (isset($this->_receive['CardId'])) {  //卡券 ID
+            $array['CardId'] = $this->_receive['CardId'];
+        }
+        if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
+            /* code 序列号。自定义 code 及非自定义 code的卡券被领取后都支持事件推送 */
+            $array['UserCardCode'] = $this->_receive['UserCardCode'];
+        }
+        if (isset($array) && count($array) > 0) {
+            return $array;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取接收消息内容正文
      */
     public function getRevContent() {

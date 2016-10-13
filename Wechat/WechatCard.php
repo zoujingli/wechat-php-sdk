@@ -44,66 +44,6 @@ class WechatCard extends WechatCommon {
     const CARD_LUCKYMONEY_UPDATE = '/card/luckymoney/updateuserbalance?';
 
     /**
-     * 获取卡券事件推送 - 卡卷审核是否通过
-     * 当Event为 card_pass_check(审核通过) 或 card_not_pass_check(未通过)
-     * @return string|boolean  返回卡券ID
-     */
-    public function getRevCardPass() {
-        if (isset($this->_receive['CardId'])) {
-            return $this->_receive['CardId'];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 获取卡券事件推送 - 领取卡券
-     * 当Event为 user_get_card(用户领取卡券)
-     * @return array|boolean
-     */
-    public function getRevCardGet() {
-        $array = array();
-        if (isset($this->_receive['CardId'])) {
-            /* 卡券 ID */
-            $array['CardId'] = $this->_receive['CardId'];
-        }
-        if (isset($this->_receive['IsGiveByFriend'])) {
-            /* 是否为转赠，1 代表是，0 代表否。 */
-            $array['IsGiveByFriend'] = $this->_receive['IsGiveByFriend'];
-        }
-        $array['OldUserCardCode'] = $this->_receive['OldUserCardCode'];
-        if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
-            /* code 序列号。自定义 code 及非自定义 code的卡券被领取后都支持事件推送。 */
-            $array['UserCardCode'] = $this->_receive['UserCardCode'];
-        }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 获取卡券事件推送 - 删除卡券
-     * 当Event为 user_del_card(用户删除卡券)
-     * @return array|boolean
-     */
-    public function getRevCardDel() {
-        if (isset($this->_receive['CardId'])) {  //卡券 ID
-            $array['CardId'] = $this->_receive['CardId'];
-        }
-        if (isset($this->_receive['UserCardCode']) && !empty($this->_receive['UserCardCode'])) {
-            /* code 序列号。自定义 code 及非自定义 code的卡券被领取后都支持事件推送 */
-            $array['UserCardCode'] = $this->_receive['UserCardCode'];
-        }
-        if (isset($array) && count($array) > 0) {
-            return $array;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * 获取微信卡券api_ticket
      * @param string $appid 用于多个appid时使用,可空
      * @param string $jsapi_ticket 手动指定jsapi_ticket，非必要情况不建议用
@@ -112,14 +52,12 @@ class WechatCard extends WechatCommon {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
-        if (!$appid) {
-            $appid = $this->appid;
-        }
-        if ($jsapi_ticket) { //手动指定token，优先使用
+        $appid = empty($appid) ? $this->appid : $appid;
+        if ($jsapi_ticket) {
             $this->jsapi_ticket = $jsapi_ticket;
             return $this->jsapi_ticket;
         }
-        $authname = 'wechat_jsapi_ticket_wxcard' . $appid;
+        $authname = 'wechat_jsapi_ticket_wxcard_' . $appid;
         if ($rs = $this->getCache($authname)) {
             $this->jsapi_ticket = $rs;
             return $rs;
@@ -130,10 +68,7 @@ class WechatCard extends WechatCommon {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                if ($this->checkRetry()) {
-                    return $this->getJsCardTicket($appid, $jsapi_ticket);
-                }
-                return false;
+                return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             $this->jsapi_ticket = $json['ticket'];
             $expire = $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600;
@@ -268,12 +203,10 @@ class WechatCard extends WechatCommon {
      * @return boolean
      */
     public function delCard($card_id) {
-        $data = array(
-            'card_id' => $card_id,
-        );
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('card_id' => $card_id);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_DELETE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -293,11 +226,11 @@ class WechatCard extends WechatCommon {
      * @param type $card_id 卡卷ID（可不给）
      */
     public function getCardList($openid, $card_id = '') {
-        $data = array('openid' => $openid);
-        !empty($card_id) && $data['card_id'] = $card_id;
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('openid' => $openid);
+        !empty($card_id) && $data['card_id'] = $card_id;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_USER_GET_LIST . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -317,11 +250,11 @@ class WechatCard extends WechatCommon {
      * @return boolean
      */
     public function getCardMpHtml($card_id) {
-        $data = array('card_id' => $card_id);
-        !empty($card_id) && $data['card_id'] = $card_id;
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('card_id' => $card_id);
+        !empty($card_id) && $data['card_id'] = $card_id;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_SEND_HTML . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -342,10 +275,10 @@ class WechatCard extends WechatCommon {
      * @return boolean
      */
     public function checkCardCodeList($card_id, $code_list) {
-        $data = array('card_id' => $card_id, 'code' => $code_list);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('card_id' => $card_id, 'code' => $code_list);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CHECKCODE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -365,10 +298,10 @@ class WechatCard extends WechatCommon {
      * @return boolean|array    返回数组信息比较复杂，请参看卡券接口文档
      */
     public function getCardInfo($card_id) {
-        $data = array('card_id' => $card_id);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('card_id' => $card_id);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_GET . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -412,13 +345,10 @@ class WechatCard extends WechatCommon {
      * @return boolean|array   返回数组请参看 微信卡券接口文档 的json格式
      */
     public function getCardLocations($offset = 0, $count = 0) {
-        $data = array(
-            'offset' => $offset,
-            'count'  => $count
-        );
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('offset' => $offset, 'count' => $count);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_LOCATION_BATCHGET . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -507,13 +437,11 @@ class WechatCard extends WechatCommon {
      * }
      */
     public function consumeCardCode($code, $card_id = '') {
-        $data = array('code' => $code);
-        if ($card_id) {
-            $data['card_id'] = $card_id;
-        }
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('code' => $code);
+        !empty($card_id) && $data['card_id'] = $card_id;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CODE_CONSUME . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -538,12 +466,10 @@ class WechatCard extends WechatCommon {
      *  }
      */
     public function decryptCardCode($encrypt_code) {
-        $data = array(
-            'encrypt_code' => $encrypt_code,
-        );
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('encrypt_code' => $encrypt_code,);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CODE_DECRYPT . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -573,10 +499,10 @@ class WechatCard extends WechatCommon {
      * }
      */
     public function checkCardCode($code) {
-        $data = array('code' => $code);
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('code' => $code);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CODE_GET . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -606,13 +532,8 @@ class WechatCard extends WechatCommon {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
-        if ($count > 50) {
-            $count = 50;
-        }
-        $data = array(
-            'offset' => $offset,
-            'count'  => $count,
-        );
+        $count > 50 && $count = 50;
+        $data = array('offset' => $offset, 'count' => $count);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_BATCHGET . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -639,11 +560,7 @@ class WechatCard extends WechatCommon {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
-        $data = array(
-            'code'     => $code,
-            'card_id'  => $card_id,
-            'new_code' => $new_code,
-        );
+        $data = array('code' => $code, 'card_id' => $card_id, 'new_code' => $new_code);
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CODE_UPDATE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -668,12 +585,8 @@ class WechatCard extends WechatCommon {
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
-        $data = array(
-            'code' => $code,
-        );
-        if ($card_id) {
-            $data['card_id'] = $card_id;
-        }
+        $data = array('code' => $code);
+        !empty($card_id) && $data['card_id'] = $card_id;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_CODE_UNAVAILABLE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -787,12 +700,8 @@ class WechatCard extends WechatCommon {
             return false;
         }
         $data = array();
-        if (count($openid) > 0) {
-            $data['openid'] = $openid;
-        }
-        if (count($user) > 0) {
-            $data['username'] = $user;
-        }
+        count($openid) > 0 && $data['openid'] = $openid;
+        count($user) > 0 && $data['username'] = $user;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_TESTWHILELIST_SET . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -814,16 +723,11 @@ class WechatCard extends WechatCommon {
      * @return boolean|array
      */
     public function updateLuckyMoney($code, $balance, $card_id = '') {
-        $data = array(
-            'code'    => $code,
-            'balance' => $balance
-        );
-        if ($card_id) {
-            $data['card_id'] = $card_id;
-        }
         if (!$this->access_token && !$this->checkAuth()) {
             return false;
         }
+        $data = array('code' => $code, 'balance' => $balance);
+        !empty($card_id) && $data['card_id'] = $card_id;
         $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CARD_LUCKYMONEY_UPDATE . 'access_token=' . $this->access_token, self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
