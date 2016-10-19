@@ -17,4 +17,3 @@ if (!class_exists('Wechat\Loader', FALSE)) {
         }
     });
 }
-

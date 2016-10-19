@@ -27,7 +27,7 @@ class WechatOauth extends WechatCommon {
     }
 
     /**
-     * 通过code获取Access Token
+     * 通过 code 获取 AccessToken
      * @return array {access_token,expires_in,refresh_token,openid,scope}
      */
     public function getOauthAccessToken() {

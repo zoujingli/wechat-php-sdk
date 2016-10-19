@@ -57,7 +57,7 @@ class WechatPay extends WechatBasic {
         }
         isset($data['nonce_str']) || $data['nonce_str'] = self::createNoncestr();
         $data["sign"] = self::getPaySign($data, $this->partnerKey);
-        return self::array2xml($data);
+        return self::arr2xml($data);
     }
 
     /**
@@ -88,7 +88,7 @@ class WechatPay extends WechatBasic {
      * @return type
      */
     public function getArrayResult($data, $url, $method = 'postXml') {
-        return self::xml2array($this->$method($data, $url));
+        return self::xml2arr($this->$method($data, $url));
     }
 
     /**
@@ -238,7 +238,7 @@ class WechatPay extends WechatBasic {
         $data['bill_date'] = $bill_date;
         $data['bill_type'] = $bill_type;
         $result = $this->postXml($data, self::MCH_BASE_URL . '/pay/downloadbill');
-        $json = self::xml2array($result);
+        $json = self::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -271,7 +271,7 @@ class WechatPay extends WechatBasic {
         $data['act_name'] = $actname; //活动名称
         $data['remark'] = $remark; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/sendredpack');
-        $json = self::xml2array($result);
+        $json = self::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -289,7 +289,7 @@ class WechatPay extends WechatBasic {
         $data['mch_billno'] = $billno;
         $data['bill_type'] = 'MCHT';
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gethbinfo');
-        $json = self::xml2array($result);
+        $json = self::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -317,7 +317,7 @@ class WechatPay extends WechatBasic {
         $data['spbill_create_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
         $data['desc'] = $desc; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/promotion/transfers');
-        $json = self::xml2array($result);
+        $json = self::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -336,7 +336,7 @@ class WechatPay extends WechatBasic {
         $data['mch_id'] = $this->mch_id;
         $data['partner_trade_no'] = $billno;
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gettransferinfo');
-        $json = self::xml2array($result);
+        $json = self::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }

@@ -3,6 +3,7 @@
 namespace Wechat\Lib;
 
 use Prpcrypt;
+use Wechat\Loader;
 
 /**
  * 微信SDK基础类
@@ -40,14 +41,13 @@ class WechatCommon extends WechatBasic {
      * @param type $options
      */
     public function __construct($options) {
+        $options = Loader::config($options);
         $this->token = isset($options['token']) ? $options['token'] : '';
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
         $this->encodingAesKey = isset($options['encodingaeskey']) ? $options['encodingaeskey'] : '';
+        isset($options['cachepath']) && Cache::$cachepath = $options['cachepath'];
         $this->config = $options;
-        if (isset($options['cachepath'])) {
-            Cache::$cachepath = $options['cachepath'];
-        }
     }
 
     /**
@@ -87,7 +87,7 @@ class WechatCommon extends WechatBasic {
                 if (!isset($array[0]) || intval($array[0]) > 0) {
                     $this->errCode = $array[0];
                     $this->errMsg = $array[1];
-                    $this->log("Api Valid Error. {$this->errMsg}[{$this->errCode}]", 'ERR');
+                    $this->log("Interface Authentication Failed. {$this->errMsg}[{$this->errCode}]", 'ERR');
                     return false;
                 }
                 $this->postxml = $array[1];
@@ -103,19 +103,19 @@ class WechatCommon extends WechatBasic {
             }
         }
         if (!$this->checkSignature($encryptStr)) {
-            $this->errMsg = 'Interface authentication failed.';
+            $this->errMsg = 'Interface authentication failed, please use the correct method to call.';
             return false;
         }
         return true;
     }
 
     /**
-     * 获取access_token
+     * 获取公众号访问 access_token
      * @param string $appid 如在类初始化时已提供，则可为空
      * @param string $appsecret 如在类初始化时已提供，则可为空
      * @param string $token 手动指定access_token，非必要情况不建议用
      */
-    public function checkAuth($appid = '', $appsecret = '', $token = '') {
+    public function getAccessToken($appid = '', $appsecret = '', $token = '') {
         if (!$appid || !$appsecret) {
             $appid = $this->appid;
             $appsecret = $this->appsecret;
@@ -123,8 +123,13 @@ class WechatCommon extends WechatBasic {
         if ($token) {
             return $this->access_token = $token;
         }
-        if (($access_token = $this->getCache($authname = 'wechat_access_token_' . $appid)) && !empty($access_token)) {
+        $cache = 'wechat_access_token_' . $appid;
+        if (($access_token = $this->getCache($cache)) && !empty($access_token)) {
             return $this->access_token = $access_token;
+        }
+        # 检测事件注册
+        if (isset(Loader::$callback[__FUNCTION__])) {
+            return $this->access_token = call_user_func_array(Loader::$callback[__FUNCTION__], array(&$this, &$cache));
         }
         $result = $this->http_get(self::API_URL_PREFIX . self::AUTH_URL . 'appid=' . $appid . '&secret=' . $appsecret);
         if ($result) {
@@ -137,7 +142,7 @@ class WechatCommon extends WechatBasic {
             }
             $this->access_token = $json['access_token'];
             $this->log("Get New AccessToken Success.");
-            $this->setCache($authname, $this->access_token, 5000);
+            $this->setCache($cache, $this->access_token, 5000);
             return $this->access_token;
         }
         return false;
@@ -148,9 +153,9 @@ class WechatCommon extends WechatBasic {
      * @param string $appid
      */
     public function resetAuth($appid = '') {
-        $this->log("Reset Auth.");
-        $this->access_token = '';
         $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
+        $this->log("Reset Auth And Remove Old AccessToken.");
+        $this->access_token = '';
         $this->removeCache($authname);
         return true;
     }
@@ -161,23 +166,14 @@ class WechatCommon extends WechatBasic {
      */
     protected function checkRetry($method, $arguments = array()) {
         if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
-            $this->log("{$method} Error. {$this->errMsg}[{$this->errCode}]", 'ERR');
+            $this->log("Run {$method} Faild. {$this->errMsg}[{$this->errCode}]", 'ERR');
             ($this->_retry = true) && $this->resetAuth();
             $this->errCode = 40001;
             $this->errMsg = 'no access';
-            $this->log("Retry Call {$method}.");
+            $this->log("Retry Run {$method} ...");
             return call_user_func_array(array($this, $method), $arguments);
         }
         return false;
-    }
-
-    /**
-     * SDK日志处理方法
-     * @param type $msg
-     * @param type $type
-     */
-    protected function log($msg, $type = 'MSG') {
-        Cache::put($type . ' - ' . $msg);
     }
 
 }

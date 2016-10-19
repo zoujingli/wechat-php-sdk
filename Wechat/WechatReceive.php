@@ -527,10 +527,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean|array
      */
     public function sendCustomMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::CUSTOM_SEND_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::CUSTOM_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -556,10 +556,10 @@ class WechatReceive extends WechatCommon {
         if ($id2) {
             $data['industry_id2'] = $id2;
         }
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SET_INDUSTRY_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SET_INDUSTRY_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -580,9 +580,9 @@ class WechatReceive extends WechatCommon {
      */
     public function addTemplateMessage($tpl_id) {
         $data = array('template_id_short' => $tpl_id);
-        if (!$this->access_token && !$this->checkAuth())
+        if (!$this->access_token && !$this->getAccessToken())
             return false;
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_ADD_TPL_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_ADD_TPL_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -625,10 +625,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean|array
      */
     public function sendTemplateMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SEND_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -678,10 +678,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean|array
      */
     public function sendMassMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -712,10 +712,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean|array
      */
     public function sendGroupMassMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_GROUP_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_GROUP_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -734,10 +734,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean
      */
     public function deleteMassMessage($msg_id) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_DELETE_URL . 'access_token=' . $this->access_token, self::json_encode(array('msg_id' => $msg_id)));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_DELETE_URL . "access_token={$this->access_token}", self::json_encode(array('msg_id' => $msg_id)));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -766,10 +766,10 @@ class WechatReceive extends WechatCommon {
      * @return boolean|array
      */
     public function previewMassMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_PREVIEW_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_PREVIEW_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -792,10 +792,10 @@ class WechatReceive extends WechatCommon {
      * }
      */
     public function queryMassMessage($msg_id) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_QUERY_URL . 'access_token=' . $this->access_token, self::json_encode(array('msg_id' => $msg_id)));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_QUERY_URL . "access_token={$this->access_token}", self::json_encode(array('msg_id' => $msg_id)));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -987,7 +987,7 @@ class WechatReceive extends WechatCommon {
             }
             $msg = $this->_msg;
         }
-        $xmldata = self::array2xml($msg);
+        $xmldata = self::arr2xml($msg);
         if ($this->encrypt_type == 'aes') { //如果来源消息为加密方式
             !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Lib/Prpcrypt.php';
             $pc = new Prpcrypt($this->encodingAesKey);

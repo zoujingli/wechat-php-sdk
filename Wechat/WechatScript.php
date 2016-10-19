@@ -12,6 +12,10 @@ use Wechat\Lib\WechatCommon;
  */
 class WechatScript extends WechatCommon {
 
+    /**
+     * JSAPI授权TICKET
+     * @var type 
+     */
     private $jsapi_ticket;
 
     /**
@@ -31,7 +35,7 @@ class WechatScript extends WechatCommon {
      * @param string $jsapi_ticket 手动指定jsapi_ticket，非必要情况不建议用
      */
     public function getJsTicket($appid = '', $jsapi_ticket = '') {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         if (empty($appid)) {
@@ -43,12 +47,17 @@ class WechatScript extends WechatCommon {
             return $this->jsapi_ticket;
         }
         # 尝试从缓存中读取
-        $jt = $this->getCache(($authname = 'wechat_jsapi_ticket_' . $appid));
+        $cache = 'wechat_jsapi_ticket_' . $appid;
+        $jt = $this->getCache($cache);
         if ($jt) {
             return $this->jsapi_ticket = $jt;
         }
+        # 检测事件注册
+        if (isset(Loader::$callback[__FUNCTION__])) {
+            return $this->jsapi_ticket = call_user_func_array(Loader::$callback[__FUNCTION__], array(&$this, &$cache));
+        }
         # 调接口获取
-        $result = $this->http_get(self::API_URL_PREFIX . self::GET_TICKET_URL . 'access_token=' . $this->access_token . '&type=jsapi');
+        $result = $this->http_get(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=jsapi');
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -57,7 +66,7 @@ class WechatScript extends WechatCommon {
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             $this->jsapi_ticket = $json['ticket'];
-            $this->setCache($authname, $this->jsapi_ticket, $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600);
+            $this->setCache($cache, $this->jsapi_ticket, $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600);
             return $this->jsapi_ticket;
         }
         return false;

@@ -12,16 +12,16 @@ use CURLFile;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/05/28 11:55
  */
-abstract class WechatBasic {
+class WechatBasic {
 
     /**
      * 产生随机字符串
      * @param type $length
+     * @param type $str
      * @return type
      */
-    static public function createNoncestr($length = 32) {
+    static public function createNoncestr($length = 32, $str = "") {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        $str = "";
         for ($i = 0; $i < $length; $i++) {
             $str.= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
@@ -47,28 +47,6 @@ abstract class WechatBasic {
     }
 
     /**
-     * 格式化参数，签名过程需要使用
-     * @param type $option
-     * @param type $urlencode
-     * @return type
-     */
-    static private function formatPayOption($option, $urlencode) {
-        $buff = "";
-        ksort($option);
-        foreach ($option as $k => $v) {
-            if ($urlencode) {
-                $v = urlencode($v);
-            }
-            $buff .= $k . "=" . $v . "&";
-        }
-        $reqPar = null;
-        if (strlen($buff) > 0) {
-            $reqPar = substr($buff, 0, strlen($buff) - 1);
-        }
-        return $reqPar;
-    }
-
-    /**
      * 生成支付签名
      * @param type $option 
      * @param type $partnerKey
@@ -76,8 +54,11 @@ abstract class WechatBasic {
      */
     static public function getPaySign($option, $partnerKey) {
         ksort($option);
-        $String = self::formatPayOption($option, false);
-        return strtoupper(md5("{$String}&key={$partnerKey}"));
+        $buff = '';
+        foreach ($option as $k => $v) {
+            $buff .= "{$k}={$v}&";
+        }
+        return strtoupper(md5("{$buff}key={$partnerKey}"));
     }
 
     /**
@@ -89,33 +70,26 @@ abstract class WechatBasic {
      * @param string $id   数字索引子节点key转换的属性名
      * @return string
      */
-    public function array2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
-        return "<{$root}>" . self::_data_to_xml($data, $item, $id) . "</{$root}>";
-    }
+    public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
 
-    /**
-     * 数据XML编码
-     * @param type $data    数据
-     * @param type $item    数字索引的子节点名
-     * @param type $id      数字索引子节点key转换的属性名
-     * @param type $content XML内容
-     * @return type
-     */
-    protected static function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
-        foreach ($data as $key => $val) {
-            is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
-            $content .= "<{$key}>";
-            if (is_array($val) || is_object($val)) {
-                $content.=self::_data_to_xml($val);
-            } elseif (is_numeric($val)) {
-                $content.=$val;
-            } else {
-                $content.= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
+        function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
+            foreach ($data as $key => $val) {
+                is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
+                $content .= "<{$key}>";
+                if (is_array($val) || is_object($val)) {
+                    $content.= _data_to_xml($val);
+                } elseif (is_numeric($val)) {
+                    $content.=$val;
+                } else {
+                    $content.= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
+                }
+                list($_key, ) = explode(' ', $key . ' ');
+                $content .= "</$_key>";
             }
-            list($_key, ) = explode(' ', $key . ' ');
-            $content .= "</$_key>";
+            return $content;
         }
-        return $content;
+
+        return "<{$root}>" . _data_to_xml($data, $item, $id) . "</{$root}>";
     }
 
     /**
@@ -123,7 +97,7 @@ abstract class WechatBasic {
      * @param type $xml
      * @return type
      */
-    static public function xml2array($xml) {
+    static public function xml2arr($xml) {
         return json_decode(self::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
@@ -189,7 +163,7 @@ abstract class WechatBasic {
      * @param type $second 设置请求超时时间
      * @return boolean
      */
-    static function http_ssl_post($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
+    static public function http_ssl_post($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -230,16 +204,15 @@ abstract class WechatBasic {
      * @param type $array
      * @return type
      */
-    protected static function json_encode($array) {
-        $str = json_encode($array);
-        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), $str);
+    static public function json_encode($array) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
     }
 
     /**
      * 读取客户端IP
      * @return type
      */
-    public function ipAddress() {
+    static public function ipAddress() {
         foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
             if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === NULL) {
                 continue;
@@ -261,7 +234,7 @@ abstract class WechatBasic {
      * @param int $expired
      * @return boolean
      */
-    protected function setCache($cachename, $value, $expired) {
+    static public function setCache($cachename, $value, $expired = 0) {
         return Cache::set($cachename, $value, $expired);
     }
 
@@ -270,7 +243,7 @@ abstract class WechatBasic {
      * @param string $cachename
      * @return mixed
      */
-    protected function getCache($cachename) {
+    static public function getCache($cachename) {
         return Cache::get($cachename);
     }
 
@@ -279,8 +252,17 @@ abstract class WechatBasic {
      * @param string $cachename
      * @return boolean
      */
-    protected function removeCache($cachename) {
+    static public function removeCache($cachename) {
         return Cache::del($cachename);
+    }
+
+    /**
+     * SDK日志处理方法
+     * @param type $msg
+     * @param type $type
+     */
+    static public function log($msg, $type = 'MSG') {
+        Cache::put($type . ' - ' . $msg);
     }
 
 }

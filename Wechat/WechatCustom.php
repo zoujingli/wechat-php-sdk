@@ -27,10 +27,10 @@ class WechatCustom extends WechatCommon {
      * @return boolean|array
      */
     public function getCustomServiceMessage($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_RECORD . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_RECORD . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -49,10 +49,10 @@ class WechatCustom extends WechatCommon {
      * @return boolean|array
      */
     public function getCustomServiceKFlist() {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_KFLIST . 'access_token=' . $this->access_token);
+        $result = $this->http_get(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_KFLIST . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -81,10 +81,10 @@ class WechatCustom extends WechatCommon {
       }
      */
     public function getCustomServiceOnlineKFlist() {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_ONLINEKFLIST . 'access_token=' . $this->access_token);
+        $result = $this->http_get(self::API_URL_PREFIX . self::CUSTOM_SERVICE_GET_ONLINEKFLIST . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -117,10 +117,10 @@ class WechatCustom extends WechatCommon {
         if ($text) {
             $data["text"] = $text;
         }
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_CREATE . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_CREATE . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -153,10 +153,10 @@ class WechatCustom extends WechatCommon {
         if ($text) {
             $data["text"] = $text;
         }
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_CLOSE . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_CLOSE . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -181,10 +181,10 @@ class WechatCustom extends WechatCommon {
      *  }
      */
     public function getKFSession($openid) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET . 'access_token=' . $this->access_token . '&openid=' . $openid);
+        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET . "access_token={$this->access_token}" . '&openid=' . $openid);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -215,10 +215,10 @@ class WechatCustom extends WechatCommon {
      *  )
      */
     public function getKFSessionlist($kf_account) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET_LIST . 'access_token=' . $this->access_token . '&kf_account=' . $kf_account);
+        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET_LIST . "access_token={$this->access_token}" . '&kf_account=' . $kf_account);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -252,10 +252,10 @@ class WechatCustom extends WechatCommon {
      *  )
      */
     public function getKFSessionWait() {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET_WAIT . 'access_token=' . $this->access_token);
+        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_GET_WAIT . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -287,10 +287,10 @@ class WechatCustom extends WechatCommon {
             "nickname"   => $nickname,
             "password"   => md5($password)
         );
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -322,10 +322,10 @@ class WechatCustom extends WechatCommon {
             "nickname"   => $nickname,
             "password"   => md5($password)
         );
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPDATE_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPDATE_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -350,10 +350,10 @@ class WechatCustom extends WechatCommon {
      * }
      */
     public function deleteKFAccount($account) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_DEL_URL . 'access_token=' . $this->access_token . '&kf_account=' . $account);
+        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_DEL_URL . "access_token={$this->access_token}" . '&kf_account=' . $account);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -379,10 +379,10 @@ class WechatCustom extends WechatCommon {
      * }
      */
     public function setKFHeadImg($account, $imgfile) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPLOAD_HEADIMG_URL . 'access_token=' . $this->access_token . '&kf_account=' . $account, array('media' => '@' . $imgfile), true);
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPLOAD_HEADIMG_URL . "access_token={$this->access_token}" . '&kf_account=' . $account, array('media' => '@' . $imgfile), true);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

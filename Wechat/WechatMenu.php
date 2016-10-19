@@ -33,10 +33,10 @@ class WechatMenu extends WechatCommon {
      * @return boolean
      */
     public function createMenu($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MENU_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::MENU_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -54,10 +54,10 @@ class WechatMenu extends WechatCommon {
      * @return array('menu'=>array())
      */
     public function getMenu() {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_GET_URL . 'access_token=' . $this->access_token);
+        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_GET_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || isset($json['errcode'])) {
@@ -75,10 +75,10 @@ class WechatMenu extends WechatCommon {
      * @return boolean
      */
     public function deleteMenu() {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_DEL_URL . 'access_token=' . $this->access_token);
+        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_DEL_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -98,10 +98,10 @@ class WechatMenu extends WechatCommon {
      * @return boolean
      */
     public function createCondMenu($data) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_ADD_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode']) || empty($json['menuid'])) {
@@ -120,11 +120,11 @@ class WechatMenu extends WechatCommon {
      * @return boolean
      */
     public function deleteCondMenu($menuid) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $data = array('menuid' => $menuid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_DEL_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_DEL_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -143,11 +143,11 @@ class WechatMenu extends WechatCommon {
      * @return boolean
      */
     public function tryCondMenu($openid) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $data = array('user_id' => $openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_TRY_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_TRY_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

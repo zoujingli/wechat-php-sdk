@@ -65,14 +65,14 @@ class WechatExtends extends WechatCommon {
      * @return boolean|string url 成功则返回转换后的短url
      */
     public function getShortUrl($long_url) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $data = array(
             'action'   => 'long2short',
             'long_url' => $long_url
         );
-        $result = $this->http_post(self::API_URL_PREFIX . self::SHORT_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::SHORT_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -93,7 +93,7 @@ class WechatExtends extends WechatCommon {
      * @return array('ticket'=>'qrcode字串','expire_seconds'=>2592000,'url'=>'二维码图片解析后的地址')
      */
     public function getQRCode($scene_id, $type = 0, $expire = 2592000) {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $type = ($type && is_string($scene_id)) ? 2 : $type;
@@ -105,7 +105,7 @@ class WechatExtends extends WechatCommon {
         if ($type == 1) {
             unset($data['expire_seconds']);
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::QRCODE_CREATE_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_URL_PREFIX . self::QRCODE_CREATE_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -130,7 +130,7 @@ class WechatExtends extends WechatCommon {
      * @return boolean|array
      */
     public function querySemantic($uid, $query, $category, $latitude = 0, $longitude = 0, $city = "", $region = "") {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         $data = array(
@@ -148,7 +148,7 @@ class WechatExtends extends WechatCommon {
         } elseif ($region) {
             $data['region'] = $region;
         }
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::SEMANTIC_API_URL . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::SEMANTIC_API_URL . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -170,7 +170,7 @@ class WechatExtends extends WechatCommon {
      * @return boolean|array 成功返回查询结果数组，其定义请看官方文档
      */
     public function getDatacube($type, $subtype, $begin_date, $end_date = '') {
-        if (!$this->access_token && !$this->checkAuth()) {
+        if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
         if (!isset(self::$DATACUBE_URL_ARR[$type]) || !isset(self::$DATACUBE_URL_ARR[$type][$subtype])) {
@@ -180,7 +180,7 @@ class WechatExtends extends WechatCommon {
             'begin_date' => $begin_date,
             'end_date'   => $end_date ? $end_date : $begin_date
         );
-        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::$DATACUBE_URL_ARR[$type][$subtype] . 'access_token=' . $this->access_token, self::json_encode($data));
+        $result = $this->http_post(self::API_BASE_URL_PREFIX . self::$DATACUBE_URL_ARR[$type][$subtype] . "access_token={$this->access_token}", self::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
