@@ -7,7 +7,7 @@
  * @date 2016-08-21 11:26
  */
 if (!class_exists('Wechat\Loader', FALSE)) {
-    /**
+    /** 
      * 注册自动加载函数
      */
     spl_autoload_register(function($class) {

@@ -5,7 +5,7 @@ namespace Wechat\Lib;
 /**
  * SDK缓存类
  * 
- * @author Anyon <zoujingli@qq.com>
+ * @author Anyon <zoujingli@qq.com> 
  * @date 2016-08-20 17:50
  */
 class Cache {

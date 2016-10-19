@@ -8,7 +8,7 @@
  */
 class PKCS7Encoder {
 
-    public static $block_size = 32;
+    public static $block_size = 32; 
 
     /**
      * 对需要加密的明文进行填充补位

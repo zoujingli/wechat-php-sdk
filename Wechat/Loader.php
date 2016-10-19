@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\Lib\Cache;
+use Wechat\Lib\Cache; 
 
 /**
  * 微信SDK加载器

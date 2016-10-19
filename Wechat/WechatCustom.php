@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon;
+use Wechat\Lib\WechatCommon; 
 
 class WechatCustom extends WechatCommon {
 

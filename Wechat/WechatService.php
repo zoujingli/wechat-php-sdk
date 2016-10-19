@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Wechat\Lib\Cache;
-use Wechat\Lib\WechatBasic;
+use Wechat\Lib\WechatBasic; 
 
 /**
  * 公众号第三方平台SDK
