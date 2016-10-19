@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Wechat\Lib\Cache;
-use Wechat\Lib\WechatBasic; 
+use Wechat\Lib\WechatBasic;
 
 /**
  * 公众号第三方平台SDK
@@ -83,13 +83,12 @@ class WechatService extends WechatBasic {
      * @param type $options
      */
     public function __construct($options = array()) {
-        $options = Loader::config($options);
-        $this->component_encodingaeskey = !empty($options['component_encodingaeskey']) ? $options['component_encodingaeskey'] : '';
-        $this->component_verify_ticket = !empty($options['component_verify_ticket']) ? $options['component_verify_ticket'] : Cache::get('component_verify_ticket');
-        $this->component_appsecret = !empty($options['component_appsecret']) ? $options['component_appsecret'] : '';
-        $this->component_token = !empty($options['component_token']) ? $options['component_token'] : '';
-        $this->component_appid = !empty($options['component_appid']) ? $options['component_appid'] : '';
-        isset($options['cachepath']) && Cache::$cachepath = $options['cachepath'];
+        $config = Loader::config($options);
+        $this->component_encodingaeskey = !empty($config['component_encodingaeskey']) ? $config['component_encodingaeskey'] : '';
+        $this->component_verify_ticket = !empty($config['component_verify_ticket']) ? $config['component_verify_ticket'] : '';
+        $this->component_appsecret = !empty($config['component_appsecret']) ? $config['component_appsecret'] : '';
+        $this->component_token = !empty($config['component_token']) ? $config['component_token'] : '';
+        $this->component_appid = !empty($config['component_appid']) ? $config['component_appid'] : '';
     }
 
     /**

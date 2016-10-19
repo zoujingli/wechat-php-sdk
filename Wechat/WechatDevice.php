@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Wechat\Lib\WechatCommon;
- 
+
 /**
  * 微信设备相关SDK
  * @author Anyon <zoujingli@qq.com>
