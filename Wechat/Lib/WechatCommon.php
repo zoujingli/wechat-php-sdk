@@ -41,7 +41,7 @@ class WechatCommon extends WechatBasic {
      * @param type $options
      */
     public function __construct($options) {
-        $config = Loader::config($config);
+        $config = Loader::config($options);
         $this->token = isset($config['token']) ? $config['token'] : '';
         $this->appid = isset($config['appid']) ? $config['appid'] : '';
         $this->appsecret = isset($config['appsecret']) ? $config['appsecret'] : '';
