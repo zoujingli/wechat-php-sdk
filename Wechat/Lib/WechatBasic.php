@@ -6,7 +6,7 @@ use CURLFile;
 
 /**
  * 微信接口通用类
- * 
+ *  
  * @category WechatSDK
  * @subpackage library
  * @author Anyon <zoujingli@qq.com>

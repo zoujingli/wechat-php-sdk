@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon;
+use Wechat\Lib\WechatCommon; 
 
 /**
  * 微信扩展功能

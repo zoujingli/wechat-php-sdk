@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Prpcrypt;
-use Wechat\Lib\WechatCommon;
+use Wechat\Lib\WechatCommon; 
 
 /**
  * 微信消息对象解析SDK

@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Wechat\Lib\WechatCommon;
-
+ 
 /**
  * 微信前端 JavaScript 签名SDK
  * 

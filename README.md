@@ -64,7 +64,7 @@ SDK 封装对接及功能
 ![](http://zoujingli.oschina.io/static/doc-image/pay.png)
 
 
-SDK版权说明
+SDK版权说明 
 --
 * SDK基于MIT协议发布，任何人可以用在任何地方，不受约束
 * 部分代码来自互联网，若有异议可以联系作者进行删除

@@ -2,7 +2,7 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon;
+use Wechat\Lib\WechatCommon; 
 
 /**
  * 微信媒体素材管理类

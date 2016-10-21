@@ -33,17 +33,16 @@ class Loader {
     /**
      * 设置配置参数
      * @param type $config
-     * @return array
+     * @return type
      */
     static public function config($config = array()) {
-        /* 检测并应用配置参数 */
         !empty($config) && self::$config = $config;
-        /* 内置类库初始化配置 */
-        !empty(self::$config['cachepath']) && Cache::$cachepath = self::$config['cachepath'];
+        if (!empty(self::$config['cachepath'])) {
+            Cache::$cachepath = self::$config['cachepath'];
+        }
         if (empty(self::$config['component_verify_ticket'])) {
             self::$config['component_verify_ticket'] = Cache::get('component_verify_ticket');
         }
-        // 返回当前生效的全部配置参数
         return self::$config;
     }
 
