@@ -36,7 +36,6 @@ class Cache {
     static public function get($name) {
         if (self::check() && ($file = self::$cachepath . $name) && file_exists($file) && ($data = file_get_contents($file)) && !empty($data)) {
             $data = unserialize($data);
-            dump($data);
             if (isset($data['expired']) && ($data['expired'] > time() || $data['expired'] === 0)) {
                 return isset($data['value']) ? $data['value'] : null;
             }
