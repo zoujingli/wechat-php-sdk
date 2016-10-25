@@ -36,6 +36,7 @@ class WechatPay extends WechatBasic {
      * @param type $options
      */
     public function __construct($options = array()) {
+        $options = Loader::config($options);
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : '';
         $this->partnerKey = isset($options['partnerkey']) ? $options['partnerkey'] : '';
