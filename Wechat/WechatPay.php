@@ -3,7 +3,7 @@
 namespace Wechat;
 
 use Wechat\Lib\WechatBasic;
- 
+
 /**
  * 微信支付SDK
  * @author zoujingli <zoujingli@qq.com>
@@ -35,7 +35,7 @@ class WechatPay extends WechatBasic {
      * 支付SDK构造函数
      * @param type $options
      */
-    public function __construct($options) {
+    public function __construct($options = array()) {
         $this->appid = isset($options['appid']) ? $options['appid'] : '';
         $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : '';
         $this->partnerKey = isset($options['partnerkey']) ? $options['partnerkey'] : '';
