@@ -159,7 +159,6 @@ class WechatPay {
         $option["signType"] = "MD5";
         $option["paySign"] = Tools::getPaySign($option, $this->partnerKey);
         $option['timestamp'] = $option['timeStamp'];
-        unset($option["timeStamp"]);
         return $option;
     }
 
