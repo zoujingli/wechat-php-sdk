@@ -127,7 +127,7 @@ class WechatPoi extends Common {
     }
 
     /**
-     * 查询门店信息
+     * 查询门店列表
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
      * @param type $begin 开始位置，0 即为从第一条开始查询
      * @param type $limit 返回数据条数，最大允许50，默认为20
