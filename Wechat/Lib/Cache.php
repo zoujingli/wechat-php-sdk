@@ -2,6 +2,8 @@
 
 namespace Wechat\Lib;
 
+use Wechat\Loader;
+
 /**
  * SDK缓存类
  * 
@@ -24,6 +26,10 @@ class Cache {
      * @return type
      */
     static public function set($name, $value, $expired = 0) {
+        # 检测事件注册
+        if (isset(Loader::$callback['CacheSet'])) {
+            return call_user_func_array(Loader::$callback['CacheSet'], func_get_args());
+        }
         $data = serialize(array('value' => $value, 'expired' => $expired > 0 ? time() + $expired : 0));
         return self::check() && file_put_contents(self::$cachepath . $name, $data);
     }
@@ -34,6 +40,10 @@ class Cache {
      * @return type
      */
     static public function get($name) {
+        # 检测事件注册
+        if (isset(Loader::$callback['CacheGet'])) {
+            return call_user_func_array(Loader::$callback['CacheGet'], func_get_args());
+        }
         if (self::check() && ($file = self::$cachepath . $name) && file_exists($file) && ($data = file_get_contents($file)) && !empty($data)) {
             $data = unserialize($data);
             if (isset($data['expired']) && ($data['expired'] > time() || $data['expired'] === 0)) {
@@ -49,6 +59,10 @@ class Cache {
      * @return type
      */
     static public function del($name) {
+        # 检测事件注册
+        if (isset(Loader::$callback['CacheDel'])) {
+            return call_user_func_array(Loader::$callback['CacheDel'], func_get_args());
+        }
         return self::check() && unlink(self::$cachepath . $name);
     }
 
@@ -63,17 +77,6 @@ class Cache {
             return FALSE;
         }
         return TRUE;
-    }
-
-    /**
-     * 输出内容到日志
-     * @param type $line
-     * @param type $filename
-     * @return type
-     */
-    static public function put($line, $filename = '') {
-        empty($filename) && $filename = date('Ymd') . '.log';
-        return self::check() && file_put_contents(self::$cachepath . $filename, '[' . date('Y/m/d H:i:s') . "] {$line}\n", FILE_APPEND);
     }
 
 }
