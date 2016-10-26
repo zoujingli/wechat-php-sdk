@@ -26,7 +26,6 @@ class Cache {
      * @return type
      */
     static public function set($name, $value, $expired = 0) {
-        # 检测事件注册
         if (isset(Loader::$callback['CacheSet'])) {
             return call_user_func_array(Loader::$callback['CacheSet'], func_get_args());
         }
@@ -40,7 +39,6 @@ class Cache {
      * @return type
      */
     static public function get($name) {
-        # 检测事件注册
         if (isset(Loader::$callback['CacheGet'])) {
             return call_user_func_array(Loader::$callback['CacheGet'], func_get_args());
         }
@@ -59,11 +57,24 @@ class Cache {
      * @return type
      */
     static public function del($name) {
-        # 检测事件注册
         if (isset(Loader::$callback['CacheDel'])) {
             return call_user_func_array(Loader::$callback['CacheDel'], func_get_args());
         }
         return self::check() && unlink(self::$cachepath . $name);
+    }
+
+    /**
+     * 输出内容到日志
+     * @param type $line
+     * @param type $filename
+     * @return type
+     */
+    static public function put($line, $filename = '') {
+        if (isset(Loader::$callback['CachePut'])) {
+            return call_user_func_array(Loader::$callback['CachePut'], func_get_args());
+        }
+        empty($filename) && $filename = date('Ymd') . '.log';
+        return self::check() && file_put_contents(self::$cachepath . $filename, '[' . date('Y/m/d H:i:s') . "] {$line}\n", FILE_APPEND);
     }
 
     /**
