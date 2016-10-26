@@ -2,15 +2,19 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon;
- 
+use Wechat\Lib\Common;
+use Wechat\Lib\Tools;
+use Wechat\Loader;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
+
 /**
  * 微信前端 JavaScript 签名SDK
  * 
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:24
  */
-class WechatScript extends WechatCommon {
+class WechatScript extends Common {
 
     /**
      * JSAPI授权TICKET
@@ -25,7 +29,7 @@ class WechatScript extends WechatCommon {
     public function resetJsTicket($appid = '') {
         $this->jsapi_ticket = '';
         $authname = 'wechat_jsapi_ticket_' . empty($appid) ? $this->appid : $appid;
-        $this->removeCache($authname);
+        Tools::removeCache($authname);
         return true;
     }
 
@@ -48,7 +52,7 @@ class WechatScript extends WechatCommon {
         }
         # 尝试从缓存中读取
         $cache = 'wechat_jsapi_ticket_' . $appid;
-        $jt = $this->getCache($cache);
+        $jt = Tools::getCache($cache);
         if ($jt) {
             return $this->jsapi_ticket = $jt;
         }
@@ -57,7 +61,7 @@ class WechatScript extends WechatCommon {
             return $this->jsapi_ticket = call_user_func_array(Loader::$callback[__FUNCTION__], array(&$this, &$cache));
         }
         # 调接口获取
-        $result = $this->http_get(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=jsapi');
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=jsapi');
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -66,7 +70,7 @@ class WechatScript extends WechatCommon {
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             $this->jsapi_ticket = $json['ticket'];
-            $this->setCache($cache, $this->jsapi_ticket, $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600);
+            Tools::setCache($cache, $this->jsapi_ticket, $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600);
             return $this->jsapi_ticket;
         }
         return false;
@@ -87,7 +91,7 @@ class WechatScript extends WechatCommon {
         $data = array(
             "jsapi_ticket" => $this->jsapi_ticket,
             "timestamp"    => empty($timestamp) ? time() : $timestamp,
-            "noncestr"     => '' . empty($noncestr) ? $this->createNoncestr(16) : $noncestr,
+            "noncestr"     => '' . empty($noncestr) ? Tools::createNoncestr(16) : $noncestr,
             "url"          => trim($url),
         );
         return array(
@@ -95,7 +99,7 @@ class WechatScript extends WechatCommon {
             "appId"     => empty($appid) ? $this->appid : $appid,
             "nonceStr"  => $data['noncestr'],
             "timestamp" => $data['timestamp'],
-            "signature" => $this->getSignature($data, 'sha1'),
+            "signature" => Tools::getSignature($data, 'sha1'),
             'jsApiList' => array(
                 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone',
                 'hideOptionMenu', 'showOptionMenu', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem',

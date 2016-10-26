@@ -3,6 +3,20 @@
 namespace Wechat;
 
 use Wechat\Lib\Cache;
+use Wechat\WechatReceive;
+
+/**
+ * 注册SDK自动加载机制
+ * 
+ * @author Anyon <zoujingli@qq.com>
+ * @date 2016/10/26 10:21
+ */
+spl_autoload_register(function($class) {
+    if (0 === stripos($class, 'Wechat\\')) {
+        $filename = dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+        file_exists($filename) && require($filename);
+    }
+});
 
 /**
  * 微信SDK加载器

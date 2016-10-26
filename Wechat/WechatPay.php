@@ -2,14 +2,16 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatBasic;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 微信支付SDK
  * @author zoujingli <zoujingli@qq.com>
  * @date 2015/05/13 12:12:00
  */
-class WechatPay extends WechatBasic {
+class WechatPay {
 
     /** 支付接口基础地址 */
     const MCH_BASE_URL = 'https://api.mch.weixin.qq.com';
@@ -56,9 +58,9 @@ class WechatPay extends WechatBasic {
         if (!isset($data['mchid']) && !isset($data['mch_id'])) {
             $data['mch_id'] = $this->mch_id;
         }
-        isset($data['nonce_str']) || $data['nonce_str'] = self::createNoncestr();
-        $data["sign"] = self::getPaySign($data, $this->partnerKey);
-        return self::arr2xml($data);
+        isset($data['nonce_str']) || $data['nonce_str'] = Tools::createNoncestr();
+        $data["sign"] = Tools::getPaySign($data, $this->partnerKey);
+        return Tools::arr2xml($data);
     }
 
     /**
@@ -68,7 +70,7 @@ class WechatPay extends WechatBasic {
      * @return type
      */
     public function postXml($data, $url) {
-        return self::http_post($url, $this->createXml($data));
+        return Tools::http_post($url, $this->createXml($data));
     }
 
     /**
@@ -78,7 +80,7 @@ class WechatPay extends WechatBasic {
      * @return type
      */
     function postXmlSSL($data, $url) {
-        return self::http_ssl_post($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
+        return Tools::httpsPost($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
     }
 
     /**
@@ -89,7 +91,7 @@ class WechatPay extends WechatBasic {
      * @return type
      */
     public function getArrayResult($data, $url, $method = 'postXml') {
-        return self::xml2arr($this->$method($data, $url));
+        return Tools::xml2arr($this->$method($data, $url));
     }
 
     /**
@@ -133,7 +135,7 @@ class WechatPay extends WechatBasic {
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
-            "spbill_create_ip" => $this->ipAddress(),
+            "spbill_create_ip" => Tools::getAddress(),
         );
         empty($openid) || $postdata['openid'] = $openid;
         $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
@@ -152,10 +154,10 @@ class WechatPay extends WechatBasic {
         $option = array();
         $option["appId"] = $this->appid;
         $option["timeStamp"] = (string) time();
-        $option["nonceStr"] = self::createNoncestr();
+        $option["nonceStr"] = Tools::createNoncestr();
         $option["package"] = "prepay_id={$prepay_id}";
         $option["signType"] = "MD5";
-        $option["paySign"] = self::getPaySign($option, $this->partnerKey);
+        $option["paySign"] = Tools::getPaySign($option, $this->partnerKey);
         $option['timestamp'] = $option['timeStamp'];
         unset($option["timeStamp"]);
         return $option;
@@ -239,7 +241,7 @@ class WechatPay extends WechatBasic {
         $data['bill_date'] = $bill_date;
         $data['bill_type'] = $bill_type;
         $result = $this->postXml($data, self::MCH_BASE_URL . '/pay/downloadbill');
-        $json = self::xml2arr($result);
+        $json = Tools::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -272,7 +274,7 @@ class WechatPay extends WechatBasic {
         $data['act_name'] = $actname; //活动名称
         $data['remark'] = $remark; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/sendredpack');
-        $json = self::xml2arr($result);
+        $json = Tools::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -290,7 +292,7 @@ class WechatPay extends WechatBasic {
         $data['mch_billno'] = $billno;
         $data['bill_type'] = 'MCHT';
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gethbinfo');
-        $json = self::xml2arr($result);
+        $json = Tools::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -318,7 +320,7 @@ class WechatPay extends WechatBasic {
         $data['spbill_create_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
         $data['desc'] = $desc; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/promotion/transfers');
-        $json = self::xml2arr($result);
+        $json = Tools::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }
@@ -337,7 +339,7 @@ class WechatPay extends WechatBasic {
         $data['mch_id'] = $this->mch_id;
         $data['partner_trade_no'] = $billno;
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/gettransferinfo');
-        $json = self::xml2arr($result);
+        $json = Tools::xml2arr($result);
         if (!empty($json) && false === $this->_parseResult($json)) {
             return false;
         }

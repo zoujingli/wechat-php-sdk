@@ -2,7 +2,10 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon; 
+use Wechat\Lib\Common;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 微信粉丝操作SDK
@@ -10,7 +13,7 @@ use Wechat\Lib\WechatCommon;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:20
  */
-class WechatUser extends WechatCommon {
+class WechatUser extends Common {
 
     /** 获取粉丝列表 */
     const USER_GET_URL = '/user/get?';
@@ -67,7 +70,7 @@ class WechatUser extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::USER_GET_URL . "access_token={$this->access_token}" . '&next_openid=' . $next_openid);
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::USER_GET_URL . "access_token={$this->access_token}" . '&next_openid=' . $next_openid);
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode'])) {
@@ -90,7 +93,7 @@ class WechatUser extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::USER_INFO_URL . "access_token={$this->access_token}&openid={$openid}");
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::USER_INFO_URL . "access_token={$this->access_token}&openid={$openid}");
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode'])) {
@@ -114,7 +117,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid' => $openid, 'remark' => $remark);
-        $result = $this->http_post(self::API_URL_PREFIX . self::USER_UPDATEREMARK_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::USER_UPDATEREMARK_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -135,7 +138,7 @@ class WechatUser extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::GROUP_GET_URL . "access_token={$this->access_token}");
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::GROUP_GET_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode'])) {
@@ -158,7 +161,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('group' => array('id' => $id));
-        $result = $this->http_post(self::API_URL_PREFIX . self::GROUP_DELETE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::GROUP_DELETE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -181,7 +184,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid' => $openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::USER_GROUP_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::USER_GROUP_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -205,7 +208,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('group' => array('name' => $name));
-        $result = $this->http_post(self::API_URL_PREFIX . self::GROUP_CREATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::GROUP_CREATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -229,7 +232,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('group' => array('id' => $groupid, 'name' => $name));
-        $result = $this->http_post(self::API_URL_PREFIX . self::GROUP_UPDATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::GROUP_UPDATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -253,7 +256,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid' => $openid, 'to_groupid' => $groupid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::GROUP_MEMBER_UPDATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::GROUP_MEMBER_UPDATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -277,7 +280,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid_list' => $openid_list, 'to_groupid' => $groupid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::GROUP_MEMBER_BATCHUPDATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::GROUP_MEMBER_BATCHUPDATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -300,7 +303,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('tag' => array('name' => $name));
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_CREATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_CREATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -324,7 +327,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('tag' => array('id' => $id, 'name' => $name));
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_UPDATE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_UPDATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -345,7 +348,7 @@ class WechatUser extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::TAGS_GET_URL . "access_token={$this->access_token}");
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::TAGS_GET_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode'])) {
@@ -368,7 +371,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('tag' => array('id' => $id));
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_DELETE_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_DELETE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -392,7 +395,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('tagid' => $tagid, 'next_openid' => $next_openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_GET_USER_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_GET_USER_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -416,7 +419,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid_list' => $openid_list, 'tagid' => $tagid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_MEMBER_BATCHTAGGING . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_MEMBER_BATCHTAGGING . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -440,7 +443,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid_list' => $openid_list, 'tagid' => $tagid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_MEMBER_BATCHUNTAGGING . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_MEMBER_BATCHUNTAGGING . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -463,7 +466,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('openid' => $openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::TAGS_LIST . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TAGS_LIST . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !isset($json['tagid_list']) || !empty($json['errcode'])) {
@@ -486,7 +489,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = empty($begin_openid) ? array() : array('begin_openid' => $begin_openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_GET_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::BACKLIST_GET_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (isset($json['errcode'])) {
@@ -509,7 +512,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('opened_list' => $openids);
-        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::BACKLIST_ADD_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -532,7 +535,7 @@ class WechatUser extends WechatCommon {
             return false;
         }
         $data = array('opened_list' => $openids);
-        $result = $this->http_post(self::API_URL_PREFIX . self::BACKLIST_DEL_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::BACKLIST_DEL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

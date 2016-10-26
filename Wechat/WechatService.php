@@ -3,7 +3,9 @@
 namespace Wechat;
 
 use Wechat\Lib\Cache;
-use Wechat\Lib\WechatBasic;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 公众号第三方平台SDK
@@ -28,7 +30,7 @@ use Wechat\Lib\WechatBasic;
  * $service->setAuthorizerOption();      //设置公众号的授权项的值
  * 
  */
-class WechatService extends WechatBasic {
+class WechatService {
 
     const URL_PREFIX = 'https://api.weixin.qq.com/cgi-bin/component';
     // 获取服务access_token
@@ -107,14 +109,14 @@ class WechatService extends WechatBasic {
         if (false === $receive->valid()) {
             $this->errCode = $receive->errCode;
             $this->errMsg = $receive->errMsg;
-            $this->log("Get Wechat Push ComponentVerifyTicket Faild. {$this->errMsg} [$this->errCode]", 'Err');
+            Tools::log("Get Wechat Push ComponentVerifyTicket Faild. {$this->errMsg} [$this->errCode]", 'Err');
             return false;
         }
         $data = $receive->getRev()->getRevData();
         if ($data['InfoType'] === 'component_verify_ticket' && !empty($data['ComponentVerifyTicket'])) {
             # 记录推送日志到微信SDK
-            $this->log("Get Wechat Push ComponentVerifyTicket Success. ");
-            $this->setCache('component_verify_ticket', $data['ComponentVerifyTicket']);
+            Tools::log("Get Wechat Push ComponentVerifyTicket Success. ");
+            Tools::setCache('component_verify_ticket', $data['ComponentVerifyTicket']);
         }
         return $data;
     }
@@ -125,19 +127,19 @@ class WechatService extends WechatBasic {
      */
     public function getComponentAccessToken() {
         $cacheKey = 'wechat_component_access_token';
-        $this->component_access_token = $this->getCache($cacheKey);
+        $this->component_access_token = Tools::getCache($cacheKey);
         if (empty($this->component_access_token)) {
             $data = array();
             $data['component_appid'] = $this->component_appid;
             $data['component_appsecret'] = $this->component_appsecret;
             $data['component_verify_ticket'] = $this->component_verify_ticket;
             $url = self::URL_PREFIX . self::COMPONENT_TOKEN_URL;
-            $result = $this->http_post($url, $this->json_encode($data));
+            $result = Tools::httpPost($url, Tools::json_encode($data));
             if (($this->component_access_token = $this->_decode($result, 'component_access_token')) === false) {
-                $this->log("Get getComponentAccessToken Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+                Tools::log("Get getComponentAccessToken Faild. {$this->errMsg} [$this->errCode]", 'ERR');
                 return false;
             }
-            $this->setCache($cacheKey, $this->component_access_token, 7200);
+            Tools::setCache($cacheKey, $this->component_access_token, 7200);
         }
         return $this->component_access_token;
     }
@@ -155,10 +157,10 @@ class WechatService extends WechatBasic {
         $data = array();
         $data['component_appid'] = $this->component_appid;
         $url = self::URL_PREFIX . self::PREAUTH_CODE_URL . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         $this->pre_auth_code = $this->_decode($result, 'pre_auth_code');
         if (empty($this->pre_auth_code)) {
-            $this->log("Get getPreauthCode Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get getPreauthCode Faild. {$this->errMsg} [$this->errCode]", 'ERR');
         }
         return $this->pre_auth_code;
     }
@@ -181,9 +183,9 @@ class WechatService extends WechatBasic {
         $data['authorizer_appid'] = $authorizer_appid;
         $data['authorizer_refresh_token'] = $authorizer_refresh_token;
         $url = self::URL_PREFIX . self::REFRESH_ACCESS_TOKEN . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         if (($result = $this->_decode($result)) === false) {
-            $this->log("Get getAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get getAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
         }
         return $result;
     }
@@ -203,10 +205,10 @@ class WechatService extends WechatBasic {
         $data['component_appid'] = $this->component_appid;
         $data['authorization_code'] = $authorization_code;
         $url = self::URL_PREFIX . self::QUERY_AUTH_URL . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         $authorization_info = $this->_decode($result, 'authorization_info');
         if (empty($authorization_info)) {
-            $this->log("Get getAuthorizationInfo Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get getAuthorizationInfo Faild. {$this->errMsg} [$this->errCode]", 'ERR');
             return false;
         }
         $authorization_info['func_info'] = $this->_parseFuncInfo($authorization_info['func_info']);
@@ -225,10 +227,10 @@ class WechatService extends WechatBasic {
         $data['component_appid'] = $this->component_appid;
         $data['authorizer_appid'] = $authorizer_appid;
         $url = self::URL_PREFIX . self::GET_AUTHORIZER_INFO_URL . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         $authorizer_info = $this->_decode($result, 'authorizer_info');
         if (empty($authorizer_info)) {
-            $this->log("Get WechatInfo Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get WechatInfo Faild. {$this->errMsg} [$this->errCode]", 'ERR');
             return false;
         }
         $author_data = array_merge($authorizer_info, $this->data['authorization_info']);
@@ -255,9 +257,9 @@ class WechatService extends WechatBasic {
         $data['authorizer_appid'] = $authorizer_appid;
         $data['option_name'] = $option_name;
         $url = self::URL_PREFIX . self::GET_AUTHORIZER_OPTION_URL . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         if (($result = $this->_decode($result)) === false) {
-            $this->log("Get getAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get getAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
         }
         return $result;
     }
@@ -280,9 +282,9 @@ class WechatService extends WechatBasic {
         $data['option_name'] = $option_name;
         $data['option_value'] = $option_value;
         $url = self::URL_PREFIX . self::SET_AUTHORIZER_OPTION_URL . "?component_access_token={$this->component_access_token}";
-        $result = $this->http_post($url, $this->json_encode($data));
+        $result = Tools::httpPost($url, Tools::json_encode($data));
         if (($result = $this->_decode($result)) === false) {
-            $this->log("Get setAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
+            Tools::log("Get setAuthorizerOption Faild. {$this->errMsg} [$this->errCode]", 'ERR');
         }
         return $result;
     }
@@ -331,7 +333,7 @@ class WechatService extends WechatBasic {
                 . "grant_type=authorization_code&"
                 . "component_appid={$this->component_appid}&"
                 . "component_access_token={$this->component_access_token}";
-        $json = $this->parseJson($this->http_get($url));
+        $json = $this->parseJson(Tools::httpGet($url));
         if ($json !== false) {
             return $json;
         }
@@ -347,7 +349,7 @@ class WechatService extends WechatBasic {
      */
     public function getOauthUserInfo($openid, $oauthAccessToken) {
         $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$oauthAccessToken}&openid={$openid}&lang=zh_CN";
-        return $this->parseJson($this->http_get($url));
+        return $this->parseJson(Tools::httpGet($url));
     }
 
     /**

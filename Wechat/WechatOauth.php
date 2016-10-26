@@ -2,12 +2,15 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon; 
+use Wechat\Lib\Common;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 微信网页授权
  */
-class WechatOauth extends WechatCommon {
+class WechatOauth extends Common {
 
     const OAUTH_PREFIX = 'https://open.weixin.qq.com/connect/oauth2';
     const OAUTH_AUTHORIZE_URL = '/authorize?';
@@ -35,7 +38,7 @@ class WechatOauth extends WechatCommon {
         if (empty($code)) {
             return false;
         }
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::OAUTH_TOKEN_URL . "appid={$this->appid}&secret={$this->appsecret}&code={$code}&grant_type=authorization_code");
+        $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_TOKEN_URL . "appid={$this->appid}&secret={$this->appsecret}&code={$code}&grant_type=authorization_code");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -54,7 +57,7 @@ class WechatOauth extends WechatCommon {
      * @return boolean|mixed
      */
     public function getOauthRefreshToken($refresh_token) {
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::OAUTH_REFRESH_URL . "appid={$this->appid}&grant_type=refresh_token&refresh_token={$refresh_token}");
+        $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_REFRESH_URL . "appid={$this->appid}&grant_type=refresh_token&refresh_token={$refresh_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -75,7 +78,7 @@ class WechatOauth extends WechatCommon {
      * 注意：unionid字段 只有在用户将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getOauthUserinfo($access_token, $openid) {
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::OAUTH_USERINFO_URL . "access_token={$access_token}&openid={$openid}");
+        $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_USERINFO_URL . "access_token={$access_token}&openid={$openid}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -95,7 +98,7 @@ class WechatOauth extends WechatCommon {
      * @return boolean 是否有效
      */
     public function getOauthAuth($access_token, $openid) {
-        $result = $this->http_get(self::API_BASE_URL_PREFIX . self::OAUTH_AUTH_URL . "access_token={$access_token}&openid={$openid}");
+        $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_AUTH_URL . "access_token={$access_token}&openid={$openid}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

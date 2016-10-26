@@ -12,7 +12,7 @@ use CURLFile;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/05/28 11:55
  */
-class WechatBasic {
+class Tools {
 
     /**
      * 产生随机字符串
@@ -23,7 +23,7 @@ class WechatBasic {
     static public function createNoncestr($length = 32, $str = "") {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         for ($i = 0; $i < $length; $i++) {
-            $str.= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
         return $str;
     }
@@ -77,11 +77,11 @@ class WechatBasic {
                 is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
                 $content .= "<{$key}>";
                 if (is_array($val) || is_object($val)) {
-                    $content.= _data_to_xml($val);
+                    $content .= _data_to_xml($val);
                 } elseif (is_numeric($val)) {
-                    $content.=$val;
+                    $content .= $val;
                 } else {
-                    $content.= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
+                    $content .= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
                 }
                 list($_key, ) = explode(' ', $key . ' ');
                 $content .= "</$_key>";
@@ -98,14 +98,14 @@ class WechatBasic {
      * @return type
      */
     static public function xml2arr($xml) {
-        return json_decode(self::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return json_decode(Tools::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
     /**
      * GET 请求
      * @param string $url
      */
-    static public function http_get($url) {
+    static public function httpGet($url) {
         $oCurl = curl_init();
         if (stripos($url, "https://") !== FALSE) {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -130,7 +130,7 @@ class WechatBasic {
      * @param type $postdata
      * @return boolean
      */
-    static public function http_post($url, $postdata) {
+    static public function httpPost($url, $postdata) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -163,7 +163,7 @@ class WechatBasic {
      * @param type $second 设置请求超时时间
      * @return boolean
      */
-    static public function http_ssl_post($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
+    static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -212,7 +212,7 @@ class WechatBasic {
      * 读取客户端IP
      * @return type
      */
-    static public function ipAddress() {
+    static public function getAddress() {
         foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
             if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === NULL) {
                 continue;

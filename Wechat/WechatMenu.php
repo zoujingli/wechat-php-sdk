@@ -2,7 +2,10 @@
 
 namespace Wechat;
 
-use Wechat\Lib\WechatCommon; 
+use Wechat\Lib\Common;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 微信菜单操作SDK
@@ -10,7 +13,7 @@ use Wechat\Lib\WechatCommon;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:52
  */
-class WechatMenu extends WechatCommon {
+class WechatMenu extends Common {
 
     /** 创建自定义菜单 */
     const MENU_ADD_URL = '/menu/create?';
@@ -36,7 +39,7 @@ class WechatMenu extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MENU_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MENU_ADD_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -57,7 +60,7 @@ class WechatMenu extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_GET_URL . "access_token={$this->access_token}");
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::MENU_GET_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || isset($json['errcode'])) {
@@ -78,7 +81,7 @@ class WechatMenu extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_get(self::API_URL_PREFIX . self::MENU_DEL_URL . "access_token={$this->access_token}");
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::MENU_DEL_URL . "access_token={$this->access_token}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -101,7 +104,7 @@ class WechatMenu extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_ADD_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::COND_MENU_ADD_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode']) || empty($json['menuid'])) {
@@ -124,7 +127,7 @@ class WechatMenu extends WechatCommon {
             return false;
         }
         $data = array('menuid' => $menuid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_DEL_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::COND_MENU_DEL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -147,7 +150,7 @@ class WechatMenu extends WechatCommon {
             return false;
         }
         $data = array('user_id' => $openid);
-        $result = $this->http_post(self::API_URL_PREFIX . self::COND_MENU_TRY_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::COND_MENU_TRY_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

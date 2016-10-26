@@ -3,7 +3,10 @@
 namespace Wechat;
 
 use Prpcrypt;
-use Wechat\Lib\WechatCommon; 
+use Wechat\Lib\Common;
+use Wechat\Lib\Tools;
+
+class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
 
 /**
  * 微信消息对象解析SDK
@@ -11,7 +14,7 @@ use Wechat\Lib\WechatCommon;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:29
  */
-class WechatReceive extends WechatCommon {
+class WechatReceive extends Common {
 
     /** 消息推送地址 */
     const CUSTOM_SEND_URL = '/message/custom/send?';
@@ -530,7 +533,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::CUSTOM_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::CUSTOM_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -559,7 +562,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SET_INDUSTRY_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_SET_INDUSTRY_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -582,7 +585,7 @@ class WechatReceive extends WechatCommon {
         $data = array('template_id_short' => $tpl_id);
         if (!$this->access_token && !$this->getAccessToken())
             return false;
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_ADD_TPL_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_ADD_TPL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -628,7 +631,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::TEMPLATE_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::TEMPLATE_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -681,7 +684,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_SEND_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -715,7 +718,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_SEND_GROUP_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_SEND_GROUP_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -737,7 +740,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_DELETE_URL . "access_token={$this->access_token}", self::json_encode(array('msg_id' => $msg_id)));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_DELETE_URL . "access_token={$this->access_token}", Tools::json_encode(array('msg_id' => $msg_id)));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -769,7 +772,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_PREVIEW_URL . "access_token={$this->access_token}", self::json_encode($data));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_PREVIEW_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -795,7 +798,7 @@ class WechatReceive extends WechatCommon {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = $this->http_post(self::API_URL_PREFIX . self::MASS_QUERY_URL . "access_token={$this->access_token}", self::json_encode(array('msg_id' => $msg_id)));
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MASS_QUERY_URL . "access_token={$this->access_token}", Tools::json_encode(array('msg_id' => $msg_id)));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -987,14 +990,14 @@ class WechatReceive extends WechatCommon {
             }
             $msg = $this->_msg;
         }
-        $xmldata = self::arr2xml($msg);
+        $xmldata = Tools::arr2xml($msg);
         if ($this->encrypt_type == 'aes') { //如果来源消息为加密方式
             !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Lib/Prpcrypt.php';
             $pc = new Prpcrypt($this->encodingAesKey);
             $array = $pc->encrypt($xmldata, $this->appid);
             $ret = $array[0];
             if ($ret != 0) {
-                $this->log('encrypt err!');
+                Tools::log('encrypt err!');
                 return false;
             }
             $timestamp = time();
