@@ -56,7 +56,7 @@ class WechatPoi extends Common {
     }
 
     /**
-     * 创建门店
+     * 删除门店
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
      * @param type $poi_id JSON数据格式
      * @return boolean
