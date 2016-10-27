@@ -17,7 +17,7 @@ class WechatPay {
     const MCH_BASE_URL = 'https://api.mch.weixin.qq.com';
 
     /** 公众号appid */
-    protected $appid;
+    public $appid;
 
     /** 商户身份ID */
     protected $mch_id;
