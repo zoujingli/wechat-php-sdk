@@ -70,7 +70,7 @@ class Tools {
      * @param string $id   数字索引子节点key转换的属性名
      * @return string
      */
-    public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
+    static public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
 
         function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
             foreach ($data as $key => $val) {
