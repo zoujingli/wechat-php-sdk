@@ -4,8 +4,6 @@ namespace Wechat;
 
 use Wechat\Lib\Tools;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 /**
  * 微信支付SDK
  * @author zoujingli <zoujingli@qq.com>
@@ -38,12 +36,12 @@ class WechatPay {
      * @param type $options
      */
     public function __construct($options = array()) {
-        $options = Loader::config($options);
-        $this->appid = isset($options['appid']) ? $options['appid'] : '';
-        $this->mch_id = isset($options['mch_id']) ? $options['mch_id'] : '';
-        $this->partnerKey = isset($options['partnerkey']) ? $options['partnerkey'] : '';
-        $this->ssl_cer = isset($options['ssl_cer']) ? $options['ssl_cer'] : '';
-        $this->ssl_key = isset($options['ssl_key']) ? $options['ssl_key'] : '';
+        $config = Loader::config($options);
+        $this->appid = isset($config['appid']) ? $config['appid'] : '';
+        $this->mch_id = isset($config['mch_id']) ? $config['mch_id'] : '';
+        $this->partnerKey = isset($config['partnerkey']) ? $config['partnerkey'] : '';
+        $this->ssl_cer = isset($config['ssl_cer']) ? $config['ssl_cer'] : '';
+        $this->ssl_key = isset($config['ssl_key']) ? $config['ssl_key'] : '';
     }
 
     /**

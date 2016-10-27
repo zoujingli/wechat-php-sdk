@@ -5,8 +5,6 @@ namespace Wechat;
 use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 /**
  * 微信设备相关SDK
  * @author Anyon <zoujingli@qq.com>

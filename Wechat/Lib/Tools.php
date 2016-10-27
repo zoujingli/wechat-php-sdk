@@ -164,6 +164,7 @@ class Tools {
      * @return boolean
      */
     static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
+        p(func_get_args());
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
         curl_setopt($ch, CURLOPT_URL, $url);

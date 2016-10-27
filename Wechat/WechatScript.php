@@ -6,8 +6,6 @@ use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 use Wechat\Loader;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 /**
  * 微信前端 JavaScript 签名SDK
  * 

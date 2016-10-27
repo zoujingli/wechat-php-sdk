@@ -2,8 +2,6 @@
 
 namespace Wechat;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 

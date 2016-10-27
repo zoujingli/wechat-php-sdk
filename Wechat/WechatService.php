@@ -5,30 +5,12 @@ namespace Wechat;
 use Wechat\Lib\Cache;
 use Wechat\Lib\Tools;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 /**
  * 公众号第三方平台SDK
  * 
  * @version 1.0
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/18 00:35:55
- * 
- * @usage:
- * $options = array(
- *    'component_token'           =>'token',          // 公众号消息校验Token
- *    'component_appid'           =>'appid',          // 填写高级调用功能的appid
- *    'component_appsecret'       =>'appsecret',      // 填写高级调用功能的appsecret
- *    'component_verify_ticket'   =>'ticket',         // 微信服务推送的ticket
- *    'component_encodingaeskey'  =>'encodingaeskey', // 公众号消息加解密Key
- * );
- * $service = new WechatService($options);
- * $service->getAuthorizationInfo();     //获取服务号的授权信息
- * $service->refreshAccessToken();       //刷新授权方操作Token
- * $service->getWechatInfo();            //获取公众号的帐号信息
- * $service->getAuthorizerOption();      //获取公众号的授权项的值
- * $service->setAuthorizerOption();      //设置公众号的授权项的值
- * 
  */
 class WechatService {
 
@@ -113,6 +95,7 @@ class WechatService {
             return false;
         }
         $data = $receive->getRev()->getRevData();
+        p($data);
         if ($data['InfoType'] === 'component_verify_ticket' && !empty($data['ComponentVerifyTicket'])) {
             # 记录推送日志到微信SDK
             Tools::log("Get Wechat Push ComponentVerifyTicket Success. ");

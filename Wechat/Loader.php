@@ -50,7 +50,7 @@ class Loader {
      * @return type
      */
     static public function config($config = array()) {
-        !empty($config) && self::$config = $config;
+        !empty($config) && self::$config = array_merge(self::$config, $config);
         if (!empty(self::$config['cachepath'])) {
             Cache::$cachepath = self::$config['cachepath'];
         }

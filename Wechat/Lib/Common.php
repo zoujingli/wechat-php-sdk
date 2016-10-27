@@ -41,12 +41,12 @@ class Common {
      * @param type $options
      */
     public function __construct($options) {
-        $options = Loader::config($options);
-        $this->token = isset($options['token']) ? $options['token'] : '';
-        $this->appid = isset($options['appid']) ? $options['appid'] : '';
-        $this->appsecret = isset($options['appsecret']) ? $options['appsecret'] : '';
-        $this->encodingAesKey = isset($options['encodingaeskey']) ? $options['encodingaeskey'] : '';
-        $this->config = $options;
+        $config = Loader::config($options);
+        $this->token = isset($config['token']) ? $config['token'] : '';
+        $this->appid = isset($config['appid']) ? $config['appid'] : '';
+        $this->appsecret = isset($config['appsecret']) ? $config['appsecret'] : '';
+        $this->encodingAesKey = isset($config['encodingaeskey']) ? $config['encodingaeskey'] : '';
+        $this->config = $config;
     }
 
     /**

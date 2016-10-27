@@ -6,8 +6,6 @@ use Prpcrypt;
 use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 
-class_exists('Wechat\Loader', FALSE) OR require __DIR__ . DIRECTORY_SEPARATOR . 'Loader.php';
-
 /**
  * 微信消息对象解析SDK
  * 
@@ -994,7 +992,8 @@ class WechatReceive extends Common {
         if ($this->encrypt_type == 'aes') { //如果来源消息为加密方式
             !class_exists('Prpcrypt', FALSE) && require __DIR__ . '/Lib/Prpcrypt.php';
             $pc = new Prpcrypt($this->encodingAesKey);
-            $array = $pc->encrypt($xmldata, $this->appid);
+            // 如果是第三方平台，加密得使用 component_appid
+            $array = $pc->encrypt($xmldata, empty($this->config['component_appid']) ? $this->appid : $this->config['component_appid']);
             $ret = $array[0];
             if ($ret != 0) {
                 Tools::log('encrypt err!');
