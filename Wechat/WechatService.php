@@ -95,7 +95,6 @@ class WechatService {
             return false;
         }
         $data = $receive->getRev()->getRevData();
-        p($data);
         if ($data['InfoType'] === 'component_verify_ticket' && !empty($data['ComponentVerifyTicket'])) {
             # 记录推送日志到微信SDK
             Tools::log("Get Wechat Push ComponentVerifyTicket Success. ");
