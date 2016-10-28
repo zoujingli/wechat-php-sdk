@@ -3,11 +3,11 @@
 [![Latest Unstable Version](https://poser.pugx.org/zoujingli/wechat-php-sdk/v/unstable)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 [![License](https://poser.pugx.org/zoujingli/wechat-php-sdk/license)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 
-* 此`SDK`运行最底要求`PHP`版本`5.3`, 建议在`PHP7`上运行以获取最佳性能。
-* 微信的部分接口需要缓存数据在本地，因此对目录需要有写权限。
-* 我们鼓励大家使用`composer`来管理您的第三方库，方便后期更新操作（尤其是接口类）。
-* 近期`access_token`经常无故失效，`SDK`已加入失败状态检测，自动重新获取`access_token`并返回结果.
-* 此`SDK`已历经数个线上项目验证与考验，可靠性与稳定性极高，欢迎`fork`或`star`此项目。
+此`SDK`运行最底要求`PHP`版本`5.3`, 建议在`PHP7`上运行以获取最佳性能。
+微信的部分接口需要缓存数据在本地，因此对目录需要有写权限。
+我们鼓励大家使用`composer`来管理您的第三方库，方便后期更新操作（尤其是接口类）。
+近期`access_token`经常无故失效，`SDK`已加入失败状态检测，自动重新获取`access_token`并返回结果.
+此`SDK`已历经数个线上项目验证与考验，可靠性与稳定性极高，欢迎`fork`或`star`此项目。
 
 ---
 
