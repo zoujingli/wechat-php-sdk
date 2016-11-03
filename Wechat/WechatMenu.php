@@ -96,7 +96,7 @@ class WechatMenu extends Common {
      * 创建个性菜单
      * @param array $data 菜单数组数据
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
-     * @return boolean
+     * @return type
      */
     public function createCondMenu($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -110,7 +110,7 @@ class WechatMenu extends Common {
                 $this->errMsg = $json['errmsg'];
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
-            return empty($json['menuid']);
+            return $json['menuid'];
         }
         return false;
     }
