@@ -836,14 +836,12 @@ class WechatReceive extends Common {
      * @return \WechatReceive
      */
     public function text($text = '') {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
             'MsgType'      => self::MSGTYPE_TEXT,
             'Content'      => $this->_auto_text_filter($text),
             'CreateTime'   => time(),
-            'FuncFlag'     => $FuncFlag
         );
         $this->Message($msg);
         return $this;
@@ -855,14 +853,12 @@ class WechatReceive extends Common {
      * @return \WechatReceive
      */
     public function image($mediaid = '') {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
             'MsgType'      => self::MSGTYPE_IMAGE,
             'Image'        => array('MediaId' => $mediaid),
             'CreateTime'   => time(),
-            'FuncFlag'     => $FuncFlag
         );
         $this->Message($msg);
         return $this;
@@ -874,14 +870,12 @@ class WechatReceive extends Common {
      * @return \WechatReceive
      */
     public function voice($mediaid = '') {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
             'MsgType'      => self::MSGTYPE_VOICE,
             'Voice'        => array('MediaId' => $mediaid),
             'CreateTime'   => time(),
-            'FuncFlag'     => $FuncFlag
         );
         $this->Message($msg);
         return $this;
@@ -896,7 +890,6 @@ class WechatReceive extends Common {
      * @return \WechatReceive
      */
     public function video($mediaid = '', $title = '', $description = '') {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -907,7 +900,6 @@ class WechatReceive extends Common {
                 'Description' => $description
             ),
             'CreateTime'   => time(),
-            'FuncFlag'     => $FuncFlag
         );
         $this->Message($msg);
         return $this;
@@ -923,7 +915,6 @@ class WechatReceive extends Common {
      * @return \WechatReceive
      */
     public function music($title, $desc, $musicurl, $hgmusicurl = '', $thumbmediaid = '') {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -935,7 +926,6 @@ class WechatReceive extends Common {
                 'MusicUrl'    => $musicurl,
                 'HQMusicUrl'  => $hgmusicurl
             ),
-            'FuncFlag'     => $FuncFlag
         );
         if ($thumbmediaid) {
             $msg['Music']['ThumbMediaId'] = $thumbmediaid;
@@ -960,7 +950,6 @@ class WechatReceive extends Common {
      *  )
      */
     public function news($newsData = array()) {
-        $FuncFlag = $this->_funcflag ? 1 : 0;
         $msg = array(
             'ToUserName'   => $this->getRevFrom(),
             'FromUserName' => $this->getRevTo(),
@@ -968,7 +957,6 @@ class WechatReceive extends Common {
             'MsgType'      => self::MSGTYPE_NEWS,
             'ArticleCount' => count($newsData),
             'Articles'     => $newsData,
-            'FuncFlag'     => $FuncFlag
         );
         $this->Message($msg);
         return $this;
