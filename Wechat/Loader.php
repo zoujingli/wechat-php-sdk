@@ -103,7 +103,7 @@ class Loader {
             self::$config['appsecret'] = self::$config['component_appsecret'];
         }
         if (empty(self::$config['encodingaeskey']) && !empty(self::$config['component_encodingaeskey'])) {
-            self::$config['encodingaeskey'] = self::$config['encodingaeskey'];
+            self::$config['encodingaeskey'] = self::$config['component_encodingaeskey'];
         }
         return self::$config;
     }
