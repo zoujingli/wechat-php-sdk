@@ -7,7 +7,7 @@ use Wechat\Lib\Tools;
 
 /**
  * 微信媒体素材管理类
- * 
+ *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/26 14:47
  */
@@ -85,9 +85,9 @@ class WechatMedia extends Common {
     /**
      * 上传图片，本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下。 (认证后的订阅号可用)
      * 注意：上传大文件时可能需要先调用 set_time_limit(0) 避免超时
-     * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义      
+     * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
      * @param array $data {"media":'@Path\filename.jpg'}
-     * 
+     *
      * @return boolean|array
      */
     public function uploadImg($data) {

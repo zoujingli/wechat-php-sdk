@@ -7,7 +7,7 @@ use Wechat\Lib\Tools;
 
 /**
  * 微信粉丝操作SDK
- * 
+ *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:20
  */
@@ -61,8 +61,8 @@ class WechatUser extends Common {
 
     /**
      * 批量获取关注粉丝列表
-     * @param type $next_openid
-     * @return boolean
+     * @param string $next_openid
+     * @return boolean|array
      */
     public function getUserList($next_openid = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -84,7 +84,7 @@ class WechatUser extends Common {
     /**
      * 获取关注者详细信息
      * @param string $openid
-     * @return array {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
+     * @return array|boolean {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
      * @注意：unionid字段 只有在粉丝将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getUserInfo($openid) {

@@ -140,7 +140,7 @@ class WechatPay {
         if (false === $this->_parseResult($result)) {
             return false;
         }
-        return $trade_type == 'JSAPI' ? $result['prepay_id'] : $result['code_url'];
+        return ($trade_type === 'JSAPI') ? $result['prepay_id'] : $result['code_url'];
     }
 
     /**
@@ -157,7 +157,6 @@ class WechatPay {
         $option["signType"] = "MD5";
         $option["paySign"] = Tools::getPaySign($option, $this->partnerKey);
         $option['timestamp'] = $option['timeStamp'];
-        unset($option["timeStamp"]);
         return $option;
     }
 

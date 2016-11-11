@@ -7,7 +7,7 @@ use Wechat\Loader;
 
 /**
  * 微信SDK基础类
- * 
+ *
  * @category WechatSDK
  * @subpackage library
  * @author Anyon <zoujingli@qq.com>
@@ -76,7 +76,7 @@ class Common {
         $encryptStr = "";
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $postStr = file_get_contents("php://input");
-            $array = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $array = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $this->encrypt_type = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"] : '';
             if ($this->encrypt_type == 'aes') {
                 $encryptStr = $array['Encrypt'];

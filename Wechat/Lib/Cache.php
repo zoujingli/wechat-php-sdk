@@ -6,24 +6,24 @@ use Wechat\Loader;
 
 /**
  * SDK缓存类
- * 
- * @author Anyon <zoujingli@qq.com> 
+ *
+ * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-20 17:50
  */
 class Cache {
 
     /**
      * 缓存位置
-     * @var type 
+     * @var type
      */
     static public $cachepath;
 
     /**
      * 设置缓存
-     * @param type $name
-     * @param type $value
-     * @param type $expired
-     * @return type
+     * @param string $name
+     * @param string $value
+     * @param int $expired
+     * @return mixed
      */
     static public function set($name, $value, $expired = 0) {
         if (isset(Loader::$callback['CacheSet'])) {
@@ -35,8 +35,8 @@ class Cache {
 
     /**
      * 读取缓存
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return mixed
      */
     static public function get($name) {
         if (isset(Loader::$callback['CacheGet'])) {
@@ -53,8 +53,8 @@ class Cache {
 
     /**
      * 删除缓存
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return mixed
      */
     static public function del($name) {
         if (isset(Loader::$callback['CacheDel'])) {
@@ -65,9 +65,9 @@ class Cache {
 
     /**
      * 输出内容到日志
-     * @param type $line
-     * @param type $filename
-     * @return type
+     * @param string $line
+     * @param string $filename
+     * @return mixed
      */
     static public function put($line, $filename = '') {
         if (isset(Loader::$callback['CachePut'])) {

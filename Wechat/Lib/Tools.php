@@ -16,9 +16,9 @@ class Tools {
 
     /**
      * 产生随机字符串
-     * @param type $length
-     * @param type $str
-     * @return type
+     * @param int $length
+     * @param string $str
+     * @return string
      */
     static public function createNoncestr($length = 32, $str = "") {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
