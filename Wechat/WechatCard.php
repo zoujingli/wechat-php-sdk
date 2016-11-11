@@ -8,8 +8,7 @@ use Wechat\Lib\Tools;
 /**
  * 微信卡卷
  */
-class WechatCard extends Common
-{
+class WechatCard extends Common {
 
     /** 卡券相关地址 */
     const CARD_CREATE = '/card/create?';
@@ -44,12 +43,12 @@ class WechatCard extends Common
     const CARD_LUCKYMONEY_UPDATE = '/card/luckymoney/updateuserbalance?';
 
     /**
-     * 获取微信卡券api_ticket
-     * @param string $appid 用于多个appid时使用,可空
-     * @param string $jsapi_ticket 手动指定jsapi_ticket，非必要情况不建议用
+     * 获取微信卡券 api_ticket
+     * @param string $appid
+     * @param string $jsapi_ticket
+     * @return bool|string
      */
-    public function getJsCardTicket($appid = '', $jsapi_ticket = '')
-    {
+    public function getJsCardTicket($appid = '', $jsapi_ticket = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -59,7 +58,7 @@ class WechatCard extends Common
             return $this->jsapi_ticket;
         }
         $authname = 'wechat_jsapi_ticket_wxcard_' . $appid;
-        if ($rs = Tools::getCache($authname)) {
+        if (($rs = Tools::getCache($authname))) {
             $this->jsapi_ticket = $rs;
             return $rs;
         }
@@ -81,23 +80,20 @@ class WechatCard extends Common
 
     /**
      * 生成选择卡卷JS签名包
-     * @param type $cardid 卡券Id
-     * @param type $cardtype 卡券类型
-     * @param type $shopid 门店Id
-     * @return string
+     * @param string $cardid 卡券Id
+     * @param string $cardtype 卡券类型
+     * @param string $shopid 门店Id
+     * @return array
      */
-    public function createChooseCardJsPackage($cardid = NULL, $cardtype = NULL, $shopid = NULL)
-    {
+    public function createChooseCardJsPackage($cardid = NULL, $cardtype = NULL, $shopid = NULL) {
         $data = array();
         $data['api_ticket'] = $this->getJsCardTicket();
         $data['app_id'] = $this->appid;
         $data['timestamp'] = time();
         $data['nonceStr'] = Tools::createNoncestr();
-
         !empty($cardid) && $data['cardId'] = $cardid;
         !empty($cardtype) && $data['cardType'] = $cardtype;
         !empty($shopid) && $data['shopId'] = $shopid;
-
         $data['cardSign'] = $this->getTicketSignature($data);
         $data['signType'] = 'SHA1';
         unset($data['api_ticket'], $data['app_id']);
@@ -106,15 +102,13 @@ class WechatCard extends Common
 
     /**
      * 生成添加卡卷JS签名包
-     * @param type $cardid 卡卷ID
-     * @param type $data 其它限定参数
-     * @return type
+     * @param string|null $cardid 卡卷ID
+     * @param array $data 其它限定参数
+     * @return array
      */
-    public function createAddCardJsPackage($cardid = NULL, $data = array())
-    {
+    public function createAddCardJsPackage($cardid = NULL, $data = array()) {
 
-        function _sign($cardid = NULL, $attr = array(), $self)
-        {
+        function _sign($cardid = NULL, $attr = array(), $self) {
             unset($attr['outer_id']);
             $attr['cardId'] = $cardid;
             $attr['timestamp'] = time();
@@ -140,10 +134,9 @@ class WechatCard extends Common
      * 获取微信卡券签名
      * @param array $arrdata 签名数组
      * @param string $method 签名方法
-     * @return boolean|string 签名值
+     * @return bool|string 签名值
      */
-    public function getTicketSignature($arrdata, $method = "sha1")
-    {
+    public function getTicketSignature($arrdata, $method = "sha1") {
         if (!function_exists($method)) {
             return false;
         }
@@ -157,11 +150,10 @@ class WechatCard extends Common
 
     /**
      * 创建卡券
-     * @param Array $data 卡券数据
-     * @return array|boolean 返回数组中card_id为卡券ID
+     * @param array $data 卡券数据
+     * @return bool|array 返回数组中card_id为卡券ID
      */
-    public function createCard($data)
-    {
+    public function createCard($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -182,10 +174,9 @@ class WechatCard extends Common
      * 更改卡券信息
      * 调用该接口更新信息后会重新送审，卡券状态变更为待审核。已被用户领取的卡券会实时更新票面信息。
      * @param string $data
-     * @return boolean
+     * @return bool
      */
-    public function updateCard($data)
-    {
+    public function updateCard($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -207,10 +198,9 @@ class WechatCard extends Common
      * 允许商户删除任意一类卡券。删除卡券后，该卡券对应已生成的领取用二维码、添加到卡包 JS API 均会失效。
      * 注意：删除卡券不能删除已被用户领取，保存在微信客户端中的卡券，已领取的卡券依旧有效。
      * @param string $card_id 卡券ID
-     * @return boolean
+     * @return bool
      */
-    public function delCard($card_id)
-    {
+    public function delCard($card_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -230,11 +220,11 @@ class WechatCard extends Common
 
     /**
      * 获取粉丝下所有卡卷列表
-     * @param type $openid 粉丝openid
-     * @param type $card_id 卡卷ID（可不给）
+     * @param $openid 粉丝openid
+     * @param string $card_id 卡卷ID（可不给）
+     * @return bool|array
      */
-    public function getCardList($openid, $card_id = '')
-    {
+    public function getCardList($openid, $card_id = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -255,11 +245,10 @@ class WechatCard extends Common
 
     /**
      * 获取图文消息群发卡券HTML
-     * @param type $card_id 卡卷ID
-     * @return boolean
+     * @param string $card_id 卡卷ID
+     * @return bool|array
      */
-    public function getCardMpHtml($card_id)
-    {
+    public function getCardMpHtml($card_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -280,12 +269,11 @@ class WechatCard extends Common
 
     /**
      * 卡卷code核查
-     * @param type $card_id 卡卷ID
-     * @param type $code_list 卡卷code列表，一维数组
-     * @return boolean
+     * @param string $card_id 卡卷ID
+     * @param array $code_list 卡卷code列表（一维数组）
+     * @return bool|array
      */
-    public function checkCardCodeList($card_id, $code_list)
-    {
+    public function checkCardCodeList($card_id, $code_list) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -305,11 +293,10 @@ class WechatCard extends Common
 
     /**
      * 查询卡券详情
-     * @param string $card_id
-     * @return boolean|array    返回数组信息比较复杂，请参看卡券接口文档
+     * @param string $card_id 卡卷ID
+     * @return bool|array
      */
-    public function getCardInfo($card_id)
-    {
+    public function getCardInfo($card_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -330,10 +317,9 @@ class WechatCard extends Common
     /**
      * 获取颜色列表
      * 获得卡券的最新颜色列表，用于创建卡券
-     * @return boolean|array   返回数组请参看 微信卡券接口文档 的json格式
+     * @return bool|array
      */
-    public function getCardColors()
-    {
+    public function getCardColors() {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -353,17 +339,15 @@ class WechatCard extends Common
     /**
      * 生成卡券二维码
      * 成功则直接返回ticket值，可以用 getQRUrl($ticket) 换取二维码url
-     *
      * @param string $card_id 卡券ID 必须
      * @param string $code 指定卡券 code 码，只能被领一次。use_custom_code 字段为 true 的卡券必须填写，非自定义 code 不必填写。
      * @param string $openid 指定领取者的 openid，只有该用户能领取。bind_openid 字段为 true 的卡券必须填写，非自定义 openid 不必填写。
      * @param int $expire_seconds 指定二维码的有效时间，范围是 60 ~ 1800 秒。不填默认为永久有效。
-     * @param boolean $is_unique_code 指定下发二维码，生成的二维码随机分配一个 code，领取后不可再次扫描。填写 true 或 false。默认 false。
+     * @param bool $is_unique_code 指定下发二维码，生成的二维码随机分配一个 code，领取后不可再次扫描。填写 true 或 false。默认 false。
      * @param string $balance 红包余额，以分为单位。红包类型必填（LUCKY_MONEY），其他卡券类型不填。
-     * @return boolean|string
+     * @return bool|string
      */
-    public function createCardQrcode($card_id, $code = '', $openid = '', $expire_seconds = 0, $is_unique_code = false, $balance = '')
-    {
+    public function createCardQrcode($card_id, $code = '', $openid = '', $expire_seconds = 0, $is_unique_code = false, $balance = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -391,10 +375,9 @@ class WechatCard extends Common
     /**
      * 消耗 code
      * 自定义 code（use_custom_code 为 true）的优惠券，在 code 被核销时，必须调用此接口。
-     *
      * @param string $code 要消耗的序列号
      * @param string $card_id 要消耗序列号所述的 card_id，创建卡券时use_custom_code 填写 true 时必填。
-     * @return boolean|array
+     * @return bool|array
      * {
      *  "errcode":0,
      *  "errmsg":"ok",
@@ -402,8 +385,7 @@ class WechatCard extends Common
      *  "openid":"oFS7Fjl0WsZ9AMZqrI80nbIq8xrA"
      * }
      */
-    public function consumeCardCode($code, $card_id = '')
-    {
+    public function consumeCardCode($code, $card_id = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -425,15 +407,14 @@ class WechatCard extends Common
     /**
      * code 解码
      * @param string $encrypt_code 通过 choose_card_info 获取的加密字符串
-     * @return boolean|array
+     * @return bool|array
      * {
      *  "errcode":0,
      *  "errmsg":"ok",
      *  "code":"751234212312"
      *  }
      */
-    public function decryptCardCode($encrypt_code)
-    {
+    public function decryptCardCode($encrypt_code) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -454,7 +435,7 @@ class WechatCard extends Common
     /**
      * 查询 code 的有效性（非自定义 code）
      * @param string $code
-     * @return boolean|array
+     * @return bool|array
      * {
      *  "errcode":0,
      *  "errmsg":"ok",
@@ -466,8 +447,7 @@ class WechatCard extends Common
      *  }
      * }
      */
-    public function checkCardCode($code)
-    {
+    public function checkCardCode($code) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -487,9 +467,9 @@ class WechatCard extends Common
 
     /**
      * 批量查询卡列表
-     * @param $offset  开始拉取的偏移，默认为0从头开始
-     * @param $count   需要查询的卡片的数量（数量最大50,默认50）
-     * @return boolean|array
+     * @param int $offset 开始拉取的偏移，默认为0从头开始
+     * @param int $count 需要查询的卡片的数量（数量最大50,默认50）
+     * @return bool|array
      * {
      *  "errcode":0,
      *  "errmsg":"ok",
@@ -497,8 +477,7 @@ class WechatCard extends Common
      *  "total_num":1                                       //该商户名下 card_id 总数
      * }
      */
-    public function getCardIdList($offset = 0, $count = 50)
-    {
+    public function getCardIdList($offset = 0, $count = 50) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -524,10 +503,9 @@ class WechatCard extends Common
      * @param string $code 卡券的 code 编码
      * @param string $card_id 卡券 ID
      * @param string $new_code 新的卡券 code 编码
-     * @return boolean
+     * @return bool
      */
-    public function updateCardCode($code, $card_id, $new_code)
-    {
+    public function updateCardCode($code, $card_id, $new_code) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -550,10 +528,9 @@ class WechatCard extends Common
      * 设置卡券失效的操作不可逆
      * @param string $code 需要设置为失效的 code
      * @param string $card_id 自定义 code 的卡券必填。非自定义 code 的卡券不填。
-     * @return boolean
+     * @return bool
      */
-    public function unavailableCardCode($code, $card_id = '')
-    {
+    public function unavailableCardCode($code, $card_id = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -575,10 +552,9 @@ class WechatCard extends Common
     /**
      * 库存修改
      * @param string $data
-     * @return boolean
+     * @return bool
      */
-    public function modifyCardStock($data)
-    {
+    public function modifyCardStock($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -598,10 +574,9 @@ class WechatCard extends Common
     /**
      * 更新门票
      * @param string $data
-     * @return boolean
+     * @return bool
      */
-    public function updateMeetingCard($data)
-    {
+    public function updateMeetingCard($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -621,10 +596,9 @@ class WechatCard extends Common
     /**
      * 激活/绑定会员卡
      * @param string $data 具体结构请参看卡券开发文档(6.1.1 激活/绑定会员卡)章节
-     * @return boolean
+     * @return bool
      */
-    public function activateMemberCard($data)
-    {
+    public function activateMemberCard($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -645,10 +619,9 @@ class WechatCard extends Common
      * 会员卡交易
      * 会员卡交易后每次积分及余额变更需通过接口通知微信，便于后续消息通知及其他扩展功能。
      * @param string $data 具体结构请参看卡券开发文档(6.1.2 会员卡交易)章节
-     * @return boolean|array
+     * @return bool|array
      */
-    public function updateMemberCard($data)
-    {
+    public function updateMemberCard($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -667,12 +640,11 @@ class WechatCard extends Common
 
     /**
      * 设置卡券测试白名单
-     * @param string $openid 测试的 openid 列表
-     * @param string $user 测试的微信号列表
-     * @return boolean
+     * @param array $openid 测试的 openid 列表
+     * @param array $user 测试的微信号列表
+     * @return bool
      */
-    public function setCardTestWhiteList($openid = array(), $user = array())
-    {
+    public function setCardTestWhiteList($openid = array(), $user = array()) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -695,12 +667,11 @@ class WechatCard extends Common
     /**
      * 更新红包金额
      * @param string $code 红包的序列号
-     * @param $balance          红包余额
+     * @param int $balance 红包余额
      * @param string $card_id 自定义 code 的卡券必填。非自定义 code 可不填。
-     * @return boolean|array
+     * @return bool|array
      */
-    public function updateLuckyMoney($code, $balance, $card_id = '')
-    {
+    public function updateLuckyMoney($code, $balance, $card_id = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

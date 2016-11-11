@@ -6,7 +6,7 @@ use CURLFile;
 
 /**
  * 微信接口通用类
- *  
+ *
  * @category WechatSDK
  * @subpackage library
  * @author Anyon <zoujingli@qq.com>
@@ -32,7 +32,7 @@ class Tools {
      * 获取签名
      * @param array $arrdata 签名数组
      * @param string $method 签名方法
-     * @return boolean|string 签名值
+     * @return bool|string 签名值
      */
     static public function getSignature($arrdata, $method = "sha1") {
         if (!function_exists($method)) {
@@ -48,9 +48,9 @@ class Tools {
 
     /**
      * 生成支付签名
-     * @param type $option 
-     * @param type $partnerKey
-     * @return type
+     * @param array $option
+     * @param string $partnerKey
+     * @return string
      */
     static public function getPaySign($option, $partnerKey) {
         ksort($option);
@@ -66,8 +66,7 @@ class Tools {
      * @param mixed $data 数据
      * @param string $root 根节点名
      * @param string $item 数字索引的子节点名
-     * @param string $attr 根节点属性
-     * @param string $id   数字索引子节点key转换的属性名
+     * @param string $id 数字索引子节点key转换的属性名
      * @return string
      */
     static public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
@@ -83,7 +82,7 @@ class Tools {
                 } else {
                     $content .= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
                 }
-                list($_key, ) = explode(' ', $key . ' ');
+                list($_key,) = explode(' ', $key . ' ');
                 $content .= "</$_key>";
             }
             return $content;
@@ -94,16 +93,26 @@ class Tools {
 
     /**
      * 将xml转为array
-     * @param type $xml
-     * @return type
+     * @param string $xml
+     * @return array
      */
     static public function xml2arr($xml) {
         return json_decode(Tools::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
     /**
-     * GET 请求
-     * @param string $url
+     * 生成安全JSON数据
+     * @param $array
+     * @return string
+     */
+    static public function json_encode($array) {
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
+    }
+
+    /**
+     * 以get方式提交请求
+     * @param $url
+     * @return bool|mixed
      */
     static public function httpGet($url) {
         $oCurl = curl_init();
@@ -125,10 +134,10 @@ class Tools {
     }
 
     /**
-     * 以post方式提交xml到对应的接口url
-     * @param type $url
-     * @param type $postdata
-     * @return boolean
+     * 以post方式提交请求
+     * @param string $url
+     * @param array $postdata
+     * @return bool|mixed
      */
     static public function httpPost($url, $postdata) {
         $ch = curl_init();
@@ -156,12 +165,12 @@ class Tools {
 
     /**
      * 使用证书，以post方式提交xml到对应的接口url
-     * @param type $url POST提交的内容
-     * @param type $postdata 请求的地址
-     * @param type $ssl_cer 证书Cer路径 | 证书内容
-     * @param type $ssl_key 证书Key路径 | 证书内容
-     * @param type $second 设置请求超时时间
-     * @return boolean
+     * @param string $url POST提交的内容
+     * @param array $postdata 请求的地址
+     * @param string $ssl_cer 证书Cer路径 | 证书内容
+     * @param string $ssl_key 证书Key路径 | 证书内容
+     * @param int $second 设置请求超时时间
+     * @return bool|mixed
      */
     static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
         $ch = curl_init();
@@ -200,17 +209,8 @@ class Tools {
     }
 
     /**
-     * 生成JSON，保留汉字
-     * @param type $array
-     * @return type
-     */
-    static public function json_encode($array) {
-        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
-    }
-
-    /**
-     * 读取客户端IP
-     * @return type
+     * 读取微信客户端IP
+     * @return null|string
      */
     static public function getAddress() {
         foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
@@ -232,7 +232,7 @@ class Tools {
      * @param string $cachename
      * @param mixed $value
      * @param int $expired
-     * @return boolean
+     * @return bool
      */
     static public function setCache($cachename, $value, $expired = 0) {
         return Cache::set($cachename, $value, $expired);
@@ -250,7 +250,7 @@ class Tools {
     /**
      * 清除缓存，按需重载
      * @param string $cachename
-     * @return boolean
+     * @return bool
      */
     static public function removeCache($cachename) {
         return Cache::del($cachename);
@@ -258,8 +258,8 @@ class Tools {
 
     /**
      * SDK日志处理方法
-     * @param type $msg
-     * @param type $type
+     * @param string $msg 日志行内容
+     * @param string $type 日志级别
      */
     static public function log($msg, $type = 'MSG') {
         Cache::put($type . ' - ' . $msg);

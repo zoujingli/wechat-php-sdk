@@ -7,7 +7,7 @@ use Wechat\Lib\Tools;
 
 /**
  * 微信菜单操作SDK
- * 
+ *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:52
  */
@@ -31,7 +31,7 @@ class WechatMenu extends Common {
      * 创建自定义菜单
      * @param array $data 菜单数组数据
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN 文档
-     * @return boolean
+     * @return bool
      */
     public function createMenu($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -52,7 +52,7 @@ class WechatMenu extends Common {
 
     /**
      * 获取所有菜单
-     * @return array('menu'=>array())
+     * @return bool|array
      */
     public function getMenu() {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -73,7 +73,7 @@ class WechatMenu extends Common {
 
     /**
      * 删除所有菜单
-     * @return boolean
+     * @return bool
      */
     public function deleteMenu() {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -96,7 +96,7 @@ class WechatMenu extends Common {
      * 创建个性菜单
      * @param array $data 菜单数组数据
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
-     * @return type
+     * @return bool|string
      */
     public function createCondMenu($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -117,8 +117,8 @@ class WechatMenu extends Common {
 
     /**
      * 删除个性菜单
-     * @param type $menuid
-     * @return boolean
+     * @param string $menuid 菜单ID
+     * @return bool
      */
     public function deleteCondMenu($menuid) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -140,8 +140,8 @@ class WechatMenu extends Common {
 
     /**
      * 测试并返回个性化菜单
-     * @param type $openid
-     * @return boolean
+     * @param string $openid 粉丝openid
+     * @return bool
      */
     public function tryCondMenu($openid) {
         if (!$this->access_token && !$this->getAccessToken()) {

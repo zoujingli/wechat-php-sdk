@@ -76,7 +76,7 @@ class WechatService {
 
     /**
      * 接收公众平台推送的 Ticket
-     * @return boolean
+     * @return bool
      */
     public function getComonentTicket() {
         $receive = new WechatReceive(array(
@@ -108,7 +108,7 @@ class WechatService {
      * @注意2. 一定保存好新的刷新令牌
      * @param string $authorizer_appid 授权方APPID
      * @param string $authorizer_refresh_token 授权方刷新令牌
-     * @return string|boolean
+     * @return bool|string
      */
     public function refreshAccessToken($authorizer_appid, $authorizer_refresh_token) {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -129,7 +129,7 @@ class WechatService {
 
     /**
      * 获取或刷新服务 AccessToken
-     * @return string|boolean
+     * @return bool|string
      */
     public function getComponentAccessToken() {
         $cacheKey = 'wechat_component_access_token';
@@ -154,7 +154,7 @@ class WechatService {
      * 解析JSON数据
      * @param string $result
      * @param string|null $field
-     * @return array|boolean
+     * @return bool|array
      */
     private function _decode($result, $field = null) {
         $this->data = json_decode($result, true);
@@ -177,7 +177,7 @@ class WechatService {
      * 获取公众号的授权信息
      *
      * @param string $authorization_code
-     * @return array|boolean
+     * @return bool|array
      */
     public function getAuthorizationInfo($authorization_code) {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -216,7 +216,7 @@ class WechatService {
     /**
      * 获取授权方的账户信息
      * @param string $authorizer_appid
-     * @return boolean
+     * @return bool
      */
     public function getWechatInfo($authorizer_appid) {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -243,7 +243,7 @@ class WechatService {
      * 获取授权方的选项设置信息
      * @param string $authorizer_appid
      * @param string $option_name
-     * @return boolean
+     * @return bool
      */
     public function getAuthorizerOption($authorizer_appid, $option_name) {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -267,7 +267,7 @@ class WechatService {
      * @param string $authorizer_appid
      * @param string $option_name
      * @param string $option_value
-     * @return boolean
+     * @return bool
      */
     public function setAuthorizerOption($authorizer_appid, $option_name, $option_value) {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -290,7 +290,7 @@ class WechatService {
     /**
      * 获取授权回跳地址
      * @param string $redirect_uri
-     * @return boolean
+     * @return bool
      */
     public function getAuthRedirect($redirect_uri) {
         empty($this->pre_auth_code) && $this->getPreauthCode();
@@ -303,7 +303,7 @@ class WechatService {
     /**
      * 获取预授权码
      *
-     * @return string|boolean
+     * @return bool|string
      */
     public function getPreauthCode() {
         empty($this->component_access_token) && $this->getComponentAccessToken();
@@ -330,13 +330,13 @@ class WechatService {
      */
     public function getOauthRedirect($appid, $redirect_uri, $scope = 'snsapi_userinfo') {
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri=" . urlencode($redirect_uri)
-        . "&response_type=code&scope={$scope}&state={$appid}&component_appid={$this->component_appid}#wechat_redirect";
+                . "&response_type=code&scope={$scope}&state={$appid}&component_appid={$this->component_appid}#wechat_redirect";
     }
 
     /**
      * 通过code获取Access Token
      * @param string $appid
-     * @return boolean|array
+     * @return bool|array
      */
     public function getOauthAccessToken($appid) {
         $code = isset($_GET['code']) ? $_GET['code'] : '';
@@ -348,10 +348,10 @@ class WechatService {
             return false;
         }
         $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?"
-            . "appid={$appid}&code={$code}&"
-            . "grant_type=authorization_code&"
-            . "component_appid={$this->component_appid}&"
-            . "component_access_token={$this->component_access_token}";
+                . "appid={$appid}&code={$code}&"
+                . "grant_type=authorization_code&"
+                . "component_appid={$this->component_appid}&"
+                . "component_access_token={$this->component_access_token}";
         $json = $this->parseJson(Tools::httpGet($url));
         if ($json !== false) {
             return $json;
@@ -362,7 +362,7 @@ class WechatService {
     /**
      * 解析JSON数据
      * @param string $result
-     * @return boolean
+     * @return bool
      */
     private function parseJson($result) {
         $json = json_decode($result, true);
@@ -378,7 +378,7 @@ class WechatService {
      * 获取关注者详细信息
      * @param string $openid
      * @param string $oauthAccessToken
-     * @return array|boolean {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
+     * @return bool|array {subscribe,openid,nickname,sex,city,province,country,language,headimgurl,subscribe_time,[unionid]}
      * 注意：unionid字段 只有在用户将公众号绑定到公众号第三方平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getOauthUserInfo($openid, $oauthAccessToken) {

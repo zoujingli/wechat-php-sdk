@@ -7,7 +7,7 @@ use Wechat\Lib\Tools;
 
 /**
  * 微信扩展功能
- * 
+ *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-22 10:32
  */
@@ -63,7 +63,7 @@ class WechatExtends extends Common {
     /**
      * 长链接转短链接接口
      * @param string $long_url 传入要转换的长url
-     * @return boolean|string url 成功则返回转换后的短url
+     * @return bool|string url 成功则返回转换后的短url
      */
     public function getShortUrl($long_url) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -91,7 +91,7 @@ class WechatExtends extends Common {
      * @param int|string $scene_id 自定义追踪id,临时二维码只能用数值型
      * @param int $type 0:临时二维码；1:永久二维码(此时expire参数无效)；2:永久二维码(此时expire参数无效)
      * @param int $expire 临时二维码有效期，最大为2592000秒(30天)
-     * @return array('ticket'=>'qrcode字串','expire_seconds'=>2592000,'url'=>'二维码图片解析后的地址')
+     * @return bool|array ('ticket'=>'qrcode字串','expire_seconds'=>2592000,'url'=>'二维码图片解析后的地址')
      */
     public function getQRCode($scene_id, $type = 0, $expire = 2592000) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -121,16 +121,16 @@ class WechatExtends extends Common {
 
     /**
      * 语义理解接口
-     * @param String $uid      用户唯一id（非开发者id），用户区分公众号下的不同用户（建议填入用户openid）
-     * @param String $query    输入文本串
-     * @param String $category 需要使用的服务类型，多个用“，”隔开，不能为空
-     * @param Float $latitude  纬度坐标，与经度同时传入；与城市二选一传入
-     * @param Float $longitude 经度坐标，与纬度同时传入；与城市二选一传入
-     * @param String $city     城市名称，与经纬度二选一传入
-     * @param String $region   区域名称，在城市存在的情况下可省略；与经纬度二选一传入
-     * @return boolean|array
+     * @param string $uid 用户唯一id（非开发者id），用户区分公众号下的不同用户（建议填入用户openid）
+     * @param string $query 输入文本串
+     * @param string $category 需要使用的服务类型，多个用“，”隔开，不能为空
+     * @param float $latitude 纬度坐标，与经度同时传入；与城市二选一传入
+     * @param float $longitude 经度坐标，与纬度同时传入；与城市二选一传入
+     * @param string $city 城市名称，与经纬度二选一传入
+     * @param string $region 区域名称，在城市存在的情况下可省略；与经纬度二选一传入
+     * @return bool|array
      */
-    public function querySemantic($uid, $query, $category, $latitude = 0, $longitude = 0, $city = "", $region = "") {
+    public function querySemantic($uid, $query, $category, $latitude = 0.00, $longitude = 0.00, $city = "", $region = "") {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -164,11 +164,11 @@ class WechatExtends extends Common {
 
     /**
      * 获取统计数据
-     * @param string $type  数据分类(user|article|upstreammsg|interface)分别为(用户分析|图文分析|消息分析|接口分析)
-     * @param string $subtype   数据子分类，参考 DATACUBE_URL_ARR 常量定义部分 或者README.md说明文档
+     * @param string $type 数据分类(user|article|upstreammsg|interface)分别为(用户分析|图文分析|消息分析|接口分析)
+     * @param string $subtype 数据子分类，参考 DATACUBE_URL_ARR 常量定义部分 或者README.md说明文档
      * @param string $begin_date 开始时间
-     * @param string $end_date   结束时间
-     * @return boolean|array 成功返回查询结果数组，其定义请看官方文档
+     * @param string $end_date 结束时间
+     * @return bool|array 成功返回查询结果数组，其定义请看官方文档
      */
     public function getDatacube($type, $subtype, $begin_date, $end_date = '') {
         if (!$this->access_token && !$this->getAccessToken()) {

@@ -33,8 +33,8 @@ class WechatPoi extends Common {
     /**
      * 创建门店
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
-     * @param type $data JSON数据格式
-     * @return boolean
+     * @param array $data
+     * @return bool
      */
     public function addPoi($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -56,8 +56,8 @@ class WechatPoi extends Common {
     /**
      * 删除门店
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
-     * @param type $poi_id JSON数据格式
-     * @return boolean
+     * @param string $poi_id JSON数据格式
+     * @return bool|array
      */
     public function delPoi($poi_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -80,8 +80,8 @@ class WechatPoi extends Common {
     /**
      * 修改门店服务信息
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
-     * @param type $data JSON数据格式
-     * @return boolean
+     * @param array $data
+     * @return bool
      */
     public function updatePoi($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -103,8 +103,8 @@ class WechatPoi extends Common {
     /**
      * 查询门店信息
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
-     * @param type $poi_id 
-     * @return boolean
+     * @param string $poi_id
+     * @return bool
      */
     public function getPoi($poi_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -127,9 +127,9 @@ class WechatPoi extends Common {
     /**
      * 查询门店列表
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1444378120&token=&lang=zh_CN
-     * @param type $begin 开始位置，0 即为从第一条开始查询
-     * @param type $limit 返回数据条数，最大允许50，默认为20
-     * @return boolean
+     * @param int $begin 开始位置，0 即为从第一条开始查询
+     * @param int $limit 返回数据条数，最大允许50，默认为20
+     * @return bool|array
      */
     public function getPoiList($begin = 0, $limit = 50) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -152,7 +152,7 @@ class WechatPoi extends Common {
 
     /**
      * 获取商家门店类目表
-     * @return bool|mixed
+     * @return bool|string
      */
     public function getCategory() {
         if (!$this->access_token && !$this->getAccessToken()) {

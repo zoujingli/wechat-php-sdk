@@ -174,7 +174,7 @@ class ErrorCode {
     /**
      * 获取错误消息内容
      * @param type $err
-     * @return boolean
+     * @return bool
      */
     public static function getErrText($err) {
         if (isset(self::$errCode[$err])) {

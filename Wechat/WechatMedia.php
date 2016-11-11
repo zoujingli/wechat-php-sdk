@@ -33,8 +33,8 @@ class WechatMedia extends Common {
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
      * 注意：临时素材的media_id是可复用的！
      * @param array $data {"media":'@Path\filename.jpg'}
-     * @param type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
-     * @return boolean|array
+     * @param string $type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
+     * @return bool|array
      */
     public function uploadMedia($data, $type) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -57,8 +57,8 @@ class WechatMedia extends Common {
     /**
      * 获取临时素材(认证后的订阅号可用)
      * @param string $media_id 媒体文件id
-     * @param boolean $is_video 是否为视频文件，默认为否
-     * @return raw data
+     * @param bool $is_video 是否为视频文件，默认为否
+     * @return bool|array
      */
     public function getMedia($media_id, $is_video = false) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -87,8 +87,7 @@ class WechatMedia extends Common {
      * 注意：上传大文件时可能需要先调用 set_time_limit(0) 避免超时
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
      * @param array $data {"media":'@Path\filename.jpg'}
-     *
-     * @return boolean|array
+     * @return bool|array
      */
     public function uploadImg($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -114,10 +113,10 @@ class WechatMedia extends Common {
      * 注意：上传大文件时可能需要先调用 set_time_limit(0) 避免超时
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
      * @param array $data {"media":'@Path\filename.jpg'}
-     * @param type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
-     * @param boolean $is_video 是否为视频文件，默认为否
+     * @param string $type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
+     * @param bool $is_video 是否为视频文件，默认为否
      * @param array $video_info 视频信息数组，非视频素材不需要提供 array('title'=>'视频标题','introduction'=>'描述')
-     * @return boolean|array
+     * @return bool|array
      */
     public function uploadForeverMedia($data, $type, $is_video = false, $video_info = array()) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -143,7 +142,7 @@ class WechatMedia extends Common {
      * 上传永久图文素材(认证后的订阅号可用)
      * 新增的永久素材也可以在公众平台官网素材管理模块中看到
      * @param array $data 消息结构{"articles":[{...}]}
-     * @return boolean|array
+     * @return bool|array
      */
     public function uploadForeverArticles($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -168,7 +167,7 @@ class WechatMedia extends Common {
      * @param string $media_id 图文素材id
      * @param array $data 消息结构{"articles":[{...}]}
      * @param int $index 更新的文章在图文素材的位置，第一篇为0，仅多图文使用
-     * @return boolean|array
+     * @return bool|array
      */
     public function updateForeverArticles($media_id, $data, $index = 0) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -197,8 +196,8 @@ class WechatMedia extends Common {
      * 获取永久素材(认证后的订阅号可用)
      * 返回图文消息数组或二进制数据，失败返回false
      * @param string $media_id 媒体文件id
-     * @param boolean $is_video 是否为视频文件，默认为否
-     * @return boolean|array|raw data
+     * @param bool $is_video 是否为视频文件，默认为否
+     * @return bool|array|raw data
      */
     public function getForeverMedia($media_id, $is_video = false) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -231,7 +230,7 @@ class WechatMedia extends Common {
     /**
      * 删除永久素材(认证后的订阅号可用)
      * @param string $media_id 媒体文件id
-     * @return boolean
+     * @return bool
      */
     public function delForeverMedia($media_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -256,7 +255,7 @@ class WechatMedia extends Common {
      * @param string $type 素材的类型,图片（image）、视频（video）、语音 （voice）、图文（news）
      * @param int $offset 全部素材的偏移位置，0表示从第一个素材
      * @param int $count 返回素材的数量，取值在1到20之间
-     * @return boolean|array
+     * @return bool|array
      * 返回数组格式:
      * array(
      *  'total_count'=>0, //该类型的素材的总数
@@ -288,7 +287,7 @@ class WechatMedia extends Common {
 
     /**
      * 获取永久素材总数(认证后的订阅号可用)
-     * @return boolean|array
+     * @return bool|array
      * 返回数组格式:
      * array(
      *  'voice_count'=>0, //语音总数量
@@ -317,7 +316,7 @@ class WechatMedia extends Common {
     /**
      * 上传图文消息素材，用于群发(认证后的订阅号可用)
      * @param array $data 消息结构{"articles":[{...}]}
-     * @return boolean|array
+     * @return bool|array
      */
     public function uploadArticles($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -344,7 +343,7 @@ class WechatMedia extends Common {
      *     "title"=>"TITLE",    //视频标题
      *     "description"=>"Description"        //视频描述
      * }
-     * @return boolean|array
+     * @return bool|array
      * {
      *     "type":"video",
      *     "media_id":"mediaid",

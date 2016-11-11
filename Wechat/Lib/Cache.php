@@ -5,7 +5,7 @@ namespace Wechat\Lib;
 use Wechat\Loader;
 
 /**
- * SDK缓存类
+ * 微信SDK基础缓存类
  *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-20 17:50
@@ -14,7 +14,7 @@ class Cache {
 
     /**
      * 缓存位置
-     * @var type
+     * @var string
      */
     static public $cachepath;
 
@@ -79,7 +79,7 @@ class Cache {
 
     /**
      * 检查缓存目录
-     * @return boolean
+     * @return bool
      */
     static protected function check() {
         empty(self::$cachepath) && self::$cachepath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;

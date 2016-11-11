@@ -32,8 +32,8 @@ class WechatPay {
     public $errCode;
 
     /**
-     * 支付SDK构造函数
-     * @param type $options
+     * WechatPay constructor.
+     * @param array $options
      */
     public function __construct($options = array()) {
         $config = Loader::config($options);
@@ -46,8 +46,8 @@ class WechatPay {
 
     /**
      * 设置标配的请求参数，生成签名，生成接口参数xml
-     * @param type $data
-     * @return type
+     * @param array $data
+     * @return string
      */
     protected function createXml($data) {
         if (!isset($data['wxappid']) && !isset($data['mch_appid']) && !isset($data['appid'])) {
@@ -63,9 +63,9 @@ class WechatPay {
 
     /**
      * POST提交XML
-     * @param type $data
-     * @param type $url
-     * @return type
+     * @param array $data
+     * @param string $url
+     * @return mixed
      */
     public function postXml($data, $url) {
         return Tools::httpPost($url, $this->createXml($data));
@@ -73,9 +73,9 @@ class WechatPay {
 
     /**
      * 使用证书post请求XML
-     * @param type $data
-     * @param type $url
-     * @return type
+     * @param array $data
+     * @param string $url
+     * @return mixed
      */
     function postXmlSSL($data, $url) {
         return Tools::httpsPost($url, $this->createXml($data), $this->ssl_cer, $this->ssl_key);
@@ -83,10 +83,10 @@ class WechatPay {
 
     /**
      * POST提交获取Array结果
-     * @param type $data 需要提交的数据
-     * @param type $url
-     * @param type $method
-     * @return type
+     * @param array $data 需要提交的数据
+     * @param string $url
+     * @param string $method
+     * @return array
      */
     public function getArrayResult($data, $url, $method = 'postXml') {
         return Tools::xml2arr($this->$method($data, $url));
@@ -94,8 +94,8 @@ class WechatPay {
 
     /**
      * 解析返回的结果
-     * @param type $result
-     * @return boolean
+     * @param array $result
+     * @return bool|array
      */
     protected function _parseResult($result) {
         if (empty($result)) {
@@ -118,13 +118,13 @@ class WechatPay {
 
     /**
      * 获取预支付ID
-     * @param type $openid          用户openid，JSAPI必填
-     * @param type $body            商品标题
-     * @param type $out_trade_no    第三方订单号
-     * @param type $total_fee       订单总价
-     * @param type $notify_url      支付成功回调地址
-     * @param type $trade_type      支付类型JSAPI|NATIVE|APP
-     * @return boolean
+     * @param string $openid 用户openid，JSAPI必填
+     * @param string $body 商品标题
+     * @param string $out_trade_no 第三方订单号
+     * @param int $total_fee 订单总价
+     * @param string $notify_url 支付成功回调地址
+     * @param string $trade_type 支付类型JSAPI|NATIVE|APP
+     * @return bool|string
      */
     public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI") {
         $postdata = array(
@@ -145,8 +145,8 @@ class WechatPay {
 
     /**
      * 创建JSAPI支付参数包
-     * @param type $prepay_id
-     * @return type
+     * @param string $prepay_id
+     * @return array
      */
     public function createMchPay($prepay_id) {
         $option = array();
@@ -162,8 +162,8 @@ class WechatPay {
 
     /**
      * 关闭订单
-     * @param type $out_trade_no
-     * @return boolean
+     * @param string $out_trade_no
+     * @return bool
      */
     public function closeOrder($out_trade_no) {
         $data = array('out_trade_no' => $out_trade_no);
@@ -176,7 +176,8 @@ class WechatPay {
 
     /**
      * 查询订单详情
-     * @param type $out_trade_no
+     * @param $out_trade_no
+     * @return bool|array
      */
     public function queryOrder($out_trade_no) {
         $data = array('out_trade_no' => $out_trade_no);
@@ -189,13 +190,13 @@ class WechatPay {
 
     /**
      * 订单退款接口
-     * @param type $out_trade_no 商户订单号
-     * @param type $transaction_id 微信订单号
-     * @param type $out_refund_no 商户退款订单号
-     * @param type $total_fee 商户订单总金额
-     * @param type $refund_fee 退款金额
-     * @param type $op_user_id 操作员ID，默认商户ID
-     * @return boolean
+     * @param string $out_trade_no 商户订单号
+     * @param string $transaction_id 微信订单号
+     * @param string $out_refund_no 商户退款订单号
+     * @param int $total_fee 商户订单总金额
+     * @param int $refund_fee 退款金额
+     * @param int|null $op_user_id 操作员ID，默认商户ID
+     * @return bool
      */
     public function refund($out_trade_no, $transaction_id, $out_refund_no, $total_fee, $refund_fee, $op_user_id = null) {
         $data = array();
@@ -214,8 +215,8 @@ class WechatPay {
 
     /**
      * 退款查询接口
-     * @param type $out_trade_no
-     * @return boolean
+     * @param string $out_trade_no
+     * @return bool|array
      */
     public function refundQuery($out_trade_no) {
         $data = array();
@@ -229,9 +230,9 @@ class WechatPay {
 
     /**
      * 获取对账单
-     * @param type $bill_date 账单日期，如 20141110
-     * @param type $bill_type ALL|SUCCESS|REFUND|REVOKED
-     * @return boolean
+     * @param string $bill_date 账单日期，如 20141110
+     * @param string $bill_type ALL|SUCCESS|REFUND|REVOKED
+     * @return bool|array
      */
     public function getBill($bill_date, $bill_type = 'ALL') {
         $data = array();
@@ -247,15 +248,14 @@ class WechatPay {
 
     /**
      * 发送现金红包
-     * @param type $openid      红包接收者OPENID
-     * @param type $amount      红包总金额
-     * @param type $billno      商户订单号
-     * @param type $sendname    商户名称
-     * @param type $wishing     红包祝福语
-     * @param type $actname     活动名称
-     * @param type $remark      备注信息
-     * @return boolean
-     * 
+     * @param string $openid 红包接收者OPENID
+     * @param int $amount 红包总金额
+     * @param string $billno 商户订单号
+     * @param string $sendname 商户名称
+     * @param string $wishing 红包祝福语
+     * @param string $actname 活动名称
+     * @param string $remark 备注信息
+     * @return bool|array
      * @link  https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_5
      */
     public function sendRedPack($openid, $amount, $billno, $sendname, $wishing, $actname, $remark) {
@@ -280,9 +280,8 @@ class WechatPay {
 
     /**
      * 现金红包状态查询
-     * @param type $billno
-     * @return boolean
-     * 
+     * @param string $billno
+     * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_7&index=6
      */
     public function queryRedPack($billno) {
@@ -298,12 +297,11 @@ class WechatPay {
 
     /**
      * 企业付款
-     * @param type $openid      红包接收者OPENID
-     * @param type $amount      红包总金额
-     * @param type $billno      商户订单号
-     * @param type $desc        备注信息
-     * @return boolean
-     * 
+     * @param string $openid 红包接收者OPENID
+     * @param int $amount 红包总金额
+     * @param string $billno 商户订单号
+     * @param string $desc 备注信息
+     * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
      */
     public function transfers($openid, $amount, $billno, $desc) {
@@ -326,9 +324,8 @@ class WechatPay {
 
     /**
      * 企业付款查询
-     * @param type $billno
-     * @return boolean
-     * 
+     * @param string $billno
+     * @return bool|array
      * @link https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
      */
     public function queryTransfers($billno) {
@@ -345,8 +342,8 @@ class WechatPay {
 
     /**
      * 二维码链接转成短链接
-     * @param type $url
-     * @return boolean
+     * @param string $url 需要处理的长链接
+     * @return bool|string
      */
     public function shortUrl($url) {
         $data = array();

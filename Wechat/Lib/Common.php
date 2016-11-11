@@ -15,6 +15,11 @@ use Wechat\Loader;
  */
 class Common {
 
+    /** API接口URL需要使用此前缀 */
+    const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
+    const API_URL_PREFIX = 'https://api.weixin.qq.com/cgi-bin';
+    const GET_TICKET_URL = '/ticket/getticket?';
+    const AUTH_URL = '/token?grant_type=client_credential&';
     public $token;
     public $encodingAesKey;
     public $encrypt_type;
@@ -30,12 +35,6 @@ class Common {
     public $config = array();
     private $_retry = FALSE;
 
-    /** API接口URL需要使用此前缀 */
-    const API_BASE_URL_PREFIX = 'https://api.weixin.qq.com';
-    const API_URL_PREFIX = 'https://api.weixin.qq.com/cgi-bin';
-    const GET_TICKET_URL = '/ticket/getticket?';
-    const AUTH_URL = '/token?grant_type=client_credential&';
-
     /**
      * 构造方法
      * @param type $options
@@ -50,27 +49,8 @@ class Common {
     }
 
     /**
-     * 验证来自微信服务器
-     * @param type $str
-     * @return boolean
-     */
-    private function checkSignature($str = '') {
-        $signature = isset($_GET["signature"]) ? $_GET["signature"] : '';
-        $signature = isset($_GET["msg_signature"]) ? $_GET["msg_signature"] : $signature; //如果存在加密验证则用加密验证段
-        $timestamp = isset($_GET["timestamp"]) ? $_GET["timestamp"] : '';
-        $nonce = isset($_GET["nonce"]) ? $_GET["nonce"] : '';
-        $tmpArr = array($this->token, $timestamp, $nonce, $str);
-        sort($tmpArr, SORT_STRING);
-        if (sha1(implode($tmpArr)) == $signature) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * 接口验证
-     * @return boolean
+     * @return bool
      */
     public function valid() {
         $encryptStr = "";
@@ -109,10 +89,30 @@ class Common {
     }
 
     /**
+     * 验证来自微信服务器
+     * @param string $str
+     * @return bool
+     */
+    private function checkSignature($str = '') {
+        // 如果存在加密验证则用加密验证段
+        $signature = isset($_GET["msg_signature"]) ? $_GET["msg_signature"] : (isset($_GET["signature"]) ? $_GET["signature"] : '');
+        $timestamp = isset($_GET["timestamp"]) ? $_GET["timestamp"] : '';
+        $nonce = isset($_GET["nonce"]) ? $_GET["nonce"] : '';
+        $tmpArr = array($this->token, $timestamp, $nonce, $str);
+        sort($tmpArr, SORT_STRING);
+        if (sha1(implode($tmpArr)) == $signature) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取公众号访问 access_token
      * @param string $appid 如在类初始化时已提供，则可为空
      * @param string $appsecret 如在类初始化时已提供，则可为空
      * @param string $token 手动指定access_token，非必要情况不建议用
+     * @return bool|string
      */
     public function getAccessToken($appid = '', $appsecret = '', $token = '') {
         if (!$appid || !$appsecret) {
@@ -148,20 +148,10 @@ class Common {
     }
 
     /**
-     * 删除验证数据
-     * @param string $appid
-     */
-    public function resetAuth($appid = '') {
-        $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
-        Tools::log("Reset Auth And Remove Old AccessToken.");
-        $this->access_token = '';
-        Tools::removeCache($authname);
-        return true;
-    }
-
-    /**
-     * 重试检测
-     * @return boolean
+     * 接口失败重试
+     * @param $method   SDK方法名称
+     * @param array $arguments SDK方法参数
+     * @return bool|mixed
      */
     protected function checkRetry($method, $arguments = array()) {
         if (!$this->_retry && in_array($this->errCode, array('40014', '40001', '41001', '42001'))) {
@@ -173,6 +163,19 @@ class Common {
             return call_user_func_array(array($this, $method), $arguments);
         }
         return false;
+    }
+
+    /**
+     * 删除验证数据
+     * @param string $appid 如在类初始化时已提供，则可为空
+     * @return bool
+     */
+    public function resetAuth($appid = '') {
+        $authname = 'wechat_access_token_' . (empty($appid) ? $this->appid : $appid);
+        Tools::log("Reset Auth And Remove Old AccessToken.");
+        $this->access_token = '';
+        Tools::removeCache($authname);
+        return true;
     }
 
 }

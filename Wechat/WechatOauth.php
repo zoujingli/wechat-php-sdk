@@ -29,7 +29,7 @@ class WechatOauth extends Common {
 
     /**
      * 通过 code 获取 AccessToken
-     * @return array {access_token,expires_in,refresh_token,openid,scope}
+     * @return bool|array {access_token,expires_in,refresh_token,openid,scope}
      */
     public function getOauthAccessToken() {
         $code = isset($_GET['code']) ? $_GET['code'] : '';
@@ -52,7 +52,7 @@ class WechatOauth extends Common {
     /**
      * 刷新access token并续期
      * @param string $refresh_token
-     * @return boolean|mixed
+     * @return bool|array
      */
     public function getOauthRefreshToken($refresh_token) {
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_REFRESH_URL . "appid={$this->appid}&grant_type=refresh_token&refresh_token={$refresh_token}");
@@ -72,7 +72,7 @@ class WechatOauth extends Common {
      * 获取授权后的用户资料
      * @param string $access_token
      * @param string $openid
-     * @return array {openid,nickname,sex,province,city,country,headimgurl,privilege,[unionid]}
+     * @return bool|array {openid,nickname,sex,province,city,country,headimgurl,privilege,[unionid]}
      * 注意：unionid字段 只有在用户将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
     public function getOauthUserinfo($access_token, $openid) {
@@ -93,7 +93,7 @@ class WechatOauth extends Common {
      * 检验授权凭证是否有效
      * @param string $access_token
      * @param string $openid
-     * @return boolean 是否有效
+     * @return bool 是否有效
      */
     public function getOauthAuth($access_token, $openid) {
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_AUTH_URL . "access_token={$access_token}&openid={$openid}");

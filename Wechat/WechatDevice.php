@@ -38,28 +38,28 @@ class WechatDevice extends Common {
      *      "comment" => "测试专用", //备注(非必填)
      *      "poi_id" => 1234         //设备关联的门店ID(非必填)
      * )
-     * @return boolean|mixed
+     * @return bool|mixed
      * {
-      "data": {
-      "apply_id": 123,
-      "device_identifiers":[
-      {
-      "device_id":10100,
-      "uuid":"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-      "major":10001,
-      "minor":10002
-      }
-      ]
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
-      apply_id:申请的批次ID，可用在“查询设备列表”接口按批次查询本次申请成功的设备ID
-      device_identifiers:指定的设备ID 列表
-      device_id:设备编号
-      uuid、major、minor
-      audit_status:审核状态。0：审核未通过、1：审核中、2：审核已通过；审核会在三个工作日内完成
-      audit_comment:审核备注，包括审核不通过的原因
+     * "data": {
+     * "apply_id": 123,
+     * "device_identifiers":[
+     * {
+     * "device_id":10100,
+     * "uuid":"FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
+     * "major":10001,
+     * "minor":10002
+     * }
+     * ]
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
+     * apply_id:申请的批次ID，可用在“查询设备列表”接口按批次查询本次申请成功的设备ID
+     * device_identifiers:指定的设备ID 列表
+     * device_id:设备编号
+     * uuid、major、minor
+     * audit_status:审核状态。0：审核未通过、1：审核中、2：审核已通过；审核会在三个工作日内完成
+     * audit_comment:审核备注，包括审核不通过的原因
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-3-25 下午1:24:06
@@ -89,20 +89,20 @@ class WechatDevice extends Common {
      * @param array $data
      * array(
      *      "device_identifier" => array(
-     *          		"device_id" => 10011,   //当提供了device_id则不需要使用uuid、major、minor，反之亦然
-     *          		"uuid" => "FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
-     *          		"major" => 1002,
-     *          		"minor" => 1223
+     *                "device_id" => 10011,   //当提供了device_id则不需要使用uuid、major、minor，反之亦然
+     *                "uuid" => "FDA50693-A4E2-4FB1-AFCF-C6EB07647825",
+     *                "major" => 1002,
+     *                "minor" => 1223
      *      ),
      *      "comment" => "测试专用", //备注(非必填)
      * )
      * {
-      "data": {
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
-     * @return boolean
+     * "data": {
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
+     * @return bool
      * @author binsee<binsee@163.com>
      * @version 2015-4-20 23:45:00
      */
@@ -157,38 +157,38 @@ class WechatDevice extends Common {
      *                                    );
      * apply_id:批次ID
      * +-------------------------------------------------------------------------------------------------------------
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确迒回JSON 数据示例：
      * 字段说明
-      {
-      "data": {
-      "devices": [          //指定的设备信息列表
-      {
-      "comment": "", //设备的备注信息
-      "device_id": 10097, //设备编号
-      "major": 10001,
-      "minor": 12102,
-      "page_ids": "15369", //与此设备关联的页面ID 列表，用逗号隔开
-      "status": 1, //激活状态，0：未激活，1：已激活（但不活跃），2：活跃
-      "poi_id": 0, //门店ID
-      "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
-      },
-      {
-      "comment": "", //设备的备注信息
-      "device_id": 10098, //设备编号
-      "major": 10001,
-      "minor": 12103,
-      "page_ids": "15368", //与此设备关联的页面ID 列表，用逗号隔开
-      "status": 1, //激活状态，0：未激活，1：已激活（但不活跃），2：活跃
-      "poi_id": 0, //门店ID
-      "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
-      }
-      ],
-      "total_count": 151 //商户名下的设备总量
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * {
+     * "data": {
+     * "devices": [          //指定的设备信息列表
+     * {
+     * "comment": "", //设备的备注信息
+     * "device_id": 10097, //设备编号
+     * "major": 10001,
+     * "minor": 12102,
+     * "page_ids": "15369", //与此设备关联的页面ID 列表，用逗号隔开
+     * "status": 1, //激活状态，0：未激活，1：已激活（但不活跃），2：活跃
+     * "poi_id": 0, //门店ID
+     * "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
+     * },
+     * {
+     * "comment": "", //设备的备注信息
+     * "device_id": 10098, //设备编号
+     * "major": 10001,
+     * "minor": 12103,
+     * "page_ids": "15368", //与此设备关联的页面ID 列表，用逗号隔开
+     * "status": 1, //激活状态，0：未激活，1：已激活（但不活跃），2：活跃
+     * "poi_id": 0, //门店ID
+     * "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
+     * }
+     * ],
+     * "total_count": 151 //商户名下的设备总量
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-3-25 下午1:45:42
@@ -218,14 +218,14 @@ class WechatDevice extends Common {
      * @param string $uuid UUID、major、minor，三个信息需填写完整，若填了设备编号，则可不填此信息
      * @param int $major
      * @param int $minor
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-4-21 00:14:00
@@ -278,14 +278,14 @@ class WechatDevice extends Common {
      * @param string $uuid UUID、major、minor，三个信息需填写完整，若填了设备编号，则可不填此信息
      * @param int $major
      * @param int $minor
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-4-21 00:31:00
@@ -332,15 +332,15 @@ class WechatDevice extends Common {
      * 上传在摇一摇页面展示的图片素材
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
      * @param array $data {"media":'@Path\filename.jpg'} 格式限定为：jpg,jpeg,png,gif，图片大小建议120px*120 px，限制不超过200 px *200 px，图片需为正方形。
-     * @return boolean|array
+     * @return bool|array
      * {
-      "data": {
-      "pic_url":"http://shp.qpic.cn/wechat_shakearound_pic/0/1428377032e9dd2797018cad79186e03e8c5aec8dc/120"
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
-      }
+     * "data": {
+     * "pic_url":"http://shp.qpic.cn/wechat_shakearound_pic/0/1428377032e9dd2797018cad79186e03e8c5aec8dc/120"
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
+     * }
      * @author binsee<binsee@163.com>
      * @version 2015-4-21 00:51:00
      */
@@ -368,15 +368,15 @@ class WechatDevice extends Common {
      * @param sting $icon_url 在摇一摇页面展示的图片， 格式限定为：jpg,jpeg,png,gif; 建议120*120 ， 限制不超过200*200
      * @param string $page_url 跳转链接
      * @param string $comment 页面的备注信息，不超过15 个字,可不填
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      "page_id": 28840 //新增页面的页面id
-      }
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * "page_id": 28840 //新增页面的页面id
+     * }
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-3-25 下午2:57:09
@@ -414,15 +414,15 @@ class WechatDevice extends Common {
      * @param sting $icon_url 在摇一摇页面展示的图片， 格式限定为：jpg,jpeg,png,gif; 建议120*120 ， 限制不超过200*200
      * @param string $page_url 跳转链接
      * @param string $comment 页面的备注信息，不超过15 个字,可不填
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      "page_id": 28840 //编辑页面的页面ID
-      }
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * "page_id": 28840 //编辑页面的页面ID
+     * }
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-3-25 下午3:02:51
@@ -461,42 +461,42 @@ class WechatDevice extends Common {
      * @param int $count
      * ①需要查询指定页面时:
      * {
-      "page_ids":[12345, 23456, 34567]
-      }
+     * "page_ids":[12345, 23456, 34567]
+     * }
      * +-------------------------------------------------------------------------------------------------------------
      * ②需要分页查询或者指定范围内的页面时:
      * {
-      "begin": 0,
-      "count": 3
-      }
+     * "begin": 0,
+     * "count": 3
+     * }
      * +-------------------------------------------------------------------------------------------------------------
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
-      {
-      "data": {
-      "pages": [
-      {
-      "comment": "just for test",
-      "description": "test",
-      "icon_url": "https://www.baidu.com/img/bd_logo1.png",
-      "page_id": 28840,
-      "page_url": "http://xw.qq.com/testapi1",
-      "title": "测试1"
-      },
-      {
-      "comment": "just for test",
-      "description": "test",
-      "icon_url": "https://www.baidu.com/img/bd_logo1.png",
-      "page_id": 28842,
-      "page_url": "http://xw.qq.com/testapi2",
-      "title": "测试2"
-      }
-      ],
-      "total_count": 2
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * {
+     * "data": {
+     * "pages": [
+     * {
+     * "comment": "just for test",
+     * "description": "test",
+     * "icon_url": "https://www.baidu.com/img/bd_logo1.png",
+     * "page_id": 28840,
+     * "page_url": "http://xw.qq.com/testapi1",
+     * "title": "测试1"
+     * },
+     * {
+     * "comment": "just for test",
+     * "description": "test",
+     * "icon_url": "https://www.baidu.com/img/bd_logo1.png",
+     * "page_id": 28842,
+     * "page_url": "http://xw.qq.com/testapi2",
+     * "title": "测试2"
+     * }
+     * ],
+     * "total_count": 2
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * 字段说明:
      * total_count 商户名下的页面总数
      * page_id 摇周边页面唯一ID
@@ -542,16 +542,16 @@ class WechatDevice extends Common {
      * 只有页面与设备没有关联关系时，才可被删除。]
      * @param array $page_ids
      * {
-      "page_ids":[12345,23456,34567]
-      }
-     * @return boolean|mixed
+     * "page_ids":[12345,23456,34567]
+     * }
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * @access public
      * @author polo<gao.bo168@gmail.com>
      * @version 2015-3-25 下午3:23:00
@@ -580,22 +580,22 @@ class WechatDevice extends Common {
     /**
      * [getShakeInfoShakeAroundUser 获取设备信息，包括UUID、major、minor，以及距离、openID 等信息。]
      * @param string $ticket 摇周边业务的ticket，可在摇到的URL 中得到，ticket生效时间为30 分钟
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": {
-      "page_id ": 14211,
-      "beacon_info": {
-      "distance": 55.00620700469034,
-      "major": 10001,
-      "minor": 19007,
-      "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
-      },
-      "openid": "oVDmXjp7y8aG2AlBuRpMZTb1-cmA"
-      },
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": {
+     * "page_id ": 14211,
+     * "beacon_info": {
+     * "distance": 55.00620700469034,
+     * "major": 10001,
+     * "minor": 19007,
+     * "uuid": "FDA50693-A4E2-4FB1-AFCF-C6EB07647825"
+     * },
+     * "openid": "oVDmXjp7y8aG2AlBuRpMZTb1-cmA"
+     * },
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * 字段说明:
      * beacon_info 设备信息，包括UUID、major、minor，以及距离
      * UUID、major、minor UUID、major、minor
@@ -635,28 +635,28 @@ class WechatDevice extends Common {
      * @param string $uuid UUID、major、minor，三个信息需填写完成，若填了设备编辑，即可不填此信息，二者选其一
      * @param int $major
      * @param int $minor
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": [
-      {
-      "click_pv": 0,
-      "click_uv": 0,
-      "ftime": 1425052800,
-      "shake_pv": 0,
-      "shake_uv": 0
-      },
-      {
-      "click_pv": 0,
-      "click_uv": 0,
-      "ftime": 1425139200,
-      "shake_pv": 0,
-      "shake_uv": 0
-      }
-      ],
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": [
+     * {
+     * "click_pv": 0,
+     * "click_uv": 0,
+     * "ftime": 1425052800,
+     * "shake_pv": 0,
+     * "shake_uv": 0
+     * },
+     * {
+     * "click_pv": 0,
+     * "click_uv": 0,
+     * "ftime": 1425139200,
+     * "shake_pv": 0,
+     * "shake_uv": 0
+     * }
+     * ],
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * 字段说明:
      * ftime 当天0 点对应的时间戳
      * click_pv 点击摇周边消息的次数
@@ -710,28 +710,28 @@ class WechatDevice extends Common {
      * @param int $page_id 指定页面的ID
      * @param int $begin_date 起始日期时间戳，最长时间跨度为30 天
      * @param int $end_date 结束日期时间戳，最长时间跨度为30 天
-     * @return boolean|mixed
+     * @return bool|mixed
      * 正确返回JSON 数据示例:
      * {
-      "data": [
-      {
-      "click_pv": 0,
-      "click_uv": 0,
-      "ftime": 1425052800,
-      "shake_pv": 0,
-      "shake_uv": 0
-      },
-      {
-      "click_pv": 0,
-      "click_uv": 0,
-      "ftime": 1425139200,
-      "shake_pv": 0,
-      "shake_uv": 0
-      }
-      ],
-      "errcode": 0,
-      "errmsg": "success."
-      }
+     * "data": [
+     * {
+     * "click_pv": 0,
+     * "click_uv": 0,
+     * "ftime": 1425052800,
+     * "shake_pv": 0,
+     * "shake_uv": 0
+     * },
+     * {
+     * "click_pv": 0,
+     * "click_uv": 0,
+     * "ftime": 1425139200,
+     * "shake_pv": 0,
+     * "shake_uv": 0
+     * }
+     * ],
+     * "errcode": 0,
+     * "errmsg": "success."
+     * }
      * 字段说明:
      * ftime 当天0 点对应的时间戳
      * click_pv 点击摇周边消息的次数

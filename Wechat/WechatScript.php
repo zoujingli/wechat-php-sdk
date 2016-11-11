@@ -8,7 +8,7 @@ use Wechat\Loader;
 
 /**
  * 微信前端 JavaScript 签名SDK
- * 
+ *
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:24
  */
@@ -16,13 +16,14 @@ class WechatScript extends Common {
 
     /**
      * JSAPI授权TICKET
-     * @var type 
+     * @var string
      */
     private $jsapi_ticket;
 
     /**
      * 删除JSAPI授权TICKET
-     * @param string $appid 用于多个appid时使用
+     * @param string $appid
+     * @return bool
      */
     public function resetJsTicket($appid = '') {
         $this->jsapi_ticket = '';
@@ -35,6 +36,7 @@ class WechatScript extends Common {
      * 获取JSAPI授权TICKET
      * @param string $appid 用于多个appid时使用,可空
      * @param string $jsapi_ticket 手动指定jsapi_ticket，非必要情况不建议用
+     * @return bool|string
      */
     public function getJsTicket($appid = '', $jsapi_ticket = '') {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -77,10 +79,10 @@ class WechatScript extends Common {
     /**
      * 获取JsApi使用签名
      * @param string $url 网页的URL，自动处理#及其后面部分
-     * @param string $timestamp 当前时间戳 (为空则自动生成)
+     * @param int $timestamp 当前时间戳 (为空则自动生成)
      * @param string $noncestr 随机串 (为空则自动生成)
      * @param string $appid 用于多个appid时使用,可空
-     * @return array|bool 返回签名字串
+     * @return bool|array 返回签名字串
      */
     public function getJsSign($url, $timestamp = 0, $noncestr = '', $appid = '') {
         if (!$this->jsapi_ticket && !$this->getJsTicket($appid) || empty($url)) {
