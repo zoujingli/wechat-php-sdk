@@ -34,6 +34,7 @@ class WechatOauth extends Common {
     public function getOauthAccessToken() {
         $code = isset($_GET['code']) ? $_GET['code'] : '';
         if (empty($code)) {
+            Tools::log("getOauthAccessToken Fail, Because there is no access to the code value in get.");
             return false;
         }
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_TOKEN_URL . "appid={$this->appid}&secret={$this->appsecret}&code={$code}&grant_type=authorization_code");
@@ -42,7 +43,8 @@ class WechatOauth extends Common {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
+                Tools::log("WechatOauth::getOauthAccessToken Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
+                return false;
             }
             return $json;
         }
@@ -61,7 +63,8 @@ class WechatOauth extends Common {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
+                Tools::log("WechatOauth::getOauthRefreshToken Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
+                return false;
             }
             return $json;
         }
@@ -82,7 +85,8 @@ class WechatOauth extends Common {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
+                Tools::log("WechatOauth::getOauthUserinfo Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
+                return false;
             }
             return $json;
         }
@@ -102,7 +106,8 @@ class WechatOauth extends Common {
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                return $this->checkRetry(__FUNCTION__, func_get_args());
+                Tools::log("WechatOauth::getOauthAuth Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
+                return false;
             } else if ($json['errcode'] == 0) {
                 return true;
             }
