@@ -18,8 +18,10 @@ class WechatOauth extends Common {
     const OAUTH_AUTH_URL = '/sns/auth?';
 
     /**
-     * oauth 授权跳转接口
-     * @param string $callback 回调URI
+     * Oauth 授权跳转接口
+     * @param string $callback 授权回跳地址
+     * @param string $state 为重定向后会带上state参数（填写a-zA-Z0-9的参数值，最多128字节）
+     * @param string $scope 授权类类型(可选值snsapi_base|snsapi_userinfo)
      * @return string
      */
     public function getOauthRedirect($callback, $state = '', $scope = 'snsapi_base') {
@@ -28,8 +30,8 @@ class WechatOauth extends Common {
     }
 
     /**
-     * 通过 code 获取 AccessToken
-     * @return bool|array {access_token,expires_in,refresh_token,openid,scope}
+     * 通过 code 获取 AccessToken 和 openid
+     * @return bool|array
      */
     public function getOauthAccessToken() {
         $code = isset($_GET['code']) ? $_GET['code'] : '';
