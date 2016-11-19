@@ -97,10 +97,7 @@ class WechatCustom extends Common {
      * @return bool|array
      */
     public function createKFSession($openid, $kf_account, $text = '') {
-        $data = array(
-            "openid"     => $openid,
-            "kf_account" => $kf_account
-        );
+        $data = array("openid" => $openid, "kf_account" => $kf_account);
         if ($text) {
             $data["text"] = $text;
         }
@@ -133,10 +130,7 @@ class WechatCustom extends Common {
      * }
      */
     public function closeKFSession($openid, $kf_account, $text = '') {
-        $data = array(
-            "openid"     => $openid,
-            "kf_account" => $kf_account
-        );
+        $data = array("openid" => $openid, "kf_account" => $kf_account);
         if ($text) {
             $data["text"] = $text;
         }
@@ -220,23 +214,7 @@ class WechatCustom extends Common {
 
     /**
      * 获取未接入会话列表
-     * @param string $openid //用户openid
-     * @return bool | array            //成功返回json数组
-     *  array (
-     *     'count' => 150 ,                            //未接入会话数量
-     *     'waitcaselist' => array (
-     *         array (
-     *             'openid'=>'OPENID',             //客户 openid
-     *             'kf_account ' =>'',                   //指定接待的客服，为空则未指定
-     *             'createtime'=>123456789,  //会话创建时间，UNIX 时间戳
-     *         ),
-     *         array (
-     *             'openid'=>'OPENID',             //客户 openid
-     *             'kf_account ' =>'',                   //指定接待的客服，为空则未指定
-     *             'createtime'=>123456789,  //会话创建时间，UNIX 时间戳
-     *         )
-     *     )
-     *  )
+     * @return bool|array
      */
     public function getKFSessionWait() {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -258,22 +236,13 @@ class WechatCustom extends Common {
     /**
      * 添加客服账号
      *
-     * @param string $account //完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符
-     * @param string $nickname //客服昵称，最长6个汉字或12个英文字符
-     * @param string $password //客服账号明文登录密码，会自动加密
+     * @param string $account 完整客服账号(账号前缀@公众号微信号，账号前缀最多10个字符)
+     * @param string $nickname 客服昵称，最长6个汉字或12个英文字符
+     * @param string $password 客服账号明文登录密码，会自动加密
      * @return bool|array
-     * 成功返回结果
-     * {
-     *   "errcode": 0,
-     *   "errmsg": "ok",
-     * }
      */
     public function addKFAccount($account, $nickname, $password) {
-        $data = array(
-            "kf_account" => $account,
-            "nickname"   => $nickname,
-            "password"   => md5($password)
-        );
+        $data = array("kf_account" => $account, "nickname" => $nickname, "password" => md5($password));
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -304,11 +273,7 @@ class WechatCustom extends Common {
      * }
      */
     public function updateKFAccount($account, $nickname, $password) {
-        $data = array(
-            "kf_account" => $account,
-            "nickname"   => $nickname,
-            "password"   => md5($password)
-        );
+        $data = array("kf_account" => $account, "nickname" => $nickname, "password" => md5($password));
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -327,14 +292,8 @@ class WechatCustom extends Common {
 
     /**
      * 删除客服账号
-     *
-     * @param string $account //完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符
+     * @param string $account 完整客服账号(账号前缀@公众号微信号，账号前缀最多10个字符)
      * @return bool|array
-     * 成功返回结果
-     * {
-     *   "errcode": 0,
-     *   "errmsg": "ok",
-     * }
      */
     public function deleteKFAccount($account) {
         if (!$this->access_token && !$this->getAccessToken()) {
@@ -355,15 +314,9 @@ class WechatCustom extends Common {
 
     /**
      * 上传客服头像
-     *
-     * @param string $account //完整客服账号，格式为：账号前缀@公众号微信号，账号前缀最多10个字符，必须是英文或者数字字符
-     * @param string $imgfile //头像文件完整路径,如：'D:\user.jpg'。头像文件必须JPG格式，像素建议640*640
+     * @param string $account 完整客服账号(账号前缀@公众号微信号，账号前缀最多10个字符)
+     * @param string $imgfile 头像文件完整路径,如：'D:\user.jpg'。头像文件必须JPG格式，像素建议640*640
      * @return bool|array
-     * 成功返回结果
-     * {
-     *   "errcode": 0,
-     *   "errmsg": "ok",
-     * }
      */
     public function setKFHeadImg($account, $imgfile) {
         if (!$this->access_token && !$this->getAccessToken()) {
