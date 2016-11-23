@@ -23,6 +23,7 @@ class WechatCard extends Common {
     // 卡卷核查接口
     const CARD_CHECKCODE = '/card/code/checkcode?';
     // 卡卷图文群发获取HTML
+    const CARD_SET_SELFCONSUMECELL = '/card/selfconsumecell/set?';
     const CARD_SEND_HTML = '/card/mpnews/gethtml?';
     const CARD_BATCHGET = '/card/batchget?';
     const CARD_MODIFY_STOCK = '/card/modifystock?';
@@ -687,6 +688,29 @@ class WechatCard extends Common {
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * 设置自助核销接口
+     * @param $card_id
+     * @return bool|array
+     */
+    public function setSelfconsumecell($card_id) {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $data = array('card_id' => $card_id, 'is_open' => true);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_SET_SELFCONSUMECELL . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
         }
         return false;
     }
