@@ -700,7 +700,7 @@ class WechatCard extends Common {
      * @param bool $need_remark_amount 用户核销时是否需要备注核销金额，填true/false，默认为false
      * @return bool|array
      */
-    public function setSelfconsumecell($card_id, $is_openid = true, $need_verify_cod = false, $need_remark_amount = false) {
+    public function setSelfconsumecell($card_id, $is_openid = false, $need_verify_cod = false, $need_remark_amount = false) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
