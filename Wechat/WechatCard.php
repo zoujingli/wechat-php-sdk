@@ -694,14 +694,22 @@ class WechatCard extends Common {
 
     /**
      * 设置自助核销接口
-     * @param $card_id
+     * @param string $card_id 卡券ID
+     * @param bool $is_openid 是否开启自助核销功能，填true/false，默认为false
+     * @param bool $need_verify_cod 用户核销时是否需要输入验证码，填true/false，默认为false
+     * @param bool $need_remark_amount 用户核销时是否需要备注核销金额，填true/false，默认为false
      * @return bool|array
      */
-    public function setSelfconsumecell($card_id) {
+    public function setSelfconsumecell($card_id, $is_openid = true, $need_verify_cod = false, $need_remark_amount = false) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array('card_id' => $card_id, 'is_open' => true);
+        $data = array(
+            'card_id'            => $card_id,
+            'is_open'            => $is_openid,
+            'need_verify_cod'    => $need_verify_cod,
+            'need_remark_amount' => $need_remark_amount,
+        );
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_SET_SELFCONSUMECELL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
