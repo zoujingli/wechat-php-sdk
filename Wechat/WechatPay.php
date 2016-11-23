@@ -124,9 +124,10 @@ class WechatPay {
      * @param int $total_fee 订单总价
      * @param string $notify_url 支付成功回调地址
      * @param string $trade_type 支付类型JSAPI|NATIVE|APP
+     * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
      * @return bool|string
      */
-    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI") {
+    public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null) {
         $postdata = array(
             "body"             => $body,
             "out_trade_no"     => $out_trade_no,
@@ -134,6 +135,7 @@ class WechatPay {
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
             "spbill_create_ip" => Tools::getAddress(),
+            "goods_tag" => $goods_tag
         );
         empty($openid) || $postdata['openid'] = $openid;
         $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
@@ -362,4 +364,28 @@ class WechatPay {
         return $result['short_url'];
     }
 
+	/**
+     * 发放代金券
+     * @param int $coupon_stock_id 代金券批次id
+     * @param string $partner_trade_no 商户此次发放凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性
+     * @param string $openid Openid信息
+     * @param string $op_user_id 操作员帐号, 默认为商户号 可在商户平台配置操作员对应的api权限
+     * @return bool|array
+     * @link  https://pay.weixin.qq.com/wiki/doc/api/tools/sp_coupon.php?chapter=12_3
+     */
+    public function sendCoupon($coupon_stock_id, $partner_trade_no, $openid, $op_user_id = null) {
+        $data = array();
+        $data['appid'] = $this->appid;
+        $data['coupon_stock_id'] = $coupon_stock_id;
+        $data['openid_count'] = 1;
+        $data['partner_trade_no'] = $partner_trade_no;
+        $data['openid'] = $openid;
+        $data['op_user_id'] = empty($op_user_id) ? $this->mch_id : $op_user_id;
+        $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/send_coupon');
+        $json = Tools::xml2arr($result);
+        if (!empty($json) && false === $this->_parseResult($json)) {
+            return false;
+        }
+        return $json;
+    }
 }
