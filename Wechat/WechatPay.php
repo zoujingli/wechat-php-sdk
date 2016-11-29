@@ -134,9 +134,9 @@ class WechatPay {
             "total_fee"        => $total_fee,
             "notify_url"       => $notify_url,
             "trade_type"       => $trade_type,
-            "spbill_create_ip" => Tools::getAddress(),
-            "goods_tag" => $goods_tag
+            "spbill_create_ip" => Tools::getAddress()
         );
+        empty($goods_tag) || $postdata['goods_tag'] = $goods_tag;
         empty($openid) || $postdata['openid'] = $openid;
         $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
         if (false === $this->_parseResult($result)) {
