@@ -42,7 +42,10 @@ class WechatCard extends Common {
     const CARD_BOARDINGPASS_CHECKIN = '/card/boardingpass/checkin?';  //飞机票-在线选座(未加方法)
     /** 更新红包金额 */
     const CARD_LUCKYMONEY_UPDATE = '/card/luckymoney/updateuserbalance?';
-
+    /*买单接口*/
+    const CARD_PAYCELL_SET = '/card/paycell/set?';
+    /*设置开卡字段接口*/
+    const CARD_MEMBERCARD_ACTIVATEUSERFORM_SET = '/card/membercard/activateuserform/set?';
     /**
      * 获取微信卡券 api_ticket
      * @param string $appid
@@ -708,6 +711,54 @@ class WechatCard extends Common {
             'need_remark_amount' => $need_remark_amount,
         );
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_SET_SELFCONSUMECELL . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+    /**
+     * 设置买单接口
+     * @DateTime  2016-12-02T19:19:45+0800
+     * @param     [type]                   $card_id   [description]
+     * @param     boolean                  $is_openid [description]
+     */
+    public function setPaycell($card_id,$is_openid = true){
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $data = array(
+            'card_id'            => $card_id,
+            'is_open'            => $is_openid,
+        );
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_PAYCELL_SET . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json;
+        }
+        return false;
+    }
+
+    /**
+     * 设置开卡字段信息接口
+     * @DateTime  2016-12-02T20:31:43+0800
+     * @param     [type]                   $data [description]
+     */
+    public function setMembercardActivateuserform($data){
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_MEMBERCARD_ACTIVATEUSERFORM_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
