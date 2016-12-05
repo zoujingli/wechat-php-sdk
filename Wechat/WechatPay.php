@@ -136,7 +136,7 @@ class WechatPay {
         }
         $data = $notifyInfo;
         unset($data['sign']);
-        if ($notifyInfo['sgin'] !== Tools::getPaySign($data, $this->partnerKey)) {
+        if ($notifyInfo['sign'] !== Tools::getPaySign($data, $this->partnerKey)) {
             Tools::log('Payment notification signature verification failed.' . var_export($notifyInfo, true), 'ERR');
             $this->errCode = '403';
             $this->errMsg = 'Payment signature verification failed.';
