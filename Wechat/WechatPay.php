@@ -128,7 +128,7 @@ class WechatPay {
             $this->errMsg = 'Payment notification forbidden access.';
             return false;
         }
-        if (empty($notifyInfo['sign']) || !($sign = $notifyInfo['sign'])) {
+        if (empty($notifyInfo['sign'])) {
             Tools::log('Payment notification signature is missing.' . var_export($notifyInfo, true), 'ERR');
             $this->errCode = '403';
             $this->errMsg = 'Payment notification signature is missing.';
@@ -136,7 +136,7 @@ class WechatPay {
         }
         $data = $notifyInfo;
         unset($data['sign']);
-        if ($sign !== Tools::getPaySign($data, $this->partnerKey)) {
+        if ($notifyInfo['sgin'] !== Tools::getPaySign($data, $this->partnerKey)) {
             Tools::log('Payment notification signature verification failed.' . var_export($notifyInfo, true), 'ERR');
             $this->errCode = '403';
             $this->errMsg = 'Payment signature verification failed.';
