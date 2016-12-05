@@ -55,13 +55,11 @@ class WechatCard extends Common {
         }
         $appid = empty($appid) ? $this->appid : $appid;
         if ($jsapi_ticket) {
-            $this->jsapi_ticket = $jsapi_ticket;
-            return $this->jsapi_ticket;
+            return $jsapi_ticket;
         }
         $authname = 'wechat_jsapi_ticket_wxcard_' . $appid;
-        if (($rs = Tools::getCache($authname))) {
-            $this->jsapi_ticket = $rs;
-            return $rs;
+        if (($jsapi_ticket = Tools::getCache($authname))) {
+            return $jsapi_ticket;
         }
         $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=wx_card');
         if ($result) {
@@ -71,10 +69,9 @@ class WechatCard extends Common {
                 $this->errMsg = $json['errmsg'];
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
-            $this->jsapi_ticket = $json['ticket'];
             $expire = $json['expires_in'] ? intval($json['expires_in']) - 100 : 3600;
-            Tools::setCache($authname, $this->jsapi_ticket, $expire);
-            return $this->jsapi_ticket;
+            Tools::setCache($authname, $json['ticket'], $expire);
+            return $json['ticket'];
         }
         return false;
     }

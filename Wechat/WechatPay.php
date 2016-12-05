@@ -117,6 +117,38 @@ class WechatPay {
     }
 
     /**
+     * 支付通知验证处理
+     * @return bool|array
+     */
+    public function getNotify() {
+        $notifyInfo = (array)simplexml_load_string(file_get_contents("php://input"), 'SimpleXMLElement', LIBXML_NOCDATA);
+        if (empty($notifyInfo)) {
+            Tools::log('Payment notification forbidden access.', 'ERR');
+            $this->errCode = '404';
+            $this->errMsg = 'Payment notification forbidden access.';
+            return false;
+        }
+        if (empty($notifyInfo['sign']) || !($sign = $notifyInfo['sign'])) {
+            Tools::log('Payment notification signature is missing.' . var_export($notifyInfo, true), 'ERR');
+            $this->errCode = '403';
+            $this->errMsg = 'Payment notification signature is missing.';
+            return false;
+        }
+        $data = $notifyInfo;
+        unset($data['sign']);
+        if ($sign !== Tools::getPaySign($data, $this->partnerKey)) {
+            Tools::log('Payment notification signature verification failed.' . var_export($notifyInfo, true), 'ERR');
+            $this->errCode = '403';
+            $this->errMsg = 'Payment signature verification failed.';
+            return false;
+        }
+        Tools::log('Payment notification signature verification success.' . var_export($notifyInfo, true), 'MSG');
+        $this->errCode = '0';
+        $this->errMsg = '';
+        return $notifyInfo;
+    }
+
+    /**
      * 获取预支付ID
      * @param string $openid 用户openid，JSAPI必填
      * @param string $body 商品标题
@@ -153,7 +185,7 @@ class WechatPay {
     public function createMchPay($prepay_id) {
         $option = array();
         $option["appId"] = $this->appid;
-        $option["timeStamp"] = (string) time();
+        $option["timeStamp"] = (string)time();
         $option["nonceStr"] = Tools::createNoncestr();
         $option["package"] = "prepay_id={$prepay_id}";
         $option["signType"] = "MD5";
@@ -364,7 +396,7 @@ class WechatPay {
         return $result['short_url'];
     }
 
-	/**
+    /**
      * 发放代金券
      * @param int $coupon_stock_id 代金券批次id
      * @param string $partner_trade_no 商户此次发放凭据号（格式：商户id+日期+流水号），商户侧需保持唯一性
