@@ -70,26 +70,26 @@ class Tools {
      * @return string
      */
     static public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
-
-        function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
-            foreach ($data as $key => $val) {
-                is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
-                $content .= "<{$key}>";
-                if (is_array($val) || is_object($val)) {
-                    $content .= _data_to_xml($val);
-                } elseif (is_numeric($val)) {
-                    $content .= $val;
-                } else {
-                    $content .= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
-                }
-                list($_key,) = explode(' ', $key . ' ');
-                $content .= "</$_key>";
-            }
-            return $content;
-        }
-
-        return "<{$root}>" . _data_to_xml($data, $item, $id) . "</{$root}>";
+        return "<{$root}>" . self::_data_to_xml($data, $item, $id) . "</{$root}>";
     }
+
+    static private function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
+        foreach ($data as $key => $val) {
+            is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
+            $content .= "<{$key}>";
+            if (is_array($val) || is_object($val)) {
+                $content .= self::_data_to_xml($val);
+            } elseif (is_numeric($val)) {
+                $content .= $val;
+            } else {
+                $content .= '<![CDATA[' . preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/", '', $val) . ']]>';
+            }
+            list($_key,) = explode(' ', $key . ' ');
+            $content .= "</$_key>";
+        }
+        return $content;
+    }
+
 
     /**
      * 将xml转为array

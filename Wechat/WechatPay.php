@@ -18,14 +18,14 @@ class WechatPay {
     public $appid;
 
     /** 商户身份ID */
-    protected $mch_id;
+    public $mch_id;
 
     /** 商户支付密钥Key */
-    protected $partnerKey;
+    public $partnerKey;
 
     /** 证书路径 */
-    protected $ssl_cer;
-    protected $ssl_key;
+    public $ssl_cer;
+    public $ssl_key;
 
     /** 执行错误消息及代码 */
     public $errMsg;
@@ -176,6 +176,52 @@ class WechatPay {
         }
         return ($trade_type === 'JSAPI') ? $result['prepay_id'] : $result['code_url'];
     }
+
+    /**
+     * 获取二维码预支付ID
+     * @param string $openid 用户openid，JSAPI必填
+     * @param string $body 商品标题
+     * @param string $out_trade_no 第三方订单号
+     * @param int $total_fee 订单总价
+     * @param string $notify_url 支付成功回调地址
+     * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
+     * @return bool|string
+     */
+    public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null) {
+        $postdata = array(
+            "body"             => $body,
+            "out_trade_no"     => $out_trade_no,
+            "total_fee"        => $total_fee,
+            "notify_url"       => $notify_url,
+            "trade_type"       => 'NATIVE',
+            "spbill_create_ip" => Tools::getAddress()
+        );
+        empty($goods_tag) || $postdata['goods_tag'] = $goods_tag;
+        empty($openid) || $postdata['openid'] = $openid;
+        $result = $this->getArrayResult($postdata, self::MCH_BASE_URL . '/pay/unifiedorder');
+        if (false === $this->_parseResult($result) || empty($result['prepay_id'])) {
+            return false;
+        }
+        return $result['prepay_id'];
+    }
+
+    /**
+     * 获取支付规二维码
+     * @param string $product_id 商户定义的商品id 或者订单号
+     * @return string
+     */
+    public function getQrcPayUrl($product_id) {
+        $data = array(
+            'appid'      => $this->appid,
+            'mch_id'     => $this->mch_id,
+            'time_stamp' => (string)time(),
+            'nonce_str'  => Tools::createNoncestr(),
+            'product_id' => (string)$product_id,
+        );
+        $data['sign'] = Tools::getPaySign($data, $this->partnerKey);
+        return "weixin://wxpay/bizpayurl?" . http_build_query($data);
+    }
+
 
     /**
      * 创建JSAPI支付参数包
