@@ -509,7 +509,7 @@ class WechatUser extends Common {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array('opened_list' => $openids);
+        $data = array('openid_list' => $openids);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::BACKLIST_ADD_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -532,7 +532,7 @@ class WechatUser extends Common {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array('opened_list' => $openids);
+        $data = array('openid_list' => $openids);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::BACKLIST_DEL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
