@@ -347,7 +347,7 @@ class WechatPay {
         $data['total_amount'] = $amount; //红包金额
         $data['total_num'] = '1'; //发放人数据
         $data['wishing'] = $wishing; //红包祝福语
-        $data['client_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
+        $data['client_ip'] = Tools::getAddress(); //调用接口的机器Ip地址
         $data['act_name'] = $actname; //活动名称
         $data['remark'] = $remark; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/sendredpack');
