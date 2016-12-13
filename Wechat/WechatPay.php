@@ -392,7 +392,7 @@ class WechatPay {
         $data['openid'] = $openid;
         $data['amount'] = $amount;
         $data['check_name'] = 'NO_CHECK'; #不验证姓名
-        $data['spbill_create_ip'] = $_SERVER['REMOTE_ADDR']; //调用接口的机器Ip地址
+        $data['spbill_create_ip'] = Tools::getAddress(); //调用接口的机器Ip地址
         $data['desc'] = $desc; //备注信息
         $result = $this->postXmlSSL($data, self::MCH_BASE_URL . '/mmpaymkttransfers/promotion/transfers');
         $json = Tools::xml2arr($result);
