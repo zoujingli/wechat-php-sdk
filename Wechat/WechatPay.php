@@ -148,6 +148,22 @@ class WechatPay {
         return $notifyInfo;
     }
 
+
+    /**
+     * 支付XML统一回复
+     * @param array $data 需要回复的XML内容数组
+     * @param bool $isReturn 是否返回XML内容，默认不返回
+     * @return string
+     */
+    public function replyXml(array $data, $isReturn = false) {
+        $xml = Tools::arr2xml($data);
+        if ($isReturn) {
+            return $xml;
+        }
+        ob_clean();
+        exit($xml);
+    }
+
     /**
      * 获取预支付ID
      * @param string $openid 用户openid，JSAPI必填
