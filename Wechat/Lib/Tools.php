@@ -102,7 +102,7 @@ class Tools {
 
     /**
      * 生成安全JSON数据
-     * @param $array
+     * @param array $array
      * @return string
      */
     static public function json_encode($array) {
@@ -136,7 +136,7 @@ class Tools {
     /**
      * 以post方式提交请求
      * @param string $url
-     * @param array $postdata
+     * @param array|string $postdata
      * @return bool|mixed
      */
     static public function httpPost($url, $postdata) {

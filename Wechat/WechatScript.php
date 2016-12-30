@@ -18,7 +18,7 @@ class WechatScript extends Common {
      * JSAPI授权TICKET
      * @var string
      */
-    private $jsapi_ticket;
+    public $jsapi_ticket;
 
     /**
      * 删除JSAPI授权TICKET
@@ -36,11 +36,15 @@ class WechatScript extends Common {
      * 获取JSAPI授权TICKET
      * @param string $appid 用于多个appid时使用,可空
      * @param string $jsapi_ticket 手动指定jsapi_ticket，非必要情况不建议用
+     * @param string $access_token 获取 jsapi_ticket 指定 access_token
      * @return bool|string
      */
-    public function getJsTicket($appid = '', $jsapi_ticket = '') {
-        if (!$this->access_token && !$this->getAccessToken()) {
-            return false;
+    public function getJsTicket($appid = '', $jsapi_ticket = '', $access_token = '') {
+        if (empty($access_token)) {
+            if (!$this->access_token && !$this->getAccessToken()) {
+                return false;
+            }
+            $access_token = $this->access_token;
         }
         if (empty($appid)) {
             $appid = $this->appid;
@@ -61,7 +65,7 @@ class WechatScript extends Common {
             return $this->jsapi_ticket = call_user_func_array(Loader::$callback[__FUNCTION__], array(&$this, &$cache));
         }
         # 调接口获取
-        $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$this->access_token}" . '&type=jsapi');
+        $result = Tools::httpGet(self::API_URL_PREFIX . self::GET_TICKET_URL . "access_token={$access_token}" . '&type=jsapi');
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -82,10 +86,11 @@ class WechatScript extends Common {
      * @param int $timestamp 当前时间戳 (为空则自动生成)
      * @param string $noncestr 随机串 (为空则自动生成)
      * @param string $appid 用于多个appid时使用,可空
-     * @return bool|array 返回签名字串
+     * @param string $access_token 获取 jsapi_ticket 指定 access_token
+     * @return array|bool 返回签名字串
      */
-    public function getJsSign($url, $timestamp = 0, $noncestr = '', $appid = '') {
-        if (!$this->jsapi_ticket && !$this->getJsTicket($appid) || empty($url)) {
+    public function getJsSign($url, $timestamp = 0, $noncestr = '', $appid = '', $access_token = '') {
+        if (!$this->jsapi_ticket && !$this->getJsTicket($appid, '', $access_token) || empty($url)) {
             return false;
         }
         $data = array(
@@ -95,7 +100,8 @@ class WechatScript extends Common {
             "url"          => trim($url),
         );
         return array(
-            # 'debug' => true,
+            "url"       => $url,
+            'debug'     => false,
             "appId"     => empty($appid) ? $this->appid : $appid,
             "nonceStr"  => $data['noncestr'],
             "timestamp" => $data['timestamp'],

@@ -60,7 +60,7 @@ class Cache {
         if (isset(Loader::$callback['CacheDel'])) {
             return call_user_func_array(Loader::$callback['CacheDel'], func_get_args());
         }
-        return self::check() && unlink(self::$cachepath . $name);
+        return self::check() && @unlink(self::$cachepath . $name);
     }
 
     /**

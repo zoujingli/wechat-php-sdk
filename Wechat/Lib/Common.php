@@ -28,18 +28,16 @@ class Common {
     public $access_token;
     public $postxml;
     public $_msg;
-    public $_funcflag = 1;
-    public $debug = false;
-    public $errCode = 40001;
+    public $errCode = 0;
     public $errMsg = "no access";
     public $config = array();
     private $_retry = FALSE;
 
     /**
      * 构造方法
-     * @param type $options
+     * @param array $options
      */
-    public function __construct($options) {
+    public function __construct($options = array()) {
         $config = Loader::config($options);
         $this->token = isset($config['token']) ? $config['token'] : '';
         $this->appid = isset($config['appid']) ? $config['appid'] : '';

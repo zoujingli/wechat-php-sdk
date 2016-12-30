@@ -25,8 +25,6 @@ class WechatService {
     const QUERY_AUTH_URL = '/api_query_auth';
     // 获取授权方的账户信息
     const GET_AUTHORIZER_INFO_URL = '/api_get_authorizer_info';
-    // 刷新授权令牌
-    const REFRESH_AUTHORIZER_TOKEN = './api_authorizer_token';
     // 获取授权方的选项设置信息
     const GET_AUTHORIZER_OPTION_URL = '/api_get_authorizer_option';
     // 设置授权方的选项信息
@@ -50,14 +48,8 @@ class WechatService {
     protected $component_access_token;
     // 刷新令牌
     protected $authorizer_appid;
-    // 预授权码
-    protected $authorizer_access_token;
-    // Wechat对象缓存
-    protected $authorizer_refresh_token;
     // JSON数据
     protected $pre_auth_code;
-    // 错误代码
-    protected $wechat = array();
     // 错误消息
     protected $data;
 
@@ -76,7 +68,7 @@ class WechatService {
 
     /**
      * 接收公众平台推送的 Ticket
-     * @return bool
+     * @return bool|array
      */
     public function getComonentTicket() {
         $receive = new WechatReceive(array(
@@ -330,7 +322,7 @@ class WechatService {
      */
     public function getOauthRedirect($appid, $redirect_uri, $scope = 'snsapi_userinfo') {
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri=" . urlencode($redirect_uri)
-                . "&response_type=code&scope={$scope}&state={$appid}&component_appid={$this->component_appid}#wechat_redirect";
+            . "&response_type=code&scope={$scope}&state={$appid}&component_appid={$this->component_appid}#wechat_redirect";
     }
 
     /**
@@ -348,10 +340,10 @@ class WechatService {
             return false;
         }
         $url = "https://api.weixin.qq.com/sns/oauth2/component/access_token?"
-                . "appid={$appid}&code={$code}&"
-                . "grant_type=authorization_code&"
-                . "component_appid={$this->component_appid}&"
-                . "component_access_token={$this->component_access_token}";
+            . "appid={$appid}&code={$code}&"
+            . "grant_type=authorization_code&"
+            . "component_appid={$this->component_appid}&"
+            . "component_access_token={$this->component_access_token}";
         $json = $this->parseJson(Tools::httpGet($url));
         if ($json !== false) {
             return $json;
@@ -385,5 +377,6 @@ class WechatService {
         $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$oauthAccessToken}&openid={$openid}&lang=zh_CN";
         return $this->parseJson(Tools::httpGet($url));
     }
+
 
 }
