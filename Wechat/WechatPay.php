@@ -108,7 +108,7 @@ class WechatPay {
             $this->errMsg = $result['return_msg'];
             return false;
         }
-        if (isset($result['err_code'])) {
+        if (isset($result['err_code']) && $result['err_code'] !== 'SUCCESS') {
             $this->errMsg = $result['err_code_des'];
             $this->errCode = $result['err_code'];
             return false;
@@ -450,7 +450,7 @@ class WechatPay {
             $this->errMsg = $result['return_msg'];
             return false;
         }
-        if (isset($result['err_code'])) {
+        if (isset($result['err_code']) && $result['err_code'] !== 'SUCCESS') {
             $this->errMsg = $result['err_code_des'];
             $this->errCode = $result['err_code'];
             return false;
