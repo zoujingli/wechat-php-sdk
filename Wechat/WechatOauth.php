@@ -80,14 +80,14 @@ class WechatOauth extends Common {
      * @return bool|array {openid,nickname,sex,province,city,country,headimgurl,privilege,[unionid]}
      * 注意：unionid字段 只有在用户将公众号绑定到微信开放平台账号后，才会出现。建议调用前用isset()检测一下
      */
-    public function getOauthUserinfo($access_token, $openid) {
+    public function getOauthUserInfo($access_token, $openid) {
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::OAUTH_USERINFO_URL . "access_token={$access_token}&openid={$openid}");
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
                 $this->errCode = $json['errcode'];
                 $this->errMsg = $json['errmsg'];
-                Tools::log("WechatOauth::getOauthUserinfo Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
+                Tools::log("WechatOauth::getOauthUserInfo Fail.{$this->errMsg} [{$this->errCode}]", 'ERR');
                 return false;
             }
             return $json;
