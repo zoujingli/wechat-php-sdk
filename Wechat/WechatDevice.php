@@ -17,7 +17,6 @@ class WechatDevice extends Common {
     const SHAKEAROUND_DEVICE_UPDATE = '/shakearound/device/update?'; //编辑设备信息
     const SHAKEAROUND_DEVICE_SEARCH = '/shakearound/device/search?'; //查询设备列表
     const SHAKEAROUND_DEVICE_BINDLOCATION = '/shakearound/device/bindlocation?'; //配置设备与门店ID的关系
-    const SHAKEAROUND_DEVICE_BINDLOCATION_OTHER = '/shakearound/device/bindlocation?'; //配置设备与其他公众账号门店的关联关系
     const SHAKEAROUND_DEVICE_BINDPAGE = '/shakearound/device/bindpage?'; //配置设备与页面的绑定关系
     const SHAKEAROUND_MATERIAL_ADD = '/shakearound/material/add?'; //上传摇一摇图片素材
     const SHAKEAROUND_PAGE_ADD = '/shakearound/page/add?'; //增加页面
@@ -168,7 +167,7 @@ class WechatDevice extends Common {
             return false;
         }
         $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id,"type"=>2,"poi_appid"=>$poi_appid);
-        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION_OTHER . "access_token={$this->access_token}", Tools::json_encode($data));
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
