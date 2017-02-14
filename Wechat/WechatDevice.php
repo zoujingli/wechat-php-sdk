@@ -50,7 +50,7 @@ class WechatDevice extends Common {
         return false;
     }
 	
-	/**
+    /**
      * 查询设备ID申请审核状态
      * @param int $apply_id
      * @return bool|array
@@ -142,6 +142,31 @@ class WechatDevice extends Common {
             );
         }
         $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return $this->checkRetry(__FUNCTION__, func_get_args());
+            }
+            return $json; //这个可以更改为返回true
+        }
+        return false;
+    }
+    
+    /**
+     * 配置设备与其他公众账号门店的关联关系
+     * @param type $device_identifier 设备信息
+     * @param type $poi_id 待关联的门店ID
+     * @param type $poi_appid 目标微信appid
+     * @return boolean
+     */
+    public function bindLocationOtherShakeAroundDevice($device_identifier,$poi_id,$poi_appid) {
+        if (!$this->access_token && !$this->getAccessToken()) {
+            return false;
+        }
+        $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id,"type"=>2,"poi_appid"=>$poi_appid);
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
