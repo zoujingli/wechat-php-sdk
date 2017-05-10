@@ -12,17 +12,14 @@ class WechatHardware extends Common {
     const DEVICE_CREATE_QRCODE = '/device/create_qrcode?';       //获取设备二维码
     const DEVICE_GET_STAT = '/device/get_stat?';                 //获取设备状态
     const DEVICE_TRANSMSG = '/device/transmsg?';                 //主动发送消息给设备
-    //const HARDWARE_MYDEVICE_PLATFORM_GET_DEVICE_STATUS = '/hardware/mydevice/platform/get_device_status?'; //设备查询
     const DEVICE_COMPEL_UNBINDHTTPS = '/device/compel_unbind?';  //强制解绑用户和设备
-
 
     /**
      * 强制解绑用户和设备
      * @param $data
      * @return bool|mixed
      */
-    public function deviceCompelUnbindhttps($data)
-    {
+    public function deviceCompelUnbindhttps($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -40,8 +37,7 @@ class WechatHardware extends Common {
     }
 
 
-    public function transmsg($data)
-    {
+    public function transmsg($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -59,8 +55,7 @@ class WechatHardware extends Common {
         return false;
     }
 
-    public function getQrcode($product_id)
-    {
+    public function getQrcode($product_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -82,8 +77,7 @@ class WechatHardware extends Common {
      * @param $data
      * @return bool|mixed
      */
-    public function deviceAuthorize($data)
-    {
+    public function deviceAuthorize($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -105,8 +99,7 @@ class WechatHardware extends Common {
      * @param $data
      * @return bool|mixed
      */
-    public function getDeviceQrcode($data)
-    {
+    public function getDeviceQrcode($data) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -129,12 +122,10 @@ class WechatHardware extends Common {
      * @param $device_id
      * @return bool|mixed
      */
-    public function getDeviceStat($device_id)
-    {
+    public function getDeviceStat($device_id) {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-
         $result = Tools::httpGet(self::API_BASE_URL_PREFIX . self::DEVICE_GET_STAT . "access_token={$this->access_token}&device_id=$device_id");
         if ($result) {
             $json = json_decode($result, true);
