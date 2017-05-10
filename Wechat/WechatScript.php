@@ -113,6 +113,9 @@ class WechatScript extends Common {
                 'translateVoice', 'getNetworkType', 'openLocation', 'getLocation',
                 'openProductSpecificView', 'addCard', 'chooseCard', 'openCard',
                 'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'onVoicePlayEnd', 'uploadVoice', 'downloadVoice',
+                'openWXDeviceLib','closeWXDeviceLib','getWXDeviceInfos','sendDataToWXDevice','disconnectWXDevice','getWXDeviceTicket','connectWXDevice',
+                'startScanWXDevice','stopScanWXDevice','onWXDeviceBindStateChange','onScanWXDeviceResult','onReceiveDataFromWXDevice',
+                'onWXDeviceBluetoothStateChange', 'onWXDeviceStateChange'
             )
         );
     }
