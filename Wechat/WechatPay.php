@@ -200,6 +200,7 @@ class WechatPay {
      * @param string $notify_url 支付成功回调地址
      * @param string $trade_type 支付类型JSAPI|NATIVE|APP
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
+     * @param string $fee_type 交易币种
      * @return bool|string
      */
     public function getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI", $goods_tag = null, $fee_type = 'CNY') {
@@ -229,6 +230,7 @@ class WechatPay {
      * @param int $total_fee 订单总价
      * @param string $notify_url 支付成功回调地址
      * @param string $goods_tag 商品标记，代金券或立减优惠功能的参数
+     * @param string $fee_type 交易币种
      * @return bool|string
      */
     public function getQrcPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $goods_tag = null, $fee_type = 'CNY') {
