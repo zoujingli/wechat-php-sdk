@@ -199,7 +199,7 @@ class WechatService {
         $authorization_list = array();
         foreach ($func_info as $func) {
             foreach ($func as $f) {
-                $authorization_list[] = $f['id'];
+               isset($f['id']) && $authorization_list[] = $f['id'];
             }
         }
         return join($authorization_list, ',');
