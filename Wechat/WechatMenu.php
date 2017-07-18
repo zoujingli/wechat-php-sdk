@@ -11,7 +11,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/06/28 11:52
  */
-class WechatMenu extends Common {
+class WechatMenu extends Common
+{
 
     /** 创建自定义菜单 */
     const MENU_ADD_URL = '/menu/create?';
@@ -33,7 +34,8 @@ class WechatMenu extends Common {
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN 文档
      * @return bool
      */
-    public function createMenu($data) {
+    public function createMenu($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -54,7 +56,8 @@ class WechatMenu extends Common {
      * 获取所有菜单
      * @return bool|array
      */
-    public function getMenu() {
+    public function getMenu()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -75,7 +78,8 @@ class WechatMenu extends Common {
      * 删除所有菜单
      * @return bool
      */
-    public function deleteMenu() {
+    public function deleteMenu()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -98,7 +102,8 @@ class WechatMenu extends Common {
      * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
      * @return bool|string
      */
-    public function createCondMenu($data) {
+    public function createCondMenu($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -120,7 +125,8 @@ class WechatMenu extends Common {
      * @param string $menuid 菜单ID
      * @return bool
      */
-    public function deleteCondMenu($menuid) {
+    public function deleteCondMenu($menuid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -143,7 +149,8 @@ class WechatMenu extends Common {
      * @param string $openid 粉丝openid
      * @return bool
      */
-    public function tryCondMenu($openid) {
+    public function tryCondMenu($openid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

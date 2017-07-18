@@ -11,7 +11,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/10/26 14:47
  */
-class WechatMedia extends Common {
+class WechatMedia extends Common
+{
 
     const UPLOAD_MEDIA_URL = 'http://file.api.weixin.qq.com/cgi-bin';
     const MEDIA_UPLOAD_URL = '/media/upload?';
@@ -36,7 +37,8 @@ class WechatMedia extends Common {
      * @param string $type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
      * @return bool|array
      */
-    public function uploadMedia($data, $type) {
+    public function uploadMedia($data, $type)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -60,7 +62,8 @@ class WechatMedia extends Common {
      * @param bool $is_video 是否为视频文件，默认为否
      * @return bool|array
      */
-    public function getMedia($media_id, $is_video = false) {
+    public function getMedia($media_id, $is_video = false)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -88,7 +91,8 @@ class WechatMedia extends Common {
      * @param bool $is_video 是否为视频文件，默认为否
      * @return bool|array
      */
-    public function getMediaWithHttpInfo($media_id, $is_video = false) {
+    public function getMediaWithHttpInfo($media_id, $is_video = false)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -97,9 +101,9 @@ class WechatMedia extends Common {
         $url_prefix = $is_video ? str_replace('https', 'http', self::API_URL_PREFIX) : self::API_URL_PREFIX;
         $url = $url_prefix . self::MEDIA_GET_URL . "access_token={$this->access_token}" . '&media_id=' . $media_id;
         $oCurl = curl_init();
-        if (stripos($url, "https://") !== FALSE) {
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (stripos($url, "https://") !== false) {
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($oCurl, CURLOPT_SSLVERSION, 1);
         }
         curl_setopt($oCurl, CURLOPT_URL, $url);
@@ -136,7 +140,8 @@ class WechatMedia extends Common {
      * @param array $data {"media":'@Path\filename.jpg'}
      * @return bool|array
      */
-    public function uploadImg($data) {
+    public function uploadImg($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -165,7 +170,8 @@ class WechatMedia extends Common {
      * @param array $video_info 视频信息数组，非视频素材不需要提供 array('title'=>'视频标题','introduction'=>'描述')
      * @return bool|array
      */
-    public function uploadForeverMedia($data, $type, $is_video = false, $video_info = array()) {
+    public function uploadForeverMedia($data, $type, $is_video = false, $video_info = array())
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -191,7 +197,8 @@ class WechatMedia extends Common {
      * @param array $data 消息结构{"articles":[{...}]}
      * @return bool|array
      */
-    public function uploadForeverArticles($data) {
+    public function uploadForeverArticles($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -216,7 +223,8 @@ class WechatMedia extends Common {
      * @param int $index 更新的文章在图文素材的位置，第一篇为0，仅多图文使用
      * @return bool|array
      */
-    public function updateForeverArticles($media_id, $data, $index = 0) {
+    public function updateForeverArticles($media_id, $data, $index = 0)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -246,7 +254,8 @@ class WechatMedia extends Common {
      * @param bool $is_video 是否为视频文件，默认为否
      * @return bool|array|raw data
      */
-    public function getForeverMedia($media_id, $is_video = false) {
+    public function getForeverMedia($media_id, $is_video = false)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -279,7 +288,8 @@ class WechatMedia extends Common {
      * @param string $media_id 媒体文件id
      * @return bool
      */
-    public function delForeverMedia($media_id) {
+    public function delForeverMedia($media_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -310,7 +320,8 @@ class WechatMedia extends Common {
      *  'item'=>array()   //素材列表数组，内容定义请参考官方文档
      * )
      */
-    public function getForeverList($type, $offset, $count) {
+    public function getForeverList($type, $offset, $count)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -343,7 +354,8 @@ class WechatMedia extends Common {
      *  'news_count'=>0   //图文总数量
      * )
      */
-    public function getForeverCount() {
+    public function getForeverCount()
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -365,7 +377,8 @@ class WechatMedia extends Common {
      * @param array $data 消息结构{"articles":[{...}]}
      * @return bool|array
      */
-    public function uploadArticles($data) {
+    public function uploadArticles($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -397,7 +410,8 @@ class WechatMedia extends Common {
      *     "created_at":1398848981
      *  }
      */
-    public function uploadMpVideo($data) {
+    public function uploadMpVideo($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

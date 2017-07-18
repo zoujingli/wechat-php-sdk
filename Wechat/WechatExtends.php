@@ -11,7 +11,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-22 10:32
  */
-class WechatExtends extends Common {
+class WechatExtends extends Common
+{
 
     const QR_LIMIT_SCENE = 1;
 
@@ -56,7 +57,8 @@ class WechatExtends extends Common {
      * @param string $ticket 传入由getQRCode方法生成的ticket参数
      * @return string url 返回http地址
      */
-    public function getQRUrl($ticket) {
+    public function getQRUrl($ticket)
+    {
         return self::QRCODE_IMG_URL . urlencode($ticket);
     }
 
@@ -65,7 +67,8 @@ class WechatExtends extends Common {
      * @param string $long_url 传入要转换的长url
      * @return bool|string url 成功则返回转换后的短url
      */
-    public function getShortUrl($long_url) {
+    public function getShortUrl($long_url)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -93,7 +96,8 @@ class WechatExtends extends Common {
      * @param int $expire 临时二维码有效期，最大为2592000秒(30天)
      * @return bool|array ('ticket'=>'qrcode字串','expire_seconds'=>2592000,'url'=>'二维码图片解析后的地址')
      */
-    public function getQRCode($scene_id, $type = 0, $expire = 2592000) {
+    public function getQRCode($scene_id, $type = 0, $expire = 2592000)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -130,7 +134,8 @@ class WechatExtends extends Common {
      * @param string $region 区域名称，在城市存在的情况下可省略；与经纬度二选一传入
      * @return bool|array
      */
-    public function querySemantic($uid, $query, $category, $latitude = 0.00, $longitude = 0.00, $city = "", $region = "") {
+    public function querySemantic($uid, $query, $category, $latitude = 0.00, $longitude = 0.00, $city = "", $region = "")
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -170,7 +175,8 @@ class WechatExtends extends Common {
      * @param string $end_date 结束时间
      * @return bool|array 成功返回查询结果数组，其定义请看官方文档
      */
-    public function getDatacube($type, $subtype, $begin_date, $end_date = '') {
+    public function getDatacube($type, $subtype, $begin_date, $end_date = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

@@ -10,7 +10,8 @@ use Wechat\Lib\Tools;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-22 10:35
  */
-class WechatDevice extends Common {
+class WechatDevice extends Common
+{
 
     const SHAKEAROUND_DEVICE_APPLYID = '/shakearound/device/applyid?'; //申请设备ID
     const SHAKEAROUND_DEVICE_APPLYSTATUS = '/shakearound/device/applystatus?'; //查询设备ID申请审核状态
@@ -33,7 +34,8 @@ class WechatDevice extends Common {
      * @param array $data
      * @return bool|array
      */
-    public function applyShakeAroundDevice($data) {
+    public function applyShakeAroundDevice($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -55,7 +57,8 @@ class WechatDevice extends Common {
      * @param int $apply_id
      * @return bool|array
      */
-    public function applyStatusShakeAroundDevice($apply_id) {
+    public function applyStatusShakeAroundDevice($apply_id)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -78,7 +81,8 @@ class WechatDevice extends Common {
      * @param array $data
      * @return bool
      */
-    public function updateShakeAroundDevice($data) {
+    public function updateShakeAroundDevice($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -101,7 +105,8 @@ class WechatDevice extends Common {
      * @param $data
      * @return bool|array
      */
-    public function searchShakeAroundDevice($data) {
+    public function searchShakeAroundDevice($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -127,7 +132,8 @@ class WechatDevice extends Common {
      * @param int $minor
      * @return bool|array
      */
-    public function bindLocationShakeAroundDevice($device_id, $poi_id, $uuid = '', $major = 0, $minor = 0) {
+    public function bindLocationShakeAroundDevice($device_id, $poi_id, $uuid = '', $major = 0, $minor = 0)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -162,7 +168,8 @@ class WechatDevice extends Common {
      * @param type $poi_appid 目标微信appid
      * @return boolean
      */
-    public function bindLocationOtherShakeAroundDevice($device_identifier, $poi_id, $poi_appid) {
+    public function bindLocationOtherShakeAroundDevice($device_identifier, $poi_id, $poi_appid)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -191,7 +198,8 @@ class WechatDevice extends Common {
      * @param int $minor
      * @return bool|array
      */
-    public function bindPageShakeAroundDevice($device_id, $page_ids = array(), $bind = 1, $append = 1, $uuid = '', $major = 0, $minor = 0) {
+    public function bindPageShakeAroundDevice($device_id, $page_ids = array(), $bind = 1, $append = 1, $uuid = '', $major = 0, $minor = 0)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -223,7 +231,8 @@ class WechatDevice extends Common {
      * @param array $data {"media":'@Path\filename.jpg'}
      * @return bool|array
      */
-    public function uploadShakeAroundMedia($data) {
+    public function uploadShakeAroundMedia($data)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -250,7 +259,8 @@ class WechatDevice extends Common {
      * @param string $comment 页面的备注信息，不超过15 个字,可不填
      * @return bool|array
      */
-    public function addShakeAroundPage($title, $description, $icon_url, $page_url, $comment = '') {
+    public function addShakeAroundPage($title, $description, $icon_url, $page_url, $comment = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -279,7 +289,8 @@ class WechatDevice extends Common {
      * @param string $comment 页面的备注信息，不超过15 个字,可不填
      * @return bool|array
      */
-    public function updateShakeAroundPage($page_id, $title, $description, $icon_url, $page_url, $comment = '') {
+    public function updateShakeAroundPage($page_id, $title, $description, $icon_url, $page_url, $comment = '')
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -305,7 +316,8 @@ class WechatDevice extends Common {
      * @param int $count
      * @return bool|mixed
      */
-    public function searchShakeAroundPage($page_ids = array(), $begin = 0, $count = 1) {
+    public function searchShakeAroundPage($page_ids = array(), $begin = 0, $count = 1)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -333,7 +345,8 @@ class WechatDevice extends Common {
      * @param array $page_ids
      * @return bool|array
      */
-    public function deleteShakeAroundPage($page_ids = array()) {
+    public function deleteShakeAroundPage($page_ids = array())
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -357,7 +370,8 @@ class WechatDevice extends Common {
      * @param string $ticket 摇周边业务的ticket(可在摇到的URL中得到，ticket生效时间为30 分钟)
      * @return bool|array
      */
-    public function getShakeInfoShakeAroundUser($ticket) {
+    public function getShakeInfoShakeAroundUser($ticket)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -386,7 +400,8 @@ class WechatDevice extends Common {
      * @param int $minor
      * @return bool|array
      */
-    public function deviceShakeAroundStatistics($device_id, $begin_date, $end_date, $uuid = '', $major = 0, $minor = 0) {
+    public function deviceShakeAroundStatistics($device_id, $begin_date, $end_date, $uuid = '', $major = 0, $minor = 0)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
@@ -420,7 +435,8 @@ class WechatDevice extends Common {
      * @param int $end_date 结束日期时间戳，最长时间跨度为30 天
      * @return bool|array
      */
-    public function pageShakeAroundStatistics($page_id, $begin_date, $end_date) {
+    public function pageShakeAroundStatistics($page_id, $begin_date, $end_date)
+    {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }

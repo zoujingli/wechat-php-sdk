@@ -21,7 +21,8 @@ spl_autoload_register(function ($class) {
  * @author Anyon <zoujingli@qq.com>
  * @date 2016-08-21 11:06
  */
-class Loader {
+class Loader
+{
 
     /**
      * 事件注册函数
@@ -47,8 +48,9 @@ class Loader {
      * @param string $method 处理方法（可以是普通方法或者类中的方法）
      * @param string|null $class 处理对象（可以直接使用的类实例）
      */
-    static public function register($event, $method, $class = NULL) {
-        if (!empty($class) && class_exists($class, FALSE) && method_exists($class, $method)) {
+    static public function register($event, $method, $class = null)
+    {
+        if (!empty($class) && class_exists($class, false) && method_exists($class, $method)) {
             self::$callback[$event] = array($class, $method);
         } else {
             self::$callback[$event] = $method;
@@ -61,7 +63,8 @@ class Loader {
      * @param array $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
      * @return WechatCard|WechatCustom|WechatDevice|WechatExtends|WechatMedia|WechatMenu|WechatOauth|WechatPay|WechatPoi|WechatReceive|WechatScript|WechatService|WechatUser
      */
-    static public function & get_instance($type, $config = array()) {
+    static public function & get_instance($type, $config = array())
+    {
         return self::get($type, $config);
     }
 
@@ -71,13 +74,14 @@ class Loader {
      * @param array $config SDK配置(token,appid,appsecret,encodingaeskey,mch_id,partnerkey,ssl_cer,ssl_key,qrc_img)
      * @return WechatCard|WechatCustom|WechatDevice|WechatExtends|WechatMedia|WechatMenu|WechatOauth|WechatPay|WechatPoi|WechatReceive|WechatScript|WechatService|WechatUser
      */
-    static public function & get($type, $config = array()) {
+    static public function & get($type, $config = array())
+    {
         $index = md5(strtolower($type) . md5(json_encode(self::$config)));
         if (!isset(self::$cache[$index])) {
             $basicName = 'Wechat' . ucfirst(strtolower($type));
             $className = "\\Wechat\\{$basicName}";
             // 注册类的无命名空间别名，兼容未带命名空间的老版本SDK
-            !class_exists($basicName, FALSE) && class_alias($className, $basicName);
+            !class_exists($basicName, false) && class_alias($className, $basicName);
             self::$cache[$index] = new $className(self::config($config));
         }
         return self::$cache[$index];
@@ -88,7 +92,8 @@ class Loader {
      * @param array $config
      * @return array
      */
-    static public function config($config = array()) {
+    static public function config($config = array())
+    {
         !empty($config) && self::$config = array_merge(self::$config, $config);
         if (!empty(self::$config['cachepath'])) {
             Cache::$cachepath = self::$config['cachepath'];

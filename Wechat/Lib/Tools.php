@@ -12,7 +12,8 @@ use CURLFile;
  * @author Anyon <zoujingli@qq.com>
  * @date 2016/05/28 11:55
  */
-class Tools {
+class Tools
+{
 
     /**
      * 产生随机字符串
@@ -20,7 +21,8 @@ class Tools {
      * @param string $str
      * @return string
      */
-    static public function createNoncestr($length = 32, $str = "") {
+    static public function createNoncestr($length = 32, $str = "")
+    {
         $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
@@ -34,7 +36,8 @@ class Tools {
      * @param string $method 签名方法
      * @return bool|string 签名值
      */
-    static public function getSignature($arrdata, $method = "sha1") {
+    static public function getSignature($arrdata, $method = "sha1")
+    {
         if (!function_exists($method)) {
             return false;
         }
@@ -52,7 +55,8 @@ class Tools {
      * @param string $partnerKey
      * @return string
      */
-    static public function getPaySign($option, $partnerKey) {
+    static public function getPaySign($option, $partnerKey)
+    {
         ksort($option);
         $buff = '';
         foreach ($option as $k => $v) {
@@ -69,11 +73,13 @@ class Tools {
      * @param string $id 数字索引子节点key转换的属性名
      * @return string
      */
-    static public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id') {
+    static public function arr2xml($data, $root = 'xml', $item = 'item', $id = 'id')
+    {
         return "<{$root}>" . self::_data_to_xml($data, $item, $id) . "</{$root}>";
     }
 
-    static private function _data_to_xml($data, $item = 'item', $id = 'id', $content = '') {
+    static private function _data_to_xml($data, $item = 'item', $id = 'id', $content = '')
+    {
         foreach ($data as $key => $val) {
             is_numeric($key) && $key = "{$item} {$id}=\"{$key}\"";
             $content .= "<{$key}>";
@@ -96,7 +102,8 @@ class Tools {
      * @param string $xml
      * @return array
      */
-    static public function xml2arr($xml) {
+    static public function xml2arr($xml)
+    {
         return json_decode(Tools::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
@@ -105,7 +112,8 @@ class Tools {
      * @param array $array
      * @return string
      */
-    static public function json_encode($array) {
+    static public function json_encode($array)
+    {
         return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
     }
 
@@ -114,11 +122,12 @@ class Tools {
      * @param $url
      * @return bool|mixed
      */
-    static public function httpGet($url) {
+    static public function httpGet($url)
+    {
         $oCurl = curl_init();
-        if (stripos($url, "https://") !== FALSE) {
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (stripos($url, "https://") !== false) {
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($oCurl, CURLOPT_SSLVERSION, 1);
         }
         curl_setopt($oCurl, CURLOPT_URL, $url);
@@ -139,17 +148,18 @@ class Tools {
      * @param array|string $data
      * @return bool|mixed
      */
-    static public function httpPost($url, $data) {
+    static public function httpPost($url, $data)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
         if (is_array($data)) {
             foreach ($data as &$value) {
-                if (is_string($value) && stripos($value, '@') === 0 && class_exists('CURLFile', FALSE)) {
+                if (is_string($value) && stripos($value, '@') === 0 && class_exists('CURLFile', false)) {
                     $value = new CURLFile(realpath(trim($value, '@')));
                 }
             }
@@ -172,15 +182,16 @@ class Tools {
      * @param int $second 设置请求超时时间
      * @return bool|mixed
      */
-    static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30) {
+    static public function httpsPost($url, $postdata, $ssl_cer = null, $ssl_key = null, $second = 30)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
         /* 要求结果为字符串且输出到屏幕上 */
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         /* 设置证书 */
         if (!is_null($ssl_cer) && file_exists($ssl_cer) && is_file($ssl_cer)) {
             curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
@@ -193,7 +204,7 @@ class Tools {
         curl_setopt($ch, CURLOPT_POST, true);
         if (is_array($postdata)) {
             foreach ($postdata as &$data) {
-                if (is_string($data) && stripos($data, '@') === 0 && class_exists('CURLFile', FALSE)) {
+                if (is_string($data) && stripos($data, '@') === 0 && class_exists('CURLFile', false)) {
                     $data = new CURLFile(realpath(trim($data, '@')));
                 }
             }
@@ -212,14 +223,15 @@ class Tools {
      * 读取微信客户端IP
      * @return null|string
      */
-    static public function getAddress() {
+    static public function getAddress()
+    {
         foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
-            if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === NULL) {
+            if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === null) {
                 continue;
             }
             sscanf($spoof, '%[^,]', $spoof);
             if (!filter_var($spoof, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-                $spoof = NULL;
+                $spoof = null;
             } else {
                 return $spoof;
             }
@@ -234,7 +246,8 @@ class Tools {
      * @param int $expired
      * @return bool
      */
-    static public function setCache($cachename, $value, $expired = 0) {
+    static public function setCache($cachename, $value, $expired = 0)
+    {
         return Cache::set($cachename, $value, $expired);
     }
 
@@ -243,7 +256,8 @@ class Tools {
      * @param string $cachename
      * @return mixed
      */
-    static public function getCache($cachename) {
+    static public function getCache($cachename)
+    {
         return Cache::get($cachename);
     }
 
@@ -252,7 +266,8 @@ class Tools {
      * @param string $cachename
      * @return bool
      */
-    static public function removeCache($cachename) {
+    static public function removeCache($cachename)
+    {
         return Cache::del($cachename);
     }
 
@@ -261,7 +276,8 @@ class Tools {
      * @param string $msg 日志行内容
      * @param string $type 日志级别
      */
-    static public function log($msg, $type = 'MSG') {
+    static public function log($msg, $type = 'MSG')
+    {
         Cache::put($type . ' - ' . $msg);
     }
 

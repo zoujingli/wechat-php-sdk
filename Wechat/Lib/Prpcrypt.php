@@ -6,7 +6,8 @@
  * @subpackage library
  * @date 2016/06/28 11:59
  */
-class PKCS7Encoder {
+class PKCS7Encoder
+{
 
     public static $block_size = 32;
 
@@ -15,7 +16,8 @@ class PKCS7Encoder {
      * @param string $text 需要进行填充补位操作的明文
      * @return string 补齐明文字符串
      */
-    function encode($text) {
+    function encode($text)
+    {
         $amount_to_pad = PKCS7Encoder::$block_size - (strlen($text) % PKCS7Encoder::$block_size);
         if ($amount_to_pad == 0) {
             $amount_to_pad = PKCS7Encoder::$block_size;
@@ -33,7 +35,8 @@ class PKCS7Encoder {
      * @param string $text 解密后的明文
      * @return string 删除填充补位后的明文
      */
-    function decode($text) {
+    function decode($text)
+    {
         $pad = ord(substr($text, -1));
         if ($pad < 1 || $pad > PKCS7Encoder::$block_size) {
             $pad = 0;
@@ -49,11 +52,13 @@ class PKCS7Encoder {
  * @subpackage library
  * @date 2016/06/28 11:59
  */
-class Prpcrypt {
+class Prpcrypt
+{
 
     public $key;
 
-    function __construct($k) {
+    function __construct($k)
+    {
         $this->key = base64_decode($k . "=");
     }
 
@@ -63,7 +68,8 @@ class Prpcrypt {
      * @param string $appid 公众号APPID
      * @return string 加密后的密文
      */
-    public function encrypt($text, $appid) {
+    public function encrypt($text, $appid)
+    {
         try {
             //获得16位随机字符串，填充到明文之前
             $random = $this->getRandomStr();//"aaaabbbbccccdddd";
@@ -84,7 +90,8 @@ class Prpcrypt {
      * @param string $appid 公众号APPID
      * @return string 解密得到的明文
      */
-    public function decrypt($encrypted, $appid) {
+    public function decrypt($encrypted, $appid)
+    {
         try {
             $iv = substr($this->key, 0, 16);
             $decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', substr($this->key, 0, 32), OPENSSL_ZERO_PADDING, $iv);
@@ -115,7 +122,8 @@ class Prpcrypt {
      * 随机生成16位字符串
      * @return string 生成的字符串
      */
-    function getRandomStr() {
+    function getRandomStr()
+    {
         $str = "";
         $str_pol = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
         $max = strlen($str_pol) - 1;
@@ -132,7 +140,8 @@ class Prpcrypt {
  * 不用于官方API接口的errCode码
  * Class ErrorCode
  */
-class ErrorCode {
+class ErrorCode
+{
 
     public static $OK = 0;
     public static $ValidateSignatureError = 40001;
@@ -166,7 +175,8 @@ class ErrorCode {
      * @param string $err
      * @return bool
      */
-    public static function getErrText($err) {
+    public static function getErrText($err)
+    {
         if (isset(self::$errCode[$err])) {
             return self::$errCode[$err];
         }
