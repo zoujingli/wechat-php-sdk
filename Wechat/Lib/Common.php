@@ -49,6 +49,24 @@ class Common
     }
 
     /**
+     * 当前当前错误代码
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errCode;
+    }
+
+    /**
+     * 获取当前错误内容
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->errMsg;
+    }
+
+    /**
      * 获取当前操作公众号APPID
      * @return string
      */
