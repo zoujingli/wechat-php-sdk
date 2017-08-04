@@ -18,6 +18,9 @@ class WechatPay
     /** 公众号appid */
     public $appid;
 
+    /** 公众号配置 */
+    public $config;
+
     /** 商户身份ID */
     public $mch_id;
 
@@ -38,12 +41,48 @@ class WechatPay
      */
     public function __construct($options = array())
     {
-        $config = Loader::config($options);
-        $this->appid = isset($config['appid']) ? $config['appid'] : '';
-        $this->mch_id = isset($config['mch_id']) ? $config['mch_id'] : '';
-        $this->partnerKey = isset($config['partnerkey']) ? $config['partnerkey'] : '';
-        $this->ssl_cer = isset($config['ssl_cer']) ? $config['ssl_cer'] : '';
-        $this->ssl_key = isset($config['ssl_key']) ? $config['ssl_key'] : '';
+        $this->config = Loader::config($options);
+        $this->appid = isset($this->config['appid']) ? $this->config['appid'] : '';
+        $this->mch_id = isset($this->config['mch_id']) ? $this->config['mch_id'] : '';
+        $this->partnerKey = isset($this->config['partnerkey']) ? $this->config['partnerkey'] : '';
+        $this->ssl_cer = isset($this->config['ssl_cer']) ? $this->config['ssl_cer'] : '';
+        $this->ssl_key = isset($this->config['ssl_key']) ? $this->config['ssl_key'] : '';
+    }
+
+    /**
+     * 获取当前错误内容
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->errMsg;
+    }
+
+    /**
+     * 当前当前错误代码
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->errCode;
+    }
+
+    /**
+     * 获取当前操作公众号APPID
+     * @return string
+     */
+    public function getAppid()
+    {
+        return $this->appid;
+    }
+
+    /**
+     * 获取SDK配置参数
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
