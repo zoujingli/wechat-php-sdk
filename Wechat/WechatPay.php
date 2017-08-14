@@ -281,7 +281,7 @@ class WechatPay
         if (false === $this->_parseResult($result)) {
             return false;
         }
-        return in_array($trade_type, array('JSAPI', 'APP')) ? $result['prepay_id'] : $result['code_url'];
+        return in_array($trade_type, array('JSAPI', 'APP')) ? $result['prepay_id'] : ($trade_type === 'MWEB' ? $result['mweb_url'] : $result['code_url']);
     }
 
     /**
