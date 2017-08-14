@@ -109,4 +109,22 @@ class Cache
         return true;
     }
 
+    /**
+     * 文件缓存，成功返回文件路径
+     * @param string $content 文件内容
+     * @param string $filename 文件名称
+     * @return bool|string
+     */
+    static public function file($content, $filename = '')
+    {
+        if (isset(Loader::$callback['CacheFile'])) {
+            return call_user_func_array(Loader::$callback['CacheFile'], func_get_args());
+        }
+        empty($filename) && $filename = md5($content);
+        if (self::check() && file_put_contents(self::$cachepath . $filename, $content)) {
+            return self::$cachepath . $filename;
+        }
+        return false;
+    }
+
 }

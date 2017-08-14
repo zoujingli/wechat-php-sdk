@@ -14,6 +14,7 @@
 
 namespace Wechat;
 
+use Wechat\Lib\Cache;
 use Wechat\Lib\Common;
 use Wechat\Lib\Tools;
 
@@ -157,8 +158,15 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
+        $cache_file = '';
+        if (($media_content = base64_decode($data['media']))) {
+            if (($cache_file = Cache::file($media_content))) {
+                $data['media'] = "@{$cache_file}";
+            }
+        }
         /* 原先的上传多媒体文件接口使用 self::UPLOAD_MEDIA_URL 前缀 */
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_UPLOADIMG_URL . "access_token={$this->access_token}", $data, true);
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_UPLOADIMG_URL . "access_token={$this->access_token}", $data);
+        !empty($cache_file) && @unlink($cache_file);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -176,7 +184,7 @@ class WechatMedia extends Common
      * 新增的永久素材也可以在公众平台官网素材管理模块中看到
      * 注意：上传大文件时可能需要先调用 set_time_limit(0) 避免超时
      * 注意：数组的键值任意，但文件名前必须加@，使用单引号以避免本地路径斜杠被转义
-     * @param array $data {"media":'@Path\filename.jpg'}
+     * @param array $data {"media":'@Path\filename.jpg'}, 支持base64格式
      * @param string $type 类型：图片:image 语音:voice 视频:video 缩略图:thumb
      * @param bool $is_video 是否为视频文件，默认为否
      * @param array $video_info 视频信息数组，非视频素材不需要提供 array('title'=>'视频标题','introduction'=>'描述')
@@ -190,7 +198,14 @@ class WechatMedia extends Common
         if ($is_video) {
             $data['description'] = Tools::json_encode($video_info);
         }
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_UPLOAD_URL . "access_token={$this->access_token}" . '&type=' . $type, $data, true);
+        $cache_file = '';
+        if (($media_content = base64_decode($data['media']))) {
+            if (($cache_file = Cache::file($media_content))) {
+                $data['media'] = "@{$cache_file}";
+            }
+        }
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_UPLOAD_URL . "access_token={$this->access_token}&type={$type}", $data);
+        !empty($cache_file) && @unlink($cache_file);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
