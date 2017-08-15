@@ -55,8 +55,12 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        //原先的上传多媒体文件接口使用 self::UPLOAD_MEDIA_URL 前缀
-        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_UPLOAD_URL . "access_token={$this->access_token}" . '&type=' . $type, $data, true);
+        list($cache_file, $media_content) = ['', base64_decode($data['media'])];
+        if (!empty($media_content) && ($cache_file = Cache::file($media_content))) {
+            $data['media'] = "@{$cache_file}";
+        }
+        $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_UPLOAD_URL . "access_token={$this->access_token}&type={$type}", $data);
+        !empty($cache_file) && @unlink($cache_file);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {
@@ -158,13 +162,10 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $cache_file = '';
-        if (($media_content = base64_decode($data['media']))) {
-            if (($cache_file = Cache::file($media_content))) {
-                $data['media'] = "@{$cache_file}";
-            }
+        list($cache_file, $media_content) = ['', base64_decode($data['media'])];
+        if (!empty($media_content) && ($cache_file = Cache::file($media_content))) {
+            $data['media'] = "@{$cache_file}";
         }
-        /* 原先的上传多媒体文件接口使用 self::UPLOAD_MEDIA_URL 前缀 */
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_UPLOADIMG_URL . "access_token={$this->access_token}", $data);
         !empty($cache_file) && @unlink($cache_file);
         if ($result) {
@@ -195,14 +196,10 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        if ($is_video) {
-            $data['description'] = Tools::json_encode($video_info);
-        }
-        $cache_file = '';
-        if (($media_content = base64_decode($data['media']))) {
-            if (($cache_file = Cache::file($media_content))) {
-                $data['media'] = "@{$cache_file}";
-            }
+        $is_video && ($data['description'] = Tools::json_encode($video_info));
+        list($cache_file, $media_content) = ['', base64_decode($data['media'])];
+        if (!empty($media_content) && ($cache_file = Cache::file($media_content))) {
+            $data['media'] = "@{$cache_file}";
         }
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_UPLOAD_URL . "access_token={$this->access_token}&type={$type}", $data);
         !empty($cache_file) && @unlink($cache_file);
@@ -255,12 +252,8 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        if (!isset($data['media_id'])) {
-            $data['media_id'] = $media_id;
-        }
-        if (!isset($data['index'])) {
-            $data['index'] = $index;
-        }
+        !isset($data['index']) && $data['index'] = $index;
+        !isset($data['media_id']) && $data['media_id'] = $media_id;
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_NEWS_UPDATE_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -279,7 +272,7 @@ class WechatMedia extends Common
      * 返回图文消息数组或二进制数据，失败返回false
      * @param string $media_id 媒体文件id
      * @param bool $is_video 是否为视频文件，默认为否
-     * @return bool|array|raw data
+     * @return bool|array
      */
     public function getForeverMedia($media_id, $is_video = false)
     {
@@ -287,9 +280,6 @@ class WechatMedia extends Common
             return false;
         }
         $data = array('media_id' => $media_id);
-        //#TODO 暂不确定此接口是否需要让视频文件走http协议
-        //如果要获取的素材是视频文件时，不能使用https协议，必须更换成http协议
-        //$url_prefix = $is_video?str_replace('https','http',self::API_URL_PREFIX):self::API_URL_PREFIX;
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_GET_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             if (is_string($result)) {
@@ -301,9 +291,8 @@ class WechatMedia extends Common
                         return $this->checkRetry(__FUNCTION__, func_get_args());
                     }
                     return $json;
-                } else {
-                    return $result;
                 }
+                return $result;
             }
             return $result;
         }
@@ -352,11 +341,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array(
-            'type'   => $type,
-            'offset' => $offset,
-            'count'  => $count,
-        );
+        $data = array('type' => $type, 'offset' => $offset, 'count' => $count,);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_BATCHGET_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);

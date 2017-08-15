@@ -78,7 +78,7 @@ class Prpcrypt
      * 对明文进行加密
      * @param string $text 需要加密的明文
      * @param string $appid 公众号APPID
-     * @return string 加密后的密文
+     * @return array
      */
     public function encrypt($text, $appid)
     {
@@ -100,7 +100,7 @@ class Prpcrypt
      * 对密文进行解密
      * @param string $encrypted 需要解密的密文
      * @param string $appid 公众号APPID
-     * @return string 解密得到的明文
+     * @return array
      */
     public function decrypt($encrypted, $appid)
     {

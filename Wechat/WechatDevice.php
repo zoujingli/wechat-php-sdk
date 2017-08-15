@@ -155,9 +155,7 @@ class WechatDevice extends Common
             }
             $device_identifier = array('uuid' => $uuid, 'major' => $major, 'minor' => $minor);
         } else {
-            $device_identifier = array(
-                'device_id' => $device_id
-            );
+            $device_identifier = array('device_id' => $device_id);
         }
         $data = array('device_identifier' => $device_identifier, 'poi_id' => $poi_id);
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_DEVICE_BINDLOCATION . "access_token={$this->access_token}", Tools::json_encode($data));
@@ -194,7 +192,7 @@ class WechatDevice extends Common
                 $this->errMsg = $json['errmsg'];
                 return $this->checkRetry(__FUNCTION__, func_get_args());
             }
-            return $json; //这个可以更改为返回true
+            return $json;
         }
         return false;
     }
@@ -248,7 +246,7 @@ class WechatDevice extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_MATERIAL_ADD . "access_token={$this->access_token}", $data, true);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::SHAKEAROUND_MATERIAL_ADD . "access_token={$this->access_token}", $data);
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

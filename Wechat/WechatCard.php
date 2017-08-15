@@ -775,10 +775,7 @@ class WechatCard extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array(
-            'card_id' => $card_id,
-            'is_open' => $is_openid,
-        );
+        $data = array('card_id' => $card_id, 'is_open' => $is_openid,);
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CARD_PAYCELL_SET . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);

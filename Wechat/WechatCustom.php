@@ -114,13 +114,11 @@ class WechatCustom extends Common
      */
     public function createKFSession($openid, $kf_account, $text = '')
     {
-        $data = array("openid" => $openid, "kf_account" => $kf_account);
-        if ($text) {
-            $data["text"] = $text;
-        }
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
+        $data = array("openid" => $openid, "kf_account" => $kf_account);
+        $text !== '' && $data["text"] = $text;
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CUSTOM_SESSION_CREATE . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -347,7 +345,7 @@ class WechatCustom extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPLOAD_HEADIMG_URL . "access_token={$this->access_token}" . '&kf_account=' . $account, array('media' => '@' . $imgfile), true);
+        $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::CS_KF_ACCOUNT_UPLOAD_HEADIMG_URL . "access_token={$this->access_token}&kf_account={$account}", array('media' => '@' . $imgfile));
         if ($result) {
             $json = json_decode($result, true);
             if (!$json || !empty($json['errcode'])) {

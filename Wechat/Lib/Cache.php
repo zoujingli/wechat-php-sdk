@@ -120,11 +120,27 @@ class Cache
         if (isset(Loader::$callback['CacheFile'])) {
             return call_user_func_array(Loader::$callback['CacheFile'], func_get_args());
         }
-        empty($filename) && $filename = md5($content);
+        empty($filename) && $filename = md5($content) . '.' . self::getFileExt($content);
         if (self::check() && file_put_contents(self::$cachepath . $filename, $content)) {
             return self::$cachepath . $filename;
         }
         return false;
+    }
+
+    /**
+     * 根据文件流读取文件后缀
+     * @param string $content
+     * @return string
+     */
+    static public function getFileExt($content)
+    {
+        $types = [
+            255216 => 'jpg', 7173 => 'gif', 6677 => 'bmp', 13780 => 'png',
+            7368   => 'mp3', 4838 => 'wma', 7784 => 'mid', 6063 => 'xml',
+        ];
+        $typeInfo = @unpack("C2chars", substr($content, 0, 2));
+        $typeCode = intval($typeInfo['chars1'] . $typeInfo['chars2']);
+        return isset($types[$typeCode]) ? $types[$typeCode] : 'mp4';
     }
 
 }

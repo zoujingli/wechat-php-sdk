@@ -84,10 +84,7 @@ class WechatExtends extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = array(
-            'action'   => 'long2short',
-            'long_url' => $long_url
-        );
+        $data = array('action' => 'long2short', 'long_url' => $long_url);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::SHORT_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -195,10 +192,7 @@ class WechatExtends extends Common
         if (!isset(self::$DATACUBE_URL_ARR[$type]) || !isset(self::$DATACUBE_URL_ARR[$type][$subtype])) {
             return false;
         }
-        $data = array(
-            'begin_date' => $begin_date,
-            'end_date'   => $end_date ? $end_date : $begin_date
-        );
+        $data = array('begin_date' => $begin_date, 'end_date' => $end_date ? $end_date : $begin_date);
         $result = Tools::httpPost(self::API_BASE_URL_PREFIX . self::$DATACUBE_URL_ARR[$type][$subtype] . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);

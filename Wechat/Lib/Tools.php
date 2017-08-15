@@ -90,6 +90,14 @@ class Tools
         return "<{$root}>" . self::_data_to_xml($data, $item, $id) . "</{$root}>";
     }
 
+    /**
+     * XML内容生成
+     * @param array $data 数据
+     * @param string $item 子节点
+     * @param string $id 节点ID
+     * @param string $content 节点内容
+     * @return string
+     */
     static private function _data_to_xml($data, $item = 'item', $id = 'id', $content = '')
     {
         foreach ($data as $key => $val) {
@@ -149,9 +157,8 @@ class Tools
         curl_close($oCurl);
         if (intval($aStatus["http_code"]) == 200) {
             return $sContent;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -202,9 +209,7 @@ class Tools
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        /* 要求结果为字符串且输出到屏幕上 */
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        /* 设置证书 */
         if (!is_null($ssl_cer) && file_exists($ssl_cer) && is_file($ssl_cer)) {
             curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
             curl_setopt($ch, CURLOPT_SSLCERT, $ssl_cer);
@@ -226,9 +231,8 @@ class Tools
         curl_close($ch);
         if ($result) {
             return $result;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**

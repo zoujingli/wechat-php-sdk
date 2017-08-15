@@ -127,9 +127,8 @@ class Common
         } elseif (isset($_GET["echostr"])) {
             if ($this->checkSignature()) {
                 exit($_GET["echostr"]);
-            } else {
-                return false;
             }
+            return false;
         }
         if (!$this->checkSignature($encryptStr)) {
             $this->errMsg = 'Interface authentication failed, please use the correct method to call.';
@@ -145,7 +144,6 @@ class Common
      */
     private function checkSignature($str = '')
     {
-        // 如果存在加密验证则用加密验证段
         $signature = isset($_GET["msg_signature"]) ? $_GET["msg_signature"] : (isset($_GET["signature"]) ? $_GET["signature"] : '');
         $timestamp = isset($_GET["timestamp"]) ? $_GET["timestamp"] : '';
         $nonce = isset($_GET["nonce"]) ? $_GET["nonce"] : '';
@@ -153,9 +151,8 @@ class Common
         sort($tmpArr, SORT_STRING);
         if (sha1(implode($tmpArr)) == $signature) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
