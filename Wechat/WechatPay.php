@@ -402,12 +402,12 @@ class WechatPay
     {
         $data = array();
         $data['out_trade_no'] = $out_trade_no;
-        !empty($transaction_id) && $data['transaction_id'] = $transaction_id;
-        !empty($transaction_id) && $data['out_refund_no'] = $out_refund_no;
         $data['total_fee'] = $total_fee;
         $data['refund_fee'] = $refund_fee;
         $data['refund_fee_type'] = $refund_fee_type;
         $data['op_user_id'] = empty($op_user_id) ? $this->mch_id : $op_user_id;
+        !empty($out_refund_no) && $data['out_refund_no'] = $out_refund_no;
+        !empty($transaction_id) && $data['transaction_id'] = $transaction_id;
         !empty($refund_account) && $data['refund_account'] = $refund_account;
         !empty($refund_desc) && $data['refund_desc'] = $refund_desc;
         $result = $this->getArrayResult($data, self::MCH_BASE_URL . '/secapi/pay/refund', 'postXmlSSL');
