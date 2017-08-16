@@ -114,20 +114,18 @@ class Prpcrypt
             $pkc_encoder = new PKCS7Encoder;
             $result = $pkc_encoder->decode($decrypted);
             if (strlen($result) < 16) {
-                return "";
+                return array(ErrorCode::$DecryptAESError, null);
             }
             $content = substr($result, 16, strlen($result));
             $len_list = unpack("N", substr($content, 0, 4));
             $xml_len = $len_list[1];
             $xml_content = substr($content, 4, $xml_len);
             $from_appid = substr($content, $xml_len + 4);
-            if (!$appid) {
-                $appid = $from_appid;
-            }
+            return array(0, $xml_content, $from_appid);
         } catch (Exception $e) {
             return array(ErrorCode::$IllegalBuffer, null);
         }
-        return array(0, $xml_content, $from_appid);
+
     }
 
     /**
