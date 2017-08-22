@@ -80,7 +80,7 @@ class WechatMessage extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = ['template_id' => $tpl_id];
+        $data = array('template_id' => $tpl_id);
         $result = Tools::httpPost(self::API_URL_PREFIX . "/template/del_private_template?access_token={$this->access_token}", [Tools::json_encode($data)]);
         if ($result) {
             $json = json_decode($result, true);
