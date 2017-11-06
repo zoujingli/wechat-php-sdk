@@ -476,12 +476,11 @@ class WechatPay
         $data['send_name'] = $sendname; //商户名称
         $data['re_openid'] = $openid; //红包接收者
         $data['total_amount'] = $total_amount; //红包总金额
-        $data['total_num'] = '1'; //发放人数据
+        $data['total_num'] = $total_num; //发放人数据
         $data['wishing'] = $wishing; //红包祝福语
         $data['client_ip'] = Tools::getAddress(); //调用接口的机器Ip地址
         $data['act_name'] = $act_name; //活动名称
         $data['remark'] = $remark; //备注信息
-        $data['total_num'] = $total_num;
         !empty($scene_id) && $data['scene_id'] = $scene_id;
         !empty($risk_info) && $data['risk_info'] = $risk_info;
         !empty($consume_mch_id) && $data['consume_mch_id'] = $consume_mch_id;
