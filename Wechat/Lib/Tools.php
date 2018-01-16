@@ -124,7 +124,7 @@ class Tools
      */
     static public function xml2arr($xml)
     {
-        return json_decode(Tools::json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+        return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
     }
 
     /**
@@ -134,7 +134,9 @@ class Tools
      */
     static public function json_encode($array)
     {
-        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), json_encode($array));
+        return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', function ($matches) {
+            return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");
+        }, json_encode($array));
     }
 
     /**
