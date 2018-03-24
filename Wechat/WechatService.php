@@ -45,7 +45,7 @@ class WechatService
     // 未授权
     const UNAUTH = 40001;
 
-    // token缓冲前缀
+    // token缓存前缀
     const AUTH_TOKEN_TAG = 'auth_token_';
 
     // 错误码
@@ -117,8 +117,8 @@ class WechatService
     }
 
     /**
-     * 获取（刷新）授权公众号的令牌
-     * @注意1. 授权公众号访问access token2小时有效
+     * 获取（刷新）授权的令牌
+     * @注意1. 授权访问access token2小时有效
      * @注意2. 一定保存好新的刷新令牌
      * @param string $authorizer_appid 授权方APPID
      * @param string $authorizer_refresh_token 授权方刷新令牌
@@ -146,7 +146,7 @@ class WechatService
      * 获取或刷新服务 AccessToken
      * @return bool|string
      */
-    protected function getComponentAccessToken()
+    public function getComponentAccessToken()
     {
         $cacheKey = 'wechat_component_access_token';
         $this->component_access_token = Tools::getCache($cacheKey);
@@ -191,7 +191,7 @@ class WechatService
     }
 
     /**
-     * 获取公众号的授权信息
+     * 获取授权信息
      *
      * @param string $authorization_code
      * @return bool|array
@@ -394,7 +394,7 @@ class WechatService
     /**
      * 解析JSON数据
      * @param string $result
-     * @return bool
+     * @return bool | array
      */
     protected function parseJson($result)
     {

@@ -14,10 +14,7 @@ use Wechat\Lib\Tools;
 
 /**
  * 小程序第三方平台SDK
- *
  * @version 1.0
- * @author Anyon <zoujingli@qq.com>
- * @date 2016/10/18 00:35:55
  */
 class WechatApplet extends WechatService
 {
@@ -501,7 +498,7 @@ class WechatApplet extends WechatService
             return false;
         }
 
-        $url = 'https://api.weixin.qq.com/wxa/undocodeaudit?access_token='.$auth_info['authorizer_access_token'];
+        $url = 'https://api.weixin.qq.com/wxa/grayrelease?ccess_token='.$auth_info['authorizer_access_token'];
         $data['gray_percentage'] = $gray_percentage;
         $returnData = $this->parseJson(Tools::httpPost($url, Tools::json_encode($data)));
 
@@ -518,7 +515,7 @@ class WechatApplet extends WechatService
             return false;
         }
 
-        $url = 'https://api.weixin.qq.com/wxa/undocodeaudit?access_token='.$auth_info['authorizer_access_token'];
+        $url = 'https://api.weixin.qq.com/wxa/revertgrayrelease?access_token='.$auth_info['authorizer_access_token'];
         $returnData = $this->parseJson(Tools::httpPost($url, Tools::json_encode([])));
 
         return $this->returnBool($returnData);
@@ -698,7 +695,7 @@ class WechatApplet extends WechatService
             return false;
         }
 
-        $url = 'https://api.weixin.qq.com/cgi-bin/wxopen/template/del?access_token='.$auth_info['authorizer_access_token'];
+        $url = 'https://api.weixin.qq.com/wxa/changewxasearchstatus?access_token='.$auth_info['authorizer_access_token'];
         $data['status'] = $status;
         $returnData = $this->parseJson(Tools::httpPost($url, Tools::json_encode($data)));
 
@@ -727,7 +724,7 @@ class WechatApplet extends WechatService
      * @return bool
      */
     private function returnBool($returnData){
-        if(isset($returnData['errcode']) && $returnData['errcode'] != 0){
+        if($returnData['errcode'] != 0){
 
             $this->errMsg = $returnData['errmsg'];
             $this->errCode = $returnData['errcode'] ;
@@ -744,7 +741,7 @@ class WechatApplet extends WechatService
      * @return bool |array
      */
     private function returnResult($returnData){
-        if(isset($returnData['errcode']) && $returnData['errcode'] != 0){
+        if($returnData['errcode'] != 0){
 
             $this->errMsg = $returnData['errmsg'];
             $this->errCode = $returnData['errcode'] ;

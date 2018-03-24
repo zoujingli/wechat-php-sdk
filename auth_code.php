@@ -9,15 +9,18 @@
 if(isset($_GET['auth_code']) && isset($_GET['expires_in']) ){
     echo $_GET['auth_code'].' | '.$_GET['expires_in'];
 
-    require 'sdk/include.php';
+    require 'include.php';
     $wxa = new \Wechat\WechatApplet([
-        'component_encodingaeskey'=>'xoiUaiy5MOWtkZFw5I5tY5Q0wfFYV5QyQTGTuFmuY0A',
+        'component_encodingaeskey'=>'component_encodingaeskey',
         'component_verify_ticket'=>'',
-        'component_appsecret'=>'e4c0a98ee2281b66132a23962ce89ffc',
-        'component_token'=>'KKAecamB63DEdQc8C872edOK92ECAm6E',
-        'component_appid'=>'wx4708c9d541173cdf',
-        'authorizer_appid' => 'wx4846b50fa640a081',
+        'component_appsecret'=>'component_appsecret',
+        'component_token'=>'component_token',
+        'component_appid'=>'component_appid',
+        'authorizer_appid' => 'authorizer_appid',
     ]);
+    #用户授权后跳转至此.
+
+    #保存用户授权token
     $wxa->getAuthorizationInfo($_GET['auth_code']);
     $category_rst = $wxa->getCategory();
     var_dump($category_rst);
@@ -25,7 +28,6 @@ if(isset($_GET['auth_code']) && isset($_GET['expires_in']) ){
     $wxa->getPage();
     $wxa->getSearchStatus();
     $wxa->getTemplateList();
-
 
 }else{
     echo 'do nothing';
