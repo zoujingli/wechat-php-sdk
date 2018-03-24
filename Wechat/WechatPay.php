@@ -203,8 +203,8 @@ class WechatPay
     }
 
     /**
-     * 支付通知验证处理
-     * @return bool|array
+     * 获取支付通知
+     * @return bool|array 支付通知
      */
     public function getNotify()
     {
@@ -221,6 +221,15 @@ class WechatPay
             $this->errMsg = 'Payment notification signature is missing.';
             return false;
         }
+        return $notifyInfo;
+    }
+
+    /**
+     * 验证支付通知
+     * @param array $notifyInfo 获取支付通知接口返回
+     * @return bool | array
+     */
+    function checkNotifySign($notifyInfo){
         $data = $notifyInfo;
         unset($data['sign']);
         if ($notifyInfo['sign'] !== Tools::getPaySign($data, $this->partnerKey)) {
@@ -234,7 +243,6 @@ class WechatPay
         $this->errMsg = '';
         return $notifyInfo;
     }
-
 
     /**
      * 支付XML统一回复

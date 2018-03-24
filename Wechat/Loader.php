@@ -90,6 +90,8 @@ class Loader
     static public function & get($type, $config = array())
     {
         $index = md5(strtolower($type) . md5(json_encode(self::$config)));
+        #不做缓存
+        unset(self::$cache[$index]);
         if (!isset(self::$cache[$index])) {
             $basicName = 'Wechat' . ucfirst(strtolower($type));
             $className = "\\Wechat\\{$basicName}";
