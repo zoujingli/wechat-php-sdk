@@ -1,5 +1,5 @@
 {
-  "type": "project",
+  "type": "composer-plugin",
   "name": "pilipala/wechat-php-sdk",
   "homepage": "https://github.com/cyc1994ya/wechat-php-sdk",
   "description": "WeChat development of SDK",
