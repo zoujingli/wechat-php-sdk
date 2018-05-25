@@ -28,6 +28,20 @@ class Tools
 {
 
     /**
+     * 判断字符串是否经过编码方法
+     * @param string $str
+     * @return bool
+     */
+    static public function isBase64($str)
+    {
+        if ($str == base64_encode(base64_decode($str))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 产生随机字符串
      * @param int $length 指定字符长度
      * @param string $str 字符串前缀
@@ -54,7 +68,7 @@ class Tools
             return false;
         }
         ksort($data);
-        $params = array();
+        $params = [];
         foreach ($data as $key => $value) {
             $params[] = "{$key}={$value}";
         }
@@ -153,7 +167,7 @@ class Tools
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 30);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
         return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
@@ -173,7 +187,7 @@ class Tools
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, self::_buildPost($data));
-        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
         return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
@@ -205,7 +219,7 @@ class Tools
         }
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, self::_buildPost($data));
-        list($content, $status) = array(curl_exec($curl), curl_getinfo($curl), curl_close($curl));
+        list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
         return (intval($status["http_code"]) === 200) ? $content : false;
     }
 
@@ -233,7 +247,7 @@ class Tools
      */
     static public function getAddress()
     {
-        foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR') as $header) {
+        foreach (['HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'HTTP_X_CLIENT_IP', 'HTTP_X_CLUSTER_CLIENT_IP', 'REMOTE_ADDR'] as $header) {
             if (!isset($_SERVER[$header]) || ($spoof = $_SERVER[$header]) === null) {
                 continue;
             }
