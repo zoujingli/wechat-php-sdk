@@ -26,6 +26,7 @@ use Wechat\Lib\Tools;
  */
 class WechatMedia extends Common
 {
+
     const MEDIA_UPLOAD_URL = '/media/upload?';
     const MEDIA_UPLOADIMG_URL = '/media/uploadimg?';
     const MEDIA_GET_URL = '/media/get?';
@@ -120,7 +121,7 @@ class WechatMedia extends Common
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
         $sContent = curl_exec($oCurl);
         $aStatus = curl_getinfo($oCurl);
-        $result = [];
+        $result = array();
         if (intval($aStatus["http_code"]) !== 200) {
             return false;
         }
@@ -181,7 +182,7 @@ class WechatMedia extends Common
      * @param array $video_info 视频信息数组，非视频素材不需要提供 array('title'=>'视频标题','introduction'=>'描述')
      * @return bool|array
      */
-    public function uploadForeverMedia($data, $type, $is_video = false, $video_info = [])
+    public function uploadForeverMedia($data, $type, $is_video = false, $video_info = array())
     {
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
@@ -269,7 +270,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = ['media_id' => $media_id];
+        $data = array('media_id' => $media_id);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_GET_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             if (is_string($result) && ($json = json_decode($result, true))) {
@@ -295,7 +296,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = ['media_id' => $media_id];
+        $data = array('media_id' => $media_id);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_DEL_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
@@ -327,7 +328,7 @@ class WechatMedia extends Common
         if (!$this->access_token && !$this->getAccessToken()) {
             return false;
         }
-        $data = ['type' => $type, 'offset' => $offset, 'count' => $count,];
+        $data = array('type' => $type, 'offset' => $offset, 'count' => $count);
         $result = Tools::httpPost(self::API_URL_PREFIX . self::MEDIA_FOREVER_BATCHGET_URL . "access_token={$this->access_token}", Tools::json_encode($data));
         if ($result) {
             $json = json_decode($result, true);
