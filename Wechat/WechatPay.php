@@ -208,7 +208,9 @@ class WechatPay
      */
     public function getNotify()
     {
+        $disableEntities = libxml_disable_entity_loader(true);
         $notifyInfo = (array)simplexml_load_string(file_get_contents("php://input"), 'SimpleXMLElement', LIBXML_NOCDATA);
+        libxml_disable_entity_loader($disableEntities);
         if (empty($notifyInfo)) {
             Tools::log('Payment notification forbidden access.', "ERR - {$this->appid}");
             $this->errCode = '404';
