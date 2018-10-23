@@ -1,8 +1,8 @@
 <?php
     require 'include.php';
 
-    $url = 'https://ceshi.xinzhibang168.com/open/auth_code.php';
-    $appid = 'wx4708c9d541173cdf';
+    $url = '';
+    $appid = '';
 
 
     $wxa = new \Wechat\WechatApplet([
