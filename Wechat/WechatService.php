@@ -42,28 +42,33 @@ class WechatService
     const GET_AUTHORIZER_OPTION_URL = '/api_get_authorizer_option';
     // 设置授权方的选项信息
     const SET_AUTHORIZER_OPTION_URL = '/api_set_authorizer_option';
+    // 未授权
+    const UNAUTH = 40001;
 
-    // 微信后台推送的ticket 每十分钟更新一次
+    // token缓存前缀
+    const AUTH_TOKEN_TAG = 'auth_token_';
+
+    // 错误码
     public $errCode;
-    // 服务appid
+    // 错误信息
     public $errMsg;
-    // 服务appsecret
+    // 推送ticket
     protected $component_verify_ticket;
-    // 公众号消息校验Token
+    // 第三方平台appid
     protected $component_appid;
-    // 公众号消息加解密Key
+    // 第三方平台appsecret
     protected $component_appsecret;
     // 服务令牌
     protected $component_token;
-    // 授权方appid
+    // 第三方平台组件加密密钥
     protected $component_encodingaeskey;
-    // 授权方令牌
+    // 第三方调用接口凭证
     protected $component_access_token;
-    // 刷新令牌
+    // 授权方appid
     protected $authorizer_appid;
-    // JSON数据
+    // 预授权码
     protected $pre_auth_code;
-    // 错误消息
+    // 返回数据
     protected $data;
 
     /**
@@ -78,10 +83,12 @@ class WechatService
         $this->component_appsecret = !empty($options['component_appsecret']) ? $options['component_appsecret'] : '';
         $this->component_token = !empty($options['component_token']) ? $options['component_token'] : '';
         $this->component_appid = !empty($options['component_appid']) ? $options['component_appid'] : '';
+        $this->authorizer_appid = !empty($options['authorizer_appid']) ? $options['authorizer_appid'] : '';
+
     }
 
     /**
-     * 接收公众平台推送的 Ticket
+     * 接收推送的 Ticket
      * @return bool|array
      */
     public function getComonentTicket()
@@ -110,14 +117,14 @@ class WechatService
     }
 
     /**
-     * 获取（刷新）授权公众号的令牌
-     * @注意1. 授权公众号访问access token2小时有效
+     * 获取（刷新）授权的令牌
+     * @注意1. 授权访问access token2小时有效
      * @注意2. 一定保存好新的刷新令牌
      * @param string $authorizer_appid 授权方APPID
      * @param string $authorizer_refresh_token 授权方刷新令牌
      * @return bool|string
      */
-    public function refreshAccessToken($authorizer_appid, $authorizer_refresh_token)
+    private function refreshAccessToken($authorizer_appid, $authorizer_refresh_token)
     {
         empty($this->component_access_token) && $this->getComponentAccessToken();
         if (empty($this->component_access_token)) {
@@ -165,7 +172,7 @@ class WechatService
      * @param string|null $field
      * @return bool|array
      */
-    private function _decode($result, $field = null)
+    protected function _decode($result, $field = null)
     {
         $this->data = json_decode($result, true);
         if (!empty($this->data['errcode'])) {
@@ -184,7 +191,7 @@ class WechatService
     }
 
     /**
-     * 获取公众号的授权信息
+     * 获取授权信息
      *
      * @param string $authorization_code
      * @return bool|array
@@ -205,6 +212,16 @@ class WechatService
             Tools::log("Get getAuthorizationInfo Faild. {$this->errMsg} [$this->errCode]", "ERR - {$this->authorizer_appid}");
             return false;
         }
+        Tools::log(json_encode($authorization_info));
+
+        //保存授权方信息
+        $this->setAuthTokenCache(
+            $authorization_info['authorizer_appid'],
+            $authorization_info['authorizer_access_token'],
+            $authorization_info['authorizer_refresh_token'],
+            $authorization_info['expires_in']
+        );
+
         $authorization_info['func_info'] = $this->_parseFuncInfo($authorization_info['func_info']);
         return $authorization_info;
     }
@@ -214,7 +231,7 @@ class WechatService
      * @param array $func_info
      * @return string
      */
-    private function _parseFuncInfo($func_info)
+    protected function _parseFuncInfo($func_info)
     {
         $authorization_list = array();
         foreach ($func_info as $func) {
@@ -318,7 +335,6 @@ class WechatService
 
     /**
      * 获取预授权码
-     *
      * @return bool|string
      */
     public function getPreauthCode()
@@ -378,9 +394,9 @@ class WechatService
     /**
      * 解析JSON数据
      * @param string $result
-     * @return bool
+     * @return bool | array
      */
-    private function parseJson($result)
+    protected function parseJson($result)
     {
         $json = json_decode($result, true);
         if (empty($json) || !empty($json['errcode'])) {
@@ -403,6 +419,72 @@ class WechatService
         $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$oauthAccessToken}&openid={$openid}&lang=zh_CN";
         return $this->parseJson(Tools::httpGet($url));
     }
+
+
+
+    /**
+     * 保存授权方信息到缓存
+     * @param string $authorizer_appid
+     * @param string $authorizer_access_token
+     * @param string $authorizer_refresh_token
+     * @param int $expired_in
+     */
+    protected function setAuthTokenCache($authorizer_appid,$authorizer_access_token,$authorizer_refresh_token,$expired_in){
+        $cacheKey = self::AUTH_TOKEN_TAG.md5($authorizer_appid);
+        $cahce_data = [
+            'authorizer_access_token' =>  $authorizer_access_token,
+            'authorizer_refresh_token' =>  $authorizer_refresh_token,
+            'expired_time' => time()+$expired_in, #提前10分钟刷新
+        ];
+        //todo::加入到刷新token队列?
+        Tools::setCache($cacheKey,$cahce_data, $expired_in);
+    }
+
+    /**
+     * 获取授权方RefreshToken,AccessToken (获取失败则需重新授权) | 做验证授权状态用
+     * @return bool|array  {authorizer_access_token,authorizer_refresh_token}
+     */
+    protected function getAuthTokenCache(){
+
+        $cacheKey = self::AUTH_TOKEN_TAG.md5($this->authorizer_appid);
+
+        $cacheData = Tools::getCache($cacheKey);
+        if($cacheData){
+            //是否即将过期
+            if($cacheData['expired_time'] + 600 < time()){
+
+                $data['component_appid'] = $this->component_appid;
+                $data['authorizer_appid'] = $this->authorizer_appid;
+                $data['authorizer_refresh_token'] = $cacheData['authorizer_refresh_token'];
+                $url = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token={$this->component_access_token}";
+                $returnData = $this->parseJson(Tools::httpPost($url, Tools::json_encode($data)));
+
+                if(isset($returnData['authorizer_access_token'])){
+
+                    $this->setAuthTokenCache(
+                        $this->authorizer_appid,
+                        $returnData['authorizer_access_token'],
+                        $returnData['authorizer_refresh_token'],
+                        $returnData['expires_in']
+                    );
+                }else{
+
+                    Tools::log($this->authorizer_appid."刷新token失败.");
+                }
+            }
+
+            return $cacheData;
+        }else{
+
+            $this->errCode = self::UNAUTH;
+            $this->errMsg = '获取令牌失败.请重新授权';
+            Tools::log("获取令牌失败.请重新授权");
+            return false;
+        }
+    }
+
+
+
 
 
 }
