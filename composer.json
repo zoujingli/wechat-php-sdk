@@ -8,6 +8,7 @@
     "wechat-php-sdk"
   ],
   "require": {
+    "ext-json": "*",
     "php": ">=5.3.3"
   },
   "autoload": {
