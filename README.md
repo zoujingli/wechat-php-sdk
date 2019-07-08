@@ -28,7 +28,7 @@ WeChatDeveloper：https://github.com/zoujingli/WeChatDeveloper
 
 **若对您有帮助，可以赞助并支持下作者哦，谢谢！**
 --
-![](http://plugs.ctolog.com/pay.png)
+![](http://static.thinkadmin.top/pay.png)
 
 
 **官方接口文档链接**
