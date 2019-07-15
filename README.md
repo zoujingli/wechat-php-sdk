@@ -15,8 +15,8 @@
 
 ## 新微信开发工具推荐
 * 微信服务号、微信小程序、微信支付、支付宝支付
-* Github 仓库 WeChatDeveloper：https://github.com/zoujingli/WeChatDeveloper
 * Gitee 仓库 WeChatDevloper: https://gitee.com/zoujingli/WeChatDeveloper
+* Github 仓库 WeChatDeveloper：https://github.com/zoujingli/WeChatDeveloper
 
 **微信SDK开发帮助及交流**
 --
