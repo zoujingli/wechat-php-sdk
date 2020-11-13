@@ -46,8 +46,6 @@ $current_url = url('', '', true, true);
 $script = load_wechat('Script', $authorizer_appid);
 // 获取JS签名包
 $result = $script->getJsSign($current_url, 0, '', $authorizer_appid, $access_token);
-dump($result);
-dump([$script->errMsg, $script->errCode]);
 
 $json = json_encode($result, JSON_PRETTY_PRINT);
 echo '<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>';
