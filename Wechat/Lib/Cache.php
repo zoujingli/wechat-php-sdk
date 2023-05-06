@@ -12,7 +12,6 @@
 // | github开源项目：https://github.com/zoujingli/wechat-php-sdk
 // +----------------------------------------------------------------------
 
-
 namespace Wechat\Lib;
 
 use Wechat\Loader;
