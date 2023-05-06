@@ -3,13 +3,15 @@
 // +----------------------------------------------------------------------
 // | wechat-php-sdk
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2017 ThinkAdmin [ thinkadmin.top ]
 // +----------------------------------------------------------------------
-// | 官方文档: https://www.kancloud.cn/zoujingli/wechat-php-sdk
+// | 官方网站: https://thinkadmin.top
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
+// | 免责声明 ( https://thinkadmin.top/disclaimer )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/wechat-php-sdk
+// | gitee 代码仓库：https://gitee.com/zoujingli/wechat-php-sdk
+// | github 代码仓库：https://github.com/zoujingli/wechat-php-sdk
 // +----------------------------------------------------------------------
 
 namespace Wechat;
@@ -43,8 +45,8 @@ class WechatMenu extends Common
     /**
      * 创建自定义菜单
      * @param array $data 菜单数组数据
-     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN 文档
      * @return bool
+     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013&token=&lang=zh_CN 文档
      */
     public function createMenu($data)
     {
@@ -111,8 +113,8 @@ class WechatMenu extends Common
     /**
      * 创建个性菜单
      * @param array $data 菜单数组数据
-     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
      * @return bool|string
+     * @link https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455782296&token=&lang=zh_CN 文档
      */
     public function createCondMenu($data)
     {

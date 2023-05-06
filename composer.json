@@ -8,10 +8,11 @@
     "wechat-php-sdk"
   ],
   "require": {
+    "php": ">=5.4",
+    "ext-curl": "*",
     "ext-json": "*",
     "ext-libxml": "*",
-    "ext-simplexml": "*",
-    "php": ">=5.4"
+    "ext-simplexml": "*"
   },
   "autoload": {
     "psr-4": {
