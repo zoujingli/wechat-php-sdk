@@ -32,8 +32,7 @@
 
 **若对您有帮助，可以赞助并支持下作者哦，谢谢！**
 --
-![](http://static.thinkadmin.top/pay.png)
-
+![](http://doc.thinkadmin.top/static/img/pay.png)
 
 **官方接口文档链接**
 --
