@@ -112,6 +112,7 @@ class WechatUser extends Common
         }
         $result = Tools::httpGet(self::API_URL_PREFIX . self::USER_INFO_URL . "access_token={$this->access_token}&openid={$openid}");
         if ($result) {
+            $result = substr(str_replace('\"', '"', json_encode($result)), 1, -1);
             $json = json_decode($result, true);
             if (empty($json) || !empty($json['errcode'])) {
                 $this->errCode = isset($json['errcode']) ? $json['errcode'] : '505';
