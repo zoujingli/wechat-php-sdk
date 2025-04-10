@@ -18,6 +18,7 @@
 * 微信服务号、微信小程序、微信支付、支付宝支付
 * Gitee 仓库 WeChatDevloper: https://gitee.com/zoujingli/WeChatDeveloper
 * Github 仓库 WeChatDeveloper：https://github.com/zoujingli/WeChatDeveloper
+* Gitcode 仓库 WeChatDeveloper：https://gitcode.com/ThinkAdmin/WeChatDeveloper
 
 **微信SDK开发帮助及交流**
 --
@@ -48,8 +49,9 @@
 --
 
 * SDK 为开源项目，你可以把它用于任何地址，并不受任何约束，欢迎`fork`项目。
+* 通过 [Gitee](http://gitee.com/zoujingli/wechat-php-sdk) 下载 SDK 源代码
 * 通过 [Github](https://github.com/zoujingli/wechat-php-sdk) 下载 SDK 源代码
-* 通过 [OSChina](http://git.oschina.net/zoujingli/wechat-php-sdk) 下载 SDK 源代码
+* 通过 [Gitcode](http://gitcode.com/ThinkAdmin/wechat-php-sdk) 下载 SDK 源代码
 * 通过 [Composer](https://getcomposer.org) 包管理工具下载 SDK 源代码
 
 **微信`SDK`封装对接及功能**
