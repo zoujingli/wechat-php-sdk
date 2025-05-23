@@ -1,3 +1,5 @@
+[![star](https://gitcode.com/ThinkAdmin/wechat-php-sdk/star/badge.svg)](https://gitcode.com/ThinkAdmin/ThinkAdmin)
+[![star](https://gitee.com/zoujingli/wechat-php-sdk/badge/star.svg?theme=gvp)](https://gitee.com/zoujingli/ThinkAdmin)
 [![Latest Stable Version](https://poser.pugx.org/zoujingli/wechat-php-sdk/v/stable)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 [![Total Downloads](https://poser.pugx.org/zoujingli/wechat-php-sdk/downloads)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
 [![Latest Unstable Version](https://poser.pugx.org/zoujingli/wechat-php-sdk/v/unstable)](https://packagist.org/packages/zoujingli/wechat-php-sdk)
